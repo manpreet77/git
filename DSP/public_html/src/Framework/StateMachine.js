@@ -1,9 +1,3 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 // This file contains all the main state machine handling
 
 var states = [
@@ -105,21 +99,31 @@ function getNextAction (oldState, currEvent) {
     
     var action, nextState;
     var SMdata = [action, nextState];
+    //alert(JSON.stringify(states[0]));
     
-    var currState = states[oldState];
+    var currState;
+    for (i=0;i< 100;i++) {
+        if ( states[i] === oldState ){
+            currState = states[i];
+            break;
+       }
+    }
+    /*
     
+    //alert(currState);
     // make the transition
-    for (i=0;i< currState.length;i++) {
+    for (i=0;i< 100;i++) {
        if ( currState[i].ev === currEvent ){
             SMdata.action    = currState[i].ac;
             SMdata.nextState = currState[i].ns; 
+            break;
        }       
-    }
+    }*/
     return SMdata; 
 }
 
 
-function runStateMachine (oldState,currEvent,currContext,doNextAction) {
+function runStateMachine (oldState,currEvent,currContext) {
 
     var oS, cE, aC, nS, nE, cC;
     var SMdata = [aC, nS];
@@ -140,6 +144,7 @@ function runStateMachine (oldState,currEvent,currContext,doNextAction) {
     }
     return nS;
 }
+
 
 
 
