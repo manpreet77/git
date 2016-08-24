@@ -20,6 +20,10 @@ function ac_prepare_work  (oldState, currEvent, action, newState) {
     // Load Adaptor Instances
     
     // Setup Logger
+    //Console.log("did some prep work on create ticket");
+    
+    newState = 's_active';
+    return 'ei_check_work';
 
 }
 

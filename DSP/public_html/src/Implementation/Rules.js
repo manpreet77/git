@@ -14,9 +14,9 @@
 function rule_ee_createticket () {
     var oldState, currEvent, newState, currContext;
     oldState  = 's_idle';
-    currEvent = 'ee_create_ticket';
-    runStateMachine(oldState, currEvent, currContext, doNextAction);
-    globals.oldState = newState;
+    currEvent = 'ee_ticket_created';
+    return runStateMachine(oldState, currEvent, currContext, doNextAction);
+    //globals.oldState = newState;
 
 }
 
