@@ -5,3 +5,6 @@
  */
 
 
+function main(){
+    alert('hello');
+}
