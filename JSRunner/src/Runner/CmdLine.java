@@ -32,7 +32,7 @@ public class CmdLine {
     public void Loop() {
 
         Log.info(" ");
-        Log.info("Welcome to ESQ Dispatcher Script Tool...V1.2");
+        Log.info("Welcome to ESQ Dispatcher Script Tool...V1.4");
 
         // Read input with BufferedReader.
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -211,12 +211,12 @@ public class CmdLine {
                 r.RunJS("SendVoiceDone.js");
                 break;
             case "ei_ack_sla_breach":
-                Log.info("Run SLABreachAck.js...................................");
-                r.RunJS("SLABreachAck.js");
+                Log.info("Run PrepareAckSLABreach.js...................................");
+                r.RunJS("PrepareAckSLABreach.js");
                 break;
             case "ei_rsl_sla_breach":
-                Log.info("Run SLABreachAck.js...................................");
-                r.RunJS("SLABreachAck.js");
+                Log.info("Run PrepareRslSLABreach.js...................................");
+                r.RunJS("PrepareRslSLABreach.js");
                 break;
         }
     }

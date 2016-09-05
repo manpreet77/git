@@ -30,25 +30,38 @@ public class Timer {
         tl.add(new TimerEvent(delayMs, eventName));
         Collections.sort(tl, new CompareTimerEvent());
     }
-    
-    public String dequeueNextTimerEvent(){
-        
+
+    public void stop(String eventName) {
+        Log.info("Stop Timer : " + eventName);
+        for (int i = 0; i < tl.size(); i++) {
+            TimerEvent te = tl.get(i);
+            if (te.eventName.equalsIgnoreCase(eventName)) {
+                tl.remove(i);
+                Log.info("Removed TimeEvent: " + tl.get(i));
+            }
+            Collections.sort(tl, new CompareTimerEvent());
+        }
+    }
+
+    public String dequeueNextTimerEvent() {
+
         TimerEvent te = tl.get(0);
-        if (te == null){
+        if (te == null) {
             return "no_events";
         }
-        Log.info ("NextTimerEvent : "+te.eventName+ " delayMs : "+ te.delayMs);
+        Log.info("NextTimerEvent : " + te.eventName + " delayMs : " + te.delayMs);
         tl.remove(0);
         return te.eventName;
     }
-    public void logAllTimerEvents(){
-        
-        Log.info ("TimerEvent List..............................\n");
-        for (int i=0; i<tl.size(); i++){
-            Log.info("TimeEvent: "+ tl.get(i));
+
+    public void logAllTimerEvents() {
+
+        Log.info("TimerEvent List..............................\n");
+        for (int i = 0; i < tl.size(); i++) {
+            Log.info("TimeEvent: " + tl.get(i));
         }
-        Log.info ("TimerEvent List..............................\n");
-        
+        Log.info("TimerEvent List..............................\n");
+
     }
 
     class CompareTimerEvent implements Comparator<TimerEvent> {
@@ -73,6 +86,7 @@ public class Timer {
             this.eventName = n;
             this.delayMs = d;
         }
+
         public String toString() {
             return "Event: " + this.eventName + "    Delay Ms: " + this.delayMs + "\n";
         }
