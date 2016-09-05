@@ -24,7 +24,7 @@ Workflow.WfStartTime                        =   new Date ().toISOString();
 // Incident Details
 Workflow.ATMMake                            =   Event.atmmake;
 Workflow.InIncidentId                       =   Event.incidentid;
-Workflow.InStartTime                        =   Event.starttime.substring(0,19);
+Workflow.InStartTime                        =   Event.starttime;
 Workflow.InPolicyName                       =   Event.policyname;
 Workflow.InTermId                           =   Event.assetid;
 Workflow.InSiteId                           =   Event.siteid;

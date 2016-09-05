@@ -21,12 +21,15 @@ for (var i in DispatchQueue) {
 if (!dq.length) { break; }
 
 dq.TryCount++;
-If (dq.MaxRetries > dq.TryCount){   // retry
+If (dq.MaxRetries > dq.TryCount) {   // retry
     dq.Status = 'retry';
-    } else  {                       // Knock this row and let the next contact get called
-             DispatchQueue[i].pop;
-    }
-}
+} else {
+// Retries are over, now check if another user is configured (Gasper Dispatch Block handling)
+   
+   
+   dq.Status = 'new';
+} 
+
 //  Sort the Queue by sendtime
 DispatchQueue.sort  ( function(a, b) { if ( a.SendTime > b.SendTime ) return 1; return 0; } );
 

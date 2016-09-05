@@ -12,8 +12,9 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
 if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'acked' || Workflow.WfStatus ==  'working') {
-    Workflow.WfLifeCycle =  'resolve';
+    Workflow.WfLifecycle =  'resolve';
     Workflow.WfStatus    =  'resolved';
+    Timer.stop('ei_rsl_sla_breach');
 }
 // Copy Arrive details into WorkFlow [resolve time, resolve user]
 

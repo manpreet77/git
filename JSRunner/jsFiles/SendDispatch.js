@@ -31,9 +31,9 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus !='') {
         Log.info('Dispatch Data:(' + i + ') delayMs: ' + dq.DelayMins + ' Status: ' + dq.Status);
         
         var currTime = new Date();
-        Log.info('currTime: ' + currTime);
+        Log.info('currTime: ' + currTime.toISOString());
         var goTime   = new Date(Date.parse(dq.SendTime));
-        Log.info('goTime: ' + goTime);
+        Log.info('goTime: ' + goTime.toISOString());
         if (dq.Status == 'new' || dq.Status == 'retry') {
             if (goTime > currTime) {
                 //set Timer for next notification

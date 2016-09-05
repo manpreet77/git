@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 
 //import org.mozilla.javascript.Context;
 //import org.mozilla.javascript.Scriptable;
-
 /**
  *
  * @author vriha
@@ -61,12 +60,15 @@ class JSRunner {
         try {
             ScriptEngineManager factory = new ScriptEngineManager();
             ScriptEngine engine = factory.getEngineByName("nashorn");
-            engine.put("Timer"   , Timer);
+            engine.put("Timer", Timer);
             engine.put("Workflow", Workflow);
-            engine.put("Event"   , Event);
-            engine.put("Log"     , Log);
+            engine.put("Event", Event);
+            engine.put("Log", Log);
             Reader in;
-            String scriptFile = System.getProperty("user.dir").concat("\\jsFiles\\").concat(jsFile);
+            //String scriptFile = System.getProperty("user.dir").concat("\\jsFiles\\").concat(jsFile);
+
+            String scriptFile = System.getProperty("user.dir") + System.getProperty("file.separator")
+                    + "jsFiles" + System.getProperty("file.separator") + jsFile;
             in = new FileReader(scriptFile);
             engine.eval(in);
         } catch (FileNotFoundException | ScriptException e) {
@@ -97,5 +99,5 @@ class JSRunner {
 //        } catch (IOException ex) {
 //            java.util.logging.Logger.getLogger(JSRunner.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-   }
+    }
 }

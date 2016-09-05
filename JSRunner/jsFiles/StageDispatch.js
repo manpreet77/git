@@ -88,6 +88,9 @@ if  (DispatchQueue === 'undefined') {
         /* FN of the person          */ dq.FirstName     = dmaps[i].user.firstName;
         /* LN of the person          */ dq.LastName      = dmaps[i].user.lastName;
         /* Emailid, PhoneNum..       */ dq.Address       = dmaps[i].user.address;
+        /* FN of the person          */ dq.FirstName2    = dmaps[i].user.firstName;
+        /* LN of the person          */ dq.LastName2     = dmaps[i].user.lastName;
+        /* Emailid, PhoneNum..       */ dq.Address2      = dmaps[i].user.address;
         /* Data to be sent           */ dq.Content       = 'undefined';
         /* Template for adaptor      */ dq.Template      = dmaps[i].template;
         /* If response can come      */ dq.WillRespond   = 'yes';
