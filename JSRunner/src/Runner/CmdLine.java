@@ -95,6 +95,8 @@ public class CmdLine {
                     r.RunJS("StageDispatch.js");
                     break;
                 case 3:
+                    Log.info("Run EventAckSLABreach.js...............................");
+                    r.RunJS("EventAckBreach.js");
                     Log.info("Run PrepareAckSLABreach.js...............................");
                     r.RunJS("PrepareAckBreach.js");
                     Log.info("Run StateDispatch.js..................................");
@@ -133,6 +135,8 @@ public class CmdLine {
                     r.RunJS("StageDispatch.js");
                     break;
                 case 8:
+                    Log.info("Run EventRslSLABreach.js. .............................");
+                    r.RunJS("EventRslSLABreach.js");
                     Log.info("Run PrepareRslSLABreach.js. .............................");
                     r.RunJS("PrepareRslSLABreach.js");
                     Log.info("Run StateDispatch.js..................................");
