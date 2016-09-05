@@ -11,8 +11,8 @@ Log.info("Prepare for Hold Entered...");
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'active' or 'acked' or 'working') {
-    Workflow.WfLifeCycle =  'hold';
+if (Workflow.WfStatus == 'active' || Workflow.WfStatus == 'acked' || Workflow.WfStatus ==  'working') {
+    Workflow.WfLifecycle =  'hold';
     Workflow.WfStatus    =  'onHold';
 }
 // Copy Arrive details into WorkFlow [hold time, hold user]

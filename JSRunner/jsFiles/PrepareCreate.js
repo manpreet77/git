@@ -14,10 +14,10 @@ Log.info("Prepare Work for Create Entered...");
 // Copy Incident details from Event into Workflow like CreateTime, ATMHour, DefaultAssignedParty...
 // Tenant DetailsWorkflow.IncidentId=Event.incidentid;
 Workflow.TenantId                           =   Event.tenantid; 
-Workflow.TenantCode                         =   Event.TenantCode;
+Workflow.TenantCode                         =   //Event.TenantCode; does not come//
 Workflow.TenantName                         =   Event.TenantName;
 //  Workflow DetailsWorkflow.IncidentType=Event.incidenttype;
-Workflow.WfStatus                           =   'active';
+Workflow.WfStatus                           =   'new';
 Workflow.WfLifeCycle                        =   'create';
 Workflow.WfId                               =   'undefined';
 Workflow.WfStartTime                        =   new Date ().toISOString();
@@ -53,17 +53,6 @@ Workflow.ArArrSLA                           =   'undefined';            //Arriva
 Workflow.ArWorkSLA                          =   'undefined';            //Work SLA       
 Workflow.ArRslSLA                           =   Event.slaresolve;       //Resolve SLA   
 
-/*  WHAT THE HELL THIS STUFF IS I DON'T KNOW
-Workflow.SchActivityIdU=Event.scheduledactivityid;
-Workflow.SchIncidentIdU=Event.scheduledincidentid;Workflow.DormantDateU=Event.dormantdate.substring(0,19);
-Workflow.RemarksU=Event.remarks;
-Workflow.SchDateU=Event.scheduleddate.substring(0,19);Workflow.ObjectKeyU=Event.objectkey;
-Workflow.PolicyIdU=Event.policyid;
-Workflow.ObjectIdU=Event.objectid;
-Workflow.FromDateU=Event.fromdate.substring(0,19);
-Workflow.ToDateU=Event.todate.substring(0,19);
-*/
-
 // Copy ATM details from Event into  Workflow
 
 // Copy Fault details from Event into Workflow
@@ -72,13 +61,13 @@ Workflow.ToDateU=Event.todate.substring(0,19);
 
 // Set WorkFlow State
 Workflow.WfLifecycle = 'create';
-Workflow.WfStatus = 'active';
+Workflow.WfStatus = 'new';
 // Start Timer for Ack SLA (ei_ack_sla_timeout)
 if(Workflow.ArAckSLA > 0)  { Timer.start('ei_ack_sla_breach', Workflow.ArAckSLA*60*1000 ); }
 // Start Timer for Resolve SLA (ei_rsl_sla_timeout)
-if(Workflow.ArRslSLA > 0)  { Timer.start('ei_ack_sla_breach', Workflow.ArAckSLA*60*1000 ); }
+if(Workflow.ArRslSLA > 0)  { Timer.start('ei_rsl_sla_breach', Workflow.ArAckSLA*60*1000 ); }
 
-Log.info(Event);
+//Log.info(Event);
 Log.info("Prepare Work for Create Exiting...");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services

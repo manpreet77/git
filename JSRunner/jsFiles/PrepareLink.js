@@ -11,8 +11,8 @@ Log.info("Prepare for Link Entered...");
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'active' or 'acked' or 'working') {
-    Workflow.WfLifeCycle =  'link';
+if (Workflow.WfStatus == 'active' || Workflow.WfStatus == 'acked' || Workflow.WfStatus == 'working') {
+    Workflow.WfLifecycle =  'link';
     Workflow.WfStatus    =  'linked';  //????
 }
 // Copy Arrive details into WorkFlow [link time, link user]

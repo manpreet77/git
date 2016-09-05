@@ -76,7 +76,7 @@ if  (DispatchQueue === 'undefined') {
         for (var i in dmaps) {
         var dq = {};
         /* Create, Ack...            */ dq.EventType     = dmaps[i].lifeCycle;
-        var sendTime = new Date(Date.parse(Workflow.WfStartTime));
+        var sendTime = new Date(Date.parse(Workflow.InStartTime));
         var sendTime2 = sendTime.setMinutes(sendTime.getMinutes() + dmaps[i].duration.baseValueMinutes);
         /* When to be sent           */ dq.SendTime      = new Date(sendTime2).toISOString();
         /* delay duration            */ dq.DelayMins     = dmaps[i].duration.baseValueMinutes;

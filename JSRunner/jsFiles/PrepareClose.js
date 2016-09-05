@@ -2,23 +2,24 @@
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
    Dispatcher Standard Workflow V 1.0
-   PrepareAck
+   PrepareClose
    This action sets the stage and decides what needs to be done in this workflow
    --------------------------------------------------------------------------------
 */
-Log.info("Prepare for Ack Entered...");
+Log.info("Prepare for Close Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfStatus == 'reopened') {
-    Workflow.WfLifecycle =  'ack';
-    Workflow.WfStatus    =  'acked';
-    Timer.stop('ei_ack_sla_breach');
-    // Copy Ack details into WorkFlow [ack time, ack user]
-    
+if (Workflow.WfStatus != 'closed') {
+    Workflow.WfLifecycle =  'close';
+    Workflow.WfStatus    =  'closed';
+} else {
+    Log.info(': current State = ' + Workflow.WfStatus + ' event ignored');
 }
-Log.info("Prepare for Ack Exiting...");
+// Copy Close details into WorkFlow [Close time, Close user]
+
+Log.info("Prepare for Close Exiting...");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services
 // --------------------------------------------------------------------------------

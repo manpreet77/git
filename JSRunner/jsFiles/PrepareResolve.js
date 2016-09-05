@@ -11,9 +11,9 @@ Log.info("Prepare for Resolve Entered...");
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'active' or 'acked' or 'working') {
+if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'acked' || Workflow.WfStatus ==  'working') {
     Workflow.WfLifeCycle =  'resolve';
-    Workflow.WfStatus    =  'Resolved';
+    Workflow.WfStatus    =  'resolved';
 }
 // Copy Arrive details into WorkFlow [resolve time, resolve user]
 

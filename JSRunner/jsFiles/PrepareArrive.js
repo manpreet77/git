@@ -11,8 +11,8 @@ Log.info("Prepare for Arrive Entered...");
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'active' or 'acked') {
-    Workflow.WfLifeCycle =  'arrived';
+if (Workflow.WfStatus == 'active' || Workflow.WfStatus == 'acked') {
+    Workflow.WfLifecycle =  'arrived';
     Workflow.WfStatus    =  'working';
 }
 // Copy Arrive details into WorkFlow [arrive time, arrive user]

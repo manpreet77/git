@@ -18,7 +18,7 @@ var dq, delayMins, currChannel;
 var sentAnyDispatch; 
 
 //  See if the Incident is in suitable state
-if (Workflow.WfStatus != 'null' or '') {
+if (Workflow.WfStatus != 'null' && Workflow.WfStatus !='') {
     
     for (var i in DispatchQueue) {
 
@@ -30,14 +30,21 @@ if (Workflow.WfStatus != 'null' or '') {
 
         Log.info('Dispatch Data:(' + i + ') delayMs: ' + dq.DelayMins + ' Status: ' + dq.Status);
         
-        if (dq.Status == 'new' or 'retry') {
-            if (dq.DelayMins > 0){
-            //set Timer for next notification
-            Log.info("Setting the next timer for = {} mins", dq.DelayMins);
-            Timer.start('ei_send_dispatch', dq.DelayMins*60*1000 );
-            dq.Status = 'wait';
-            break;
-        } 
+        var currTime = new Date();
+        Log.info('currTime: ' + currTime);
+        var goTime   = new Date(Date.parse(dq.SendTime));
+        Log.info('goTime: ' + goTime);
+        if (dq.Status == 'new' || dq.Status == 'retry') {
+            if (goTime > currTime) {
+                //set Timer for next notification
+                Log.info("Setting the next timer for = {} mins", dq.DelayMins);
+                Timer.start('ei_send_dispatch', dq.DelayMins*60*1000 );
+                dq.Status = 'wait';
+                break;
+            }
+        } else if (dq.Status != 'wait') {
+                break;
+            }
         // All new with 0 delay and waits
 
         //  actually send to the adaptor
@@ -90,7 +97,6 @@ if (Workflow.WfStatus != 'null' or '') {
     
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
-}
 }
 Log.info("Send Dispatch Exiting...");
 // --------------------------------------------------------------------------------

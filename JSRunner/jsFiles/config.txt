@@ -21,8 +21,10 @@ switch          prepareSwitch       !closed     switched
                                     !resolved   
 link            prepareLink         !closed     linked
                                     !resolved
+                                    !isLinked
 resolve         prepareResolve      !resolved   resolved
                                     !closed
+reopen          prepareReopen       resolved    resumed
 close           prepareClose        !closed     closed
 
 ------------------------------------------------------------------------------------------

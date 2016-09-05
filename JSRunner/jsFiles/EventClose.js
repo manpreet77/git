@@ -1,4 +1,4 @@
-// FIELDS......................       RESOLVE.........................................
+// FIELDS......................       CLOSE...............NEEDS CHECKING...............
 Event.Id                              = '601';
 Event.actionrulename                  = 'test';
 Event.actionruleid                    = '1';
@@ -9,7 +9,7 @@ Event.incidentfromsubstatus           = '03';//    REPLACED PART
 Event.category                        = '06';//    Incident Status
 Event.subcategory                     = '02';//    Update
 Event.acttype                         = 'Update';
-Event.starttime                       = '2016-09-03T07:47:49.46';
+Event.starttime                       = '2016-09-03T07=47=49.46';
 Event.createdby                       = '17';
 Event.remarks                         = 'Incident Resolved';
 Event.userid                          = '17';
@@ -30,7 +30,7 @@ Event.activityid                      = '601';
 Event.islinked                        = '0';
 Event.incidenttype                    = '1';
 Event.defaultincidentpriority         = '0';
-Event.incidentactiontime              = '08/26/2016 12:18:53 PM';
+Event.incidentactiontime              = '08/26/2016 12=18=53 PM';
 Event.externalticketid                = '';
 Event.targetparty                     = 'DC.ATMOps';
 Event.targetpartyid                   = '8';
@@ -62,4 +62,4 @@ Event.sm                              = 'true';
 Event.problemstillexists              = 'False';
 Event.mail                            = '';
 
-Log.info('Event Resolve Data\n'+Event);
+Log.info('Event Close Data\n'+Event);
