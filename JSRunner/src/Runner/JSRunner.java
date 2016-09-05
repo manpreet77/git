@@ -64,14 +64,12 @@ class JSRunner {
             engine.put("Workflow", Workflow);
             engine.put("Event", Event);
             engine.put("Log", Log);
-            Reader in;
-            //String scriptFile = System.getProperty("user.dir").concat("\\jsFiles\\").concat(jsFile);
-
+            
             String scriptFile = System.getProperty("user.dir") + System.getProperty("file.separator")
                     + "jsFiles" + System.getProperty("file.separator") + jsFile;
-            in = new FileReader(scriptFile);
-            engine.eval(in);
-        } catch (FileNotFoundException | ScriptException e) {
+            engine.eval("load(\"" + scriptFile + "\");");
+            
+            } catch (ScriptException e) {
             Log.error(e.getMessage());
         }
     }
