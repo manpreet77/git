@@ -1,0 +1,33 @@
+-------------------------------------------------------------------------------------------
+Dispatcher....  Dispatcher.....     WfStatus
+                Action              Entry       Exit        Comments
+--------------  ---------------     --------    ---------   -------------------------------
+create          prepareCreate       null        new         New Workflow
+ack             prepareAck          new         acked       
+                                    resumed
+                                    reopened
+arrive          prepareArrive       new         arrived
+                                    resumed
+                                    reopened
+ackslabreach    ackslabreach        !acked      <nc>     
+hold            prepareHold         !onHold     onHold   
+                                    !Resolved   
+                                    !Closed     
+resume          prepareResume       onHold      resumed
+rslslabreach    rslslabreach        !resolved   <nc>
+                                    !onHold
+                                    !closed
+switch          prepareSwitch       !closed     switched
+                                    !resolved   
+link            prepareLink         !closed     linked
+                                    !resolved
+resolve         prepareResolve      !resolved   resolved
+                                    !closed
+close           prepareClose        !closed     closed
+
+------------------------------------------------------------------------------------------
+All Rules will be also wired to StageDispatch.js
+------------------------------------------------------------------------------------------
+
+
+           
