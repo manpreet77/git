@@ -22,7 +22,7 @@ if (!dq.length) { break; }
 
 dq.TryCount++;
 If (dq.MaxRetries > dq.TryCount){   // retry
-    dq.Status = 'new';
+    dq.Status = 'retry';
     } else  {                       // Knock this row and let the next contact get called
              DispatchQueue[i].pop;
     }
