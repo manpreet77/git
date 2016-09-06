@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.logging.Level;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -65,12 +66,16 @@ class JSRunner {
             engine.put("Event", Event);
             engine.put("Log", Log);
             
-            String scriptFile = System.getProperty("user.dir") + System.getProperty("file.separator")
-                    + "jsFiles" + System.getProperty("file.separator") + jsFile;
-            engine.eval("load(\"" + scriptFile + "\");");
+            File scriptFile = new File(System.getProperty("user.dir") + System.getProperty("file.separator") +  System.getProperty("file.separator") + "jsFiles" + System.getProperty("file.separator") + jsFile);
+            Log.info(scriptFile.getAbsolutePath());
+            
+            //engine.eval("load('" + scriptFile.getAbsolutePath() + "');");
+            engine.eval (new FileReader(scriptFile));
             
             } catch (ScriptException e) {
             Log.error(e.getMessage());
+        } catch (FileNotFoundException ex) {
+            Log.error(ex.getMessage());
         }
     }
 

@@ -55,6 +55,7 @@ public class CmdLine {
             Log.info("90 - Log the Workflow Object");
             Log.info("91 - Log the Event Object");
             Log.info("92 - Log All Timer Events in Queue");
+            Log.info("93 - Log DispatchQueue");
             Log.info(" ");
             Log.info("Enter Choice: ");
 
@@ -181,6 +182,10 @@ public class CmdLine {
                 case 92:
                     Log.info("Logging all TimerEvents...............................");
                     t.logAllTimerEvents();
+                    break;
+                case 93:
+                    Log.info("Logging all DispatchQueue.............................");
+                    r.RunJS("LogDispatchQueue.js");
                     break;
                 default:
                     Log.info("Quitting..............................................");
