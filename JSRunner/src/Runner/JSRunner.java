@@ -78,9 +78,7 @@ class JSRunner {
             }
             
             } catch (FileNotFoundException | ScriptException e) {
-            Log.error(e.getMessage());
-        } catch (FileNotFoundException ex) {
-            Log.error(ex.getMessage());
+            Log.error(e.getMessage());        
         }
     }
 
