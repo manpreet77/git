@@ -97,18 +97,18 @@ public class CmdLine {
                     r.RunJS("StageDispatch.js");
                     break;
                 case 3:
-                    Log.info("Run EventETA.js...............................");
-                    r.RunJS("EventETA.js");
-                    Log.info("Run PrepareETA.js...............................");
-                    r.RunJS("PrepareETA.js");
-                    Log.info("Run StateDispatch.js..................................");
-                    r.RunJS("StageDispatch.js");
-                    break;
-                case 4:
                     Log.info("Run EventAckSLABreach.js...............................");
                     r.RunJS("EventAckBreach.js");
                     Log.info("Run PrepareAckSLABreach.js...............................");
                     r.RunJS("PrepareAckBreach.js");
+                    Log.info("Run StateDispatch.js..................................");
+                    r.RunJS("StageDispatch.js");
+                    break;
+                case 4:
+                    Log.info("Run EventETA.js...............................");
+                    r.RunJS("EventETA.js");
+                    Log.info("Run PrepareETA.js...............................");
+                    r.RunJS("PrepareETA.js");
                     Log.info("Run StateDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
@@ -193,7 +193,7 @@ public class CmdLine {
                     t.logAllTimerEvents();
                     break;
                 case 93:
-                    Log.info("Logging all DispatchQueue.............................");
+                    Log.info("Logging DispatchQueue.............................");
                     r.RunJS("LogDispatchQueue.js");
                     break;
                 default:

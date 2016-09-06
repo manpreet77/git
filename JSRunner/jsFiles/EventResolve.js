@@ -61,5 +61,3 @@ Event.subject                         = '';
 Event.sm                              = 'true';
 Event.problemstillexists              = 'False';
 Event.mail                            = '';
-
-Log.info('Event Resolve Data\n'+Event);

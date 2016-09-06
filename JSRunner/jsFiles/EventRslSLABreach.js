@@ -10,7 +10,6 @@ Log.info("Event Rsl SLA Breach Entered...");
 // Start Timer for Rsl SLA (ei_rsl_sla_breach)
 Timer.start('ei_rsl_sla_breach', 0 );
 
-Log.info(Event);
 Log.info("Event Rsl SLA Breach Exiting...");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services

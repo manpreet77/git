@@ -108,8 +108,6 @@ DispatchQueue.sort  ( function(a, b) { if ( a.SendTime > b.SendTime ) return 1; 
 //  Save the Queue away
 Workflow.DispatchQueueStringify = JSON.stringify (DispatchQueue);
 
-Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
-
 //  Kick off the sending of notifications
 Timer.start('ei_send_dispatch', 0);
 

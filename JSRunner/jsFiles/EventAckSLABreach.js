@@ -10,7 +10,6 @@ Log.info("Event Ack SLA Breach Entered...");
 // Start Timer for Ack SLA (ei_ack_sla_breach)
 Timer.start('ei_ack_sla_breach', 0 );
 
-Log.info(Event);
 Log.info("Event Ack SLA Breach Exiting...");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services

@@ -6,6 +6,9 @@ create          prepareCreate       null        new         New Workflow
 ack             prepareAck          new         acked       
                                     resumed
                                     reopened
+eta             prepareEta          new         <nc>
+                                    resumed
+                                    reopened
 arrive          prepareArrive       new         arrived
                                     resumed
                                     reopened
