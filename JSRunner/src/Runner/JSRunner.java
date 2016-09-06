@@ -65,11 +65,18 @@ class JSRunner {
             engine.put("Event", Event);
             engine.put("Log", Log);
             
-            String scriptFile = System.getProperty("user.dir") + System.getProperty("file.separator")
+            String scriptFilePath = System.getProperty("user.dir") + System.getProperty("file.separator")
                     + "jsFiles" + System.getProperty("file.separator") + jsFile;
-            engine.eval("load(\"" + scriptFile + "\");");
+            File scriptFile = new File(scriptFilePath);
+            Log.info(scriptFile.getAbsolutePath());
             
-            } catch (ScriptException e) {
+            if(!System.getProperty("os.name").toLowerCase().contains("win")){
+                engine.eval (new FileReader(scriptFile));
+            } else {            
+                engine.eval("load(\"" + scriptFile + "\");");
+            }
+            
+            } catch (FileNotFoundException | ScriptException e) {
             Log.error(e.getMessage());
         }
     }
