@@ -70,7 +70,7 @@ class JSRunner {
             File scriptFile = new File(scriptFilePath);
             Log.info(scriptFile.getAbsolutePath());
             
-            if(!System.getProperty("os.name").toLowerCase().contains("win")){
+            if(System.getProperty("os.name").toLowerCase().contains("win")){
                 engine.eval (new FileReader(scriptFile));
             } else {            
                 engine.eval("load(\"" + scriptFile + "\");");
