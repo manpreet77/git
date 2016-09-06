@@ -15,6 +15,10 @@ if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfS
     Workflow.WfLifecycle =  'ack';
     Workflow.WfStatus    =  'acked';
     Timer.stop('ei_ack_sla_breach');
+    
+    var ArrSLABreachDelay;
+    // CALCULATE THIS FROM ETA
+    Timer.start('ei_arr_sla_breach', ArrSLABreachDelay);
     // Copy Ack details into WorkFlow [ack time, ack user]
     
 }
