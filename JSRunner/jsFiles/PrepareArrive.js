@@ -14,6 +14,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus == 'active' || Workflow.WfStatus == 'acked') {
     Workflow.WfLifecycle =  'arrived';
     Workflow.WfStatus    =  'working';
+    Timer.stop('ei_arr_sla_breach');
 }
 // Copy Arrive details into WorkFlow [arrive time, arrive user]
 

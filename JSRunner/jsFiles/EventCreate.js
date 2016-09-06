@@ -60,4 +60,3 @@ Event.subject                        = '';
 Event.sm                             = 'true';
 Event.problemstillexists             = 'False';
 Event.mail                           = '';
-Log.info('Event Create Data\n'+Event);

@@ -42,19 +42,21 @@ public class CmdLine {
             Log.info("1  - Create");
             Log.info("2  - Ack");
             Log.info("3  - Ack Breach");
-            Log.info("4  - Arrive");
-            Log.info("5  - Hold");
-            Log.info("6  - Resume");
-            Log.info("7  - Resolve");
-            Log.info("8  - Rsl Breach");
-            Log.info("9  - Reopen");
-            Log.info("10 - Close");
-            Log.info("11 - SendVoiceDone");
-            Log.info("12 - SendVoiceError");
+            Log.info("4  - ETA");
+            Log.info("5  - Arrive");
+            Log.info("6  - Hold");
+            Log.info("7  - Resume");
+            Log.info("8  - Resolve");
+            Log.info("9  - Rsl Breach");
+            Log.info("10 - Reopen");
+            Log.info("11 - Close");
+            Log.info("12 - SendVoiceDone");
+            Log.info("13 - SendVoiceError");
             Log.info("0  - Process One Timer Event");
             Log.info("90 - Log the Workflow Object");
             Log.info("91 - Log the Event Object");
             Log.info("92 - Log All Timer Events in Queue");
+            Log.info("93 - Log DispatchQueue");
             Log.info(" ");
             Log.info("Enter Choice: ");
 
@@ -103,6 +105,14 @@ public class CmdLine {
                     r.RunJS("StageDispatch.js");
                     break;
                 case 4:
+                    Log.info("Run EventETA.js...............................");
+                    r.RunJS("EventETA.js");
+                    Log.info("Run PrepareETA.js...............................");
+                    r.RunJS("PrepareETA.js");
+                    Log.info("Run StateDispatch.js..................................");
+                    r.RunJS("StageDispatch.js");
+                    break;
+                case 5:
                     Log.info("Run EventArrive.js..................................");
                     r.RunJS("EventArrive.js");
                     Log.info("Run PrepareArrive.js..................................");
@@ -110,7 +120,7 @@ public class CmdLine {
                     Log.info("Run StateDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
-                case 5:
+                case 6:
                     Log.info("Run EventHold.js..................................");
                     r.RunJS("EventHold.js");
                     Log.info("Run PrepareHold.js..................................");
@@ -118,7 +128,7 @@ public class CmdLine {
                     Log.info("Run StateDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
-                case 6:
+                case 7:
                     Log.info("Run EventResume.,.... ..............................");
                     r.RunJS("EventResume.js");
                     Log.info("Run PrepareResume.,.... ..............................");
@@ -126,7 +136,7 @@ public class CmdLine {
                     Log.info("Run StateDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
-                case 7:
+                case 8:
                     Log.info("Run EventResolve.js.................................");
                     r.RunJS("EventResolve.js");
                     Log.info("Run PrepareResolve.js.................................");
@@ -134,7 +144,7 @@ public class CmdLine {
                     Log.info("Run StateDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
-                case 8:
+                case 9:
                     Log.info("Run EventRslSLABreach.js. .............................");
                     r.RunJS("EventRslSLABreach.js");
                     Log.info("Run PrepareRslSLABreach.js. .............................");
@@ -142,7 +152,7 @@ public class CmdLine {
                     Log.info("Run StateDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
-                case 9:
+                case 10:
                     Log.info("Run EventReopen.js..................................");
                     r.RunJS("EventReopen.js");
                     Log.info("Run PrepareReopen.js..................................");
@@ -150,7 +160,7 @@ public class CmdLine {
                     Log.info("Run StateDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
-                case 10:
+                case 11:
                     Log.info("Run EventClose..,.... ..............................");
                     r.RunJS("EventClose.js");
                     Log.info("Run PrepareClose..,.... ..............................");
@@ -158,11 +168,11 @@ public class CmdLine {
                     Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
-                case 11:
+                case 12:
                     Log.info("Run SendVoiceDone.js..................................");
                     r.RunJS("SendVoiceDone.js");
                     break;
-                case 12:
+                case 13:
                     Log.info("Run SendVoiceError.js.................................");
                     r.RunJS("SendVoiceError.js");
                     break;
@@ -181,6 +191,10 @@ public class CmdLine {
                 case 92:
                     Log.info("Logging all TimerEvents...............................");
                     t.logAllTimerEvents();
+                    break;
+                case 93:
+                    Log.info("Logging DispatchQueue.............................");
+                    r.RunJS("LogDispatchQueue.js");
                     break;
                 default:
                     Log.info("Quitting..............................................");

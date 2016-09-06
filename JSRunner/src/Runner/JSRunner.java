@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.logging.Level;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -78,6 +79,8 @@ class JSRunner {
             
             } catch (FileNotFoundException | ScriptException e) {
             Log.error(e.getMessage());
+        } catch (FileNotFoundException ex) {
+            Log.error(ex.getMessage());
         }
     }
 
