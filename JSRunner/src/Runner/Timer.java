@@ -39,7 +39,7 @@ public class Timer {
         String dm;
         eventName = (String) mirror.get("eventName");
         delayMs = (new Double (Double.parseDouble(mirror.get("delayMs").toString()))).longValue();
-        if (eventName.isEmpty() || delayMs == 0) {
+        if (eventName.isEmpty() || delayMs < 0) {
             throw new IllegalArgumentException("eventName=" + eventName + ", delayMs=" + delayMs);
         }
         create(eventName, delayMs);

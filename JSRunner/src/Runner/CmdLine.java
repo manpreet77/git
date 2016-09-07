@@ -32,7 +32,7 @@ public class CmdLine {
     public void Loop() {
 
         Log.info(" ");
-        Log.info("Welcome to ESQ Dispatcher Script Tool...V1.6.4");
+        Log.info("Welcome to ESQ Dispatcher Script Tool...V1.7.5");
 
         // Read input with BufferedReader.
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));

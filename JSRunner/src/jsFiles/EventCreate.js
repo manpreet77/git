@@ -9,7 +9,7 @@ Event.incidentfromsubstatus          = '';
 Event.category                       = '06';
 Event.subcategory                    = '01';
 Event.acttype                        = 'Create';
-Event.starttime                      = '2016-09-05T12:04:53.957';
+Event.starttime                      = '2016-09-07T14:25:53.957Z';
 Event.createdby                      = '17';
 Event.remarks                        = 'Inicdent Created';
 Event.userid                         = '17';
@@ -29,7 +29,7 @@ Event.activityid                     = '601';
 Event.islinked                       = '0';
 Event.incidenttype                   = '1';
 Event.defaultincidentpriority        = '0';
-Event.incidentactiontime             = '08/26/2016 12:18:53 PM';
+Event.incidentactiontime             = '09/07/2016 02:25:53 PM';
 Event.externalticketid               = '';
 Event.targetparty                    = 'DC.ATMOps';
 Event.targetpartyid                  = '8';
@@ -41,7 +41,17 @@ Event.schedules_afhr                 = '0';
 Event.schedules_brhr                 = '1';
 Event.slaresolve                     = '480';
 Event.slaacknowledge                 = '30';
-Event.schedules_oper                 = '0';
+Event.schedules_brnchr               = '0';
+Event.schedules_operhr               = '0';
+Event.schedules_othrhr               = '0';
+Event.schedules_aftrhr               = '0';
+Event.schedules_peakhr               = '0';
+Event.schedules_ofpkhr               = '0';
+Event.schedulesnext_categorycode     = 'BRNCHR';
+Event.schedulesnext_nextavailableschedulestarttime = '2016-09-07T15:35:53.957Z';
+
+
+
 Event.message                        = '';
 Event.policy_name                    = 'ATM.Others.ATM Others';
 Event.policyid                       = '78';

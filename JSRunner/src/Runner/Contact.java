@@ -43,6 +43,6 @@ public class Contact {
         } catch (IOException e) {
             Log.error(e.getMessage());
         }
-        return response.toString();
+        return response.toString().replace('"', '\'');
     }
 }
