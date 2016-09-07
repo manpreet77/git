@@ -7,22 +7,13 @@
  --------------------------------------------------------------------------------
  */
 Log.info("Prepare Work for Create Entered...");
-// Housekeeping
-
-// Duplicate check for ee_incident_create
 
 // Copy Incident details from Event into Workflow like CreateTime, ATMHour, DefaultAssignedParty...
-// Tenant DetailsWorkflow.IncidentId=Event.incidentid;
+
 Workflow.TenantId = Event.tenantid;
-Workflow.TenantCode = //Event.TenantCode; does not come//
-        Workflow.TenantName = Event.TenantName;
-//  Workflow DetailsWorkflow.IncidentType=Event.incidenttype;
-Workflow.WfStatus = 'new';
-Workflow.WfLifeCycle = 'Create';
-Workflow.WfId = 'undefined';
-Workflow.WfStartTime = new Date().toISOString();
+Workflow.TenantCode = 'undefined';//Event.TenantCode; does not come//
+Workflow.TenantName = 'undefined';//Event.TenantName; does not come//
 // Incident Details
-Workflow.ATMMake = Event.atmmake;
 Workflow.InIncidentId = Event.incidentid;
 Workflow.InStartTime = Event.starttime;
 Workflow.InPolicyName = Event.policyname;
@@ -38,9 +29,15 @@ Workflow.InStatus = 'undefined';
 Workflow.InSubStatus = 'undefined';
 Workflow.InAssigneeParty = Event.targetpartyid;
 Workflow.InPartyId = 'undefined';
-Workflow.InIsInATMBranchHours = Event.schedules_brhr;
-Workflow.InIsInATMAfterHours = Event.schedules_afhr;
-Workflow.InIsInATMOtherHours = Event.schedules_oper;
+Workflow.InIsInATMBranchHours = Event.schedules_brnchr; // 1 or 0
+Workflow.InIsInATMAfterHours = Event.schedules_aftrhr; // 1 or 0
+Workflow.InIsInATMOperHours = Event.schedules_operhr; // 1 or 0
+Workflow.InIsInATMOtherHours = Event.schedules_othrhr; // 1 or 0
+Workflow.InIsInATMPeakHours = Event.schedules_peakhr; // 1 or 0
+Workflow.InIsInATMOffPeakHours = Event.schedules_ofpkhr; // 1 or 0
+Workflow.InNextATMSchedAvailable= Event.schedulesnext_categorycode;  // any of OPERHR,BRNCHR,AFTRHR,OTHRHR,PEAKHR,OFPKHR
+Workflow.InNextATMSchedAvailableTime= Event.schedulesnext_nextavailableschedulestarttime; //next avl time - e.g. 2016-08-30T00:00:00
+
 // Action Rule Details
 Workflow.ArId = Event.actionruleid;
 Workflow.ArName = Event.actionrulename;   // Action Rule Name
@@ -54,16 +51,20 @@ Workflow.ArWorkSLA = 'undefined';            //Work SLA
 Workflow.ArRslSLA = Event.slaresolve;       //Resolve SLA   
 
 // Copy ATM details from Event into  Workflow
+Workflow.AtmMake = Event.atmmake;
 
 // Copy Fault details from Event into Workflow
 
 // Copy Incident Stats into Workflow
 
 // Set WorkFlow State
-Workflow.WfLifecycle = 'Create';
+//  Workflow Details
 Workflow.WfStatus = 'new';
-// Start Timer for Ack SLA (ei_ack_sla_breach)
+Workflow.WfLifeCycle = 'Create';
+Workflow.WfId = 'undefined';
+Workflow.WfStartTime = new Date().toISOString();
 
+// Start Timer for Ack SLA (ei_ack_sla_breach)
 if (Workflow.ArAckSLA > 0) {
     Log.info('Start Timer');
     Timer.start({
