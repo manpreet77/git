@@ -15,11 +15,11 @@ Log.info("Send Dispatch Entered...");
 var DispatchQueue = JSON.parse(Workflow.DispatchQueueStringify);
 
 var dq, delayMins, currChannel;
-var sentAnyDispatch; 
+var sentAnyDispatch;
 
 //  See if the Incident is in suitable state
-if (Workflow.WfStatus != 'null' && Workflow.WfStatus !='') {
-    
+if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
+
     for (var i in DispatchQueue) {
 
         //  dequeue next email to be sent
@@ -29,23 +29,26 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus !='') {
             continue;
 
         Log.info('Dispatch Data:(' + i + ') delayMs: ' + dq.DelayMins + ' Status: ' + dq.Status);
-        
+
         var currTime = new Date();
         Log.info('currTime: ' + currTime.toISOString());
-        var goTime   = new Date(Date.parse(dq.SendTime));
+        var goTime = new Date(Date.parse(dq.SendTime));
         Log.info('goTime: ' + goTime.toISOString());
-        
+
         if (dq.Status == 'new' || dq.Status == 'retry') {
             if (goTime > currTime) {
                 //set Timer for next notification
                 Log.info("Setting the next timer for = {} mins", dq.DelayMins);
-                Timer.create('ei_send_notification', dq.DelayMins*60*1000);
+                Timer.start({
+                    eventName: 'ei_ack_sla_breach',
+                    delayMs: dq-DelayMins * 60 * 1000
+                });
                 dq.Status = 'wait';
                 break;
             }
         } else if (dq.Status != 'wait') {
-                break;
-            }
+            break;
+        }
         // All new with 0 delay and waits
 
         //  actually send to the adaptor
@@ -54,16 +57,15 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus !='') {
         {
             case 'email':
             {
-                //TODO
-                //var EmailTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});
-                /*email.send( {to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true" } );*/
-                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
+                EmailTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});
+                email.send({to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true"});
+                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= ' + dq.Level + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + dq.FirstName + ', LastName = ' + dq.LastName + ', Address = ' + dq.Address);
                 /*SendActivity (  Workflow.InIncidentId,  /*OperationalType* /"ACTIVITY",  /*OperationalName* /"Email Notify",
-                /*Status* /null,             /*SubStatus* /null,
-                /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
-                /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
-                /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
-                /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
+                 /*Status* /null,             /*SubStatus* /null,
+                 /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
+                 /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
+                 /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
+                 /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
                 dq.Status = 'done';
                 break;
             }
@@ -75,13 +77,13 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus !='') {
             {
                 //var VoiceTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});
                 /*voice.send( { to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true" } );*/
-                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
+                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= ' + dq.Level + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + dq.FirstName + ', LastName = ' + dq.LastName + ', Address = ' + dq.Address);
                 /*SendActivity (  Workflow.InIncidentId,  /*OperationalType* /"ACTIVITY",  /*OperationalName* /"Email Notify",
-                /*Status* /null,             /*SubStatus* /null,
-                /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
-                /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
-                /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
-                /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
+                 /*Status* /null,             /*SubStatus* /null,
+                 /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
+                 /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
+                 /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
+                 /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
                 dq.Status = 'calling';
                 break;
             }
@@ -95,7 +97,7 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus !='') {
             }
         }
     }
-    
+
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 }

@@ -1,0 +1,51 @@
+{
+                "partyName": "name1473177051782",
+                "partyDetails": [{
+                                "user": {
+                                                "firstName": "Rajiv",
+                                                "lastName": "Beri",
+                                                "address": "rajiv.beri@esq.com"
+                                },
+                                "lifeCycle": "Create",
+                                "contactType": "Notification",
+                                "level": "Base",
+                                "contactChannel": "Email",
+                                "atmSchedule": "OperationalHours",
+                                "duration": {
+                                                "name": "somesystemgeneratedname",
+                                                "baseValueMinutes": 0,
+                                                "graceValueMinutes": 0
+                                },
+                                "template": {
+                                                "name": "NotificationEmailTemplate",
+                                                "description": "EmailTemplatefortenants",
+                                                "templateType": "email",
+                                                "subject": "IncidentAlertNotification-IncidentId: %Workflow.IncidentId%-ATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%-%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%",
+                                                "body": "Theproblem\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%occurredonATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%withIncidentId=%Workflow.IncidentId%.\\n<br>\\nPleaseresolvetheincidentwithindefinedSLA%Workflow.TimeBefore1Escalation%Hoursinordertoavoidescalation.\\n</br>\\n<br><br><b>\\nThisisanauto-generatedemail.PleasedonotreplyorwritebacktothisEmailID.\\n</b></br></br>\\n\\n"
+                                }
+                },
+                {
+                                "user": {
+                                                "firstName": "Manpreet",
+                                                "lastName": "Singh",
+                                                "address": "ms@esq.com"
+                                },
+                                "lifeCycle": "Create",
+                                "contactType": "Escalation",
+                                "level": "Level-1",
+                                "contactChannel": "Email",
+                                "atmSchedule": "OperationalHours",
+                                "duration": {
+                                                "name": "somesystemgeneratedname",
+                                                "baseValueMinutes": 3,
+                                                "graceValueMinutes": 0
+                                },
+                                "template": {
+                                                "name": "Level-1EmailTemplate",
+                                                "description": "L1-EmailTemplatefortenants",
+                                                "templateType": "email",
+                                                "subject": "EscalationlevelL1-IncidentId: %Workflow.IncidentId%-ATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%-%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%",
+                                                "body": "Duetonon-resolutionoftheIncidentId: \\n%Workflow.IncidentId%-%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%fortheATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
+                                }
+                }]
+}

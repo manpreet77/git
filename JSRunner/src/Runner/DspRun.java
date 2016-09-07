@@ -23,13 +23,14 @@ class DspRun {
         HashMap e = new HashMap();
         List<Runner.Timer.TimerEvent> tl = new ArrayList<Runner.Timer.TimerEvent>();
         Logger l = LoggerFactory.getLogger(DspRun.class);
-        Timer t   = new Timer(tl,l);
-        
-        
+        Timer t = new Timer(tl, l);
+        AdaptorEmail ae = new AdaptorEmail(l);
+        Contact ct = new Contact(l);
+
         String j = "nashorn";
-        
-        JSRunner r = new JSRunner (w, e, t, l, j);
-         
+
+        JSRunner r = new JSRunner(w, e, t, l, j,ae,ct);
+
         CmdLine cmd = new CmdLine(r, tl, t, l);
         cmd.Loop();
 

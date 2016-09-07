@@ -14,7 +14,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'acked' || Workflow.WfStatus ==  'working') {
     Workflow.WfLifecycle =  'resolve';
     Workflow.WfStatus    =  'resolved';
-    Timer.stop('ei_rsl_sla_breach');
+    Timer.cancel('ei_rsl_sla_breach');
 }
 // Copy Arrive details into WorkFlow [resolve time, resolve user]
 

@@ -9,6 +9,7 @@ import Runner.Timer.TimerEvent;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.slf4j.Logger;
 
 /**
@@ -23,12 +24,25 @@ public class Timer {
     public Timer(List tl, Logger l) {
         this.tl = tl;
         this.Log = l;
-    }    
-    
-    public void create(String eventName, Integer delayMs) {
+    }
+
+    public void create(String eventName, long delayMs) {
         Log.info("Start Timer : " + eventName + " for " + delayMs + " ms");
         tl.add(new TimerEvent(delayMs, eventName));
         Collections.sort(tl, new CompareTimerEvent());
+    }
+
+    public void start(ScriptObjectMirror mirror) {
+        String eventName = "";
+        long delayMs = 0;
+        Double dm;
+        eventName = (String) mirror.get("eventName");
+        dm = (Double) mirror.get("delayMs");
+        delayMs = dm.longValue();
+        if (eventName.isEmpty() || delayMs == 0) {
+            throw new IllegalArgumentException("eventName=" + eventName + ", delayMs=" + delayMs);
+        }
+        create(eventName, delayMs);
     }
 
     public void cancel(String eventName) {
@@ -41,6 +55,15 @@ public class Timer {
             }
             Collections.sort(tl, new CompareTimerEvent());
         }
+    }
+
+    public void cancel(ScriptObjectMirror mirror) {
+        String eventName = "";
+        eventName = (String) mirror.get("eventName");
+        if (eventName.isEmpty()) {
+            throw new IllegalArgumentException("eventName=" + eventName );
+        }
+        cancel(eventName);
     }
 
     public String dequeueNextTimerEvent() {
@@ -80,9 +103,9 @@ public class Timer {
     class TimerEvent {
 
         public String eventName;
-        public int delayMs;
+        public long delayMs;
 
-        public TimerEvent(int d, String n) {
+        public TimerEvent(long d, String n) {
             this.eventName = n;
             this.delayMs = d;
         }

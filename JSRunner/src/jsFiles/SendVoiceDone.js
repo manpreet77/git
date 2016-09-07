@@ -29,7 +29,10 @@ Workflow.DispatchQueueStringify = JSON.stringify (DispatchQueue);
 Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
 
 //  Kick off the sending of notifications
-Timer.create('ei_send_dispatch',0);
+Timer.start({
+    eventName: 'ei_send_dispatch',
+    delayMs: 0
+});
 
 Log.info("Send Error for Voice Exiting...");
 //  --------------------------------------------------------------------------------
