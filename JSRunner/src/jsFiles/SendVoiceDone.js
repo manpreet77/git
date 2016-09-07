@@ -18,7 +18,7 @@ for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
     if (currdq.Status == 'calling' & currdq.Channel == 'voice') { break; }
     } 
-if (!dq.length) { break; }
+//if (!dq.length) { break; } TODO
 DispatchQueue[i].pop;
 //  Sort the Queue by sendtime
 DispatchQueue.sort  ( function(a, b) { if ( a.SendTime > b.SendTime ) return 1; return 0; } );
@@ -29,7 +29,7 @@ Workflow.DispatchQueueStringify = JSON.stringify (DispatchQueue);
 Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
 
 //  Kick off the sending of notifications
-Timer.start({ eventName: 'ei_send_dispatch', delayMs: 0 });
+Timer.create('ei_send_dispatch',0);
 
 Log.info("Send Error for Voice Exiting...");
 //  --------------------------------------------------------------------------------

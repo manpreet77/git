@@ -9,6 +9,7 @@
     --------------------------------------------------------------------------------
 */
 Log.info("Stage Dispatch Entered...");
+
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
@@ -20,8 +21,15 @@ if  (DispatchQueue === 'undefined') {
     DispatchQueue = new Array();
     
     //var dmaps = Contact.queryActionRule({arName: Workflow.ArName,tenantId: Workflow.TenantId, wfLifecyle : Workflow.WfLifecycle, /*channel : 'Email' */});
+  Log.info("Arugs to QueryActionRule: actionrule= " +  Workflow.ArName + ", tenantid= " +  Workflow.TenantId + "lifecycle= " + Workflow.WfLifecycle);
+  var dmaps = Contact.queryActionRule({
+   actionRule: Workflow.ArName,
+   tenantId: Workflow.TenantId,   
+   lifecycle: Workflow.WfLifecycle
+});
+
        
-    var dmaps  =[{
+/*    var dmaps  =[{
                         "user":{
                                         "firstName":"Rajiv",
                                         "lastName":"Beri",
@@ -69,7 +77,7 @@ if  (DispatchQueue === 'undefined') {
                                                         "body":"Due to non - resolution of the  Incident Id: \\n%Workflow.IncidentId% - %Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% for the ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId%, It has been escalated to Level L1. <br>Please resolve the incident in order to avoid further escalation</br> \\n      \\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
                                                 }
                 }					
-        ];	
+        ];	*/
     
         Log.info("Dispatch maps - dmaps size ={}" + dmaps.length);
         
@@ -108,8 +116,11 @@ DispatchQueue.sort  ( function(a, b) { if ( a.SendTime > b.SendTime ) return 1; 
 //  Save the Queue away
 Workflow.DispatchQueueStringify = JSON.stringify (DispatchQueue);
 
+Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
+
 //  Kick off the sending of notifications
 Timer.start('ei_send_dispatch', 0);
+
 
 Log.info("Stage Dispatch Exiting...");
 //  --------------------------------------------------------------------------------

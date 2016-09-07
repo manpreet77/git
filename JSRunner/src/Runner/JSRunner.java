@@ -67,7 +67,9 @@ class JSRunner {
             engine.put("Log", Log);
             
             String scriptFilePath = System.getProperty("user.dir") + System.getProperty("file.separator")
-                    + "jsFiles" + System.getProperty("file.separator") + jsFile;
+                    + "src" + System.getProperty("file.separator")                    
+                    + "jsFiles" + System.getProperty("file.separator")
+                    + jsFile;
             File scriptFile = new File(scriptFilePath);
             Log.info(scriptFile.getAbsolutePath());
             

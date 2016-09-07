@@ -23,15 +23,15 @@ public class Timer {
     public Timer(List tl, Logger l) {
         this.tl = tl;
         this.Log = l;
-    }
-
-    public void start(String eventName, Integer delayMs) {
+    }    
+    
+    public void create(String eventName, Integer delayMs) {
         Log.info("Start Timer : " + eventName + " for " + delayMs + " ms");
         tl.add(new TimerEvent(delayMs, eventName));
         Collections.sort(tl, new CompareTimerEvent());
     }
 
-    public void stop(String eventName) {
+    public void cancel(String eventName) {
         Log.info("Stop Timer : " + eventName);
         for (int i = 0; i < tl.size(); i++) {
             TimerEvent te = tl.get(i);

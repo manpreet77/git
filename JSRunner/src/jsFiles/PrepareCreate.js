@@ -18,7 +18,7 @@ Workflow.TenantCode                         =   //Event.TenantCode; does not com
 Workflow.TenantName                         =   Event.TenantName;
 //  Workflow DetailsWorkflow.IncidentType=Event.incidenttype;
 Workflow.WfStatus                           =   'new';
-Workflow.WfLifeCycle                        =   'create';
+Workflow.WfLifeCycle                        =   'Create';
 Workflow.WfId                               =   'undefined';
 Workflow.WfStartTime                        =   new Date ().toISOString();
 // Incident Details
@@ -60,12 +60,16 @@ Workflow.ArRslSLA                           =   Event.slaresolve;       //Resolv
 // Copy Incident Stats into Workflow
 
 // Set WorkFlow State
-Workflow.WfLifecycle = 'create';
+Workflow.WfLifecycle = 'Create';
 Workflow.WfStatus = 'new';
-// Start Timer for Ack SLA (ei_ack_sla_timeout)
-if(Workflow.ArAckSLA > 0)  { Timer.start('ei_ack_sla_breach', Workflow.ArAckSLA*60*1000 ); }
-// Start Timer for Resolve SLA (ei_rsl_sla_timeout)
-if(Workflow.ArRslSLA > 0)  { Timer.start('ei_rsl_sla_breach', Workflow.ArAckSLA*60*1000 ); }
+// Start Timer for Ack SLA (ei_ack_sla_breach)
+if(Workflow.ArAckSLA > 0)  {   
+  Timer.create('ei_ack_sla_breach', Workflow.ArAckSLA*60*1000);
+}
+// Start Timer for Resolve SLA (ei_rsl_sla_breach)
+if(Workflow.ArRslSLA > 0)  {  
+  Timer.create('ei_rsl_sla_breach',Workflow.ArRslSLA*60*1000);
+}
 
 //Log.info(Event);
 Log.info("Prepare Work for Create Exiting...");

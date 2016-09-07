@@ -14,7 +14,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfStatus == 'reopened') {
     var ArrSLABreachDelay = 0;
     // CALCULATE THIS FROM ETA
-    Timer.start('ei_arr_sla_breach', ArrSLABreachDelay);
+    Timer.create('ei_arr_sla_breach', ArrSLABreachDelay);
     // Copy Ack details into WorkFlow [ack time, ack user]
     
 }

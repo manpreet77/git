@@ -34,11 +34,12 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus !='') {
         Log.info('currTime: ' + currTime.toISOString());
         var goTime   = new Date(Date.parse(dq.SendTime));
         Log.info('goTime: ' + goTime.toISOString());
+        
         if (dq.Status == 'new' || dq.Status == 'retry') {
             if (goTime > currTime) {
                 //set Timer for next notification
                 Log.info("Setting the next timer for = {} mins", dq.DelayMins);
-                Timer.start('ei_send_dispatch', dq.DelayMins*60*1000 );
+                Timer.create('ei_send_notification', dq.DelayMins*60*1000);
                 dq.Status = 'wait';
                 break;
             }

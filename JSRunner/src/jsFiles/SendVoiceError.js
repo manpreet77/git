@@ -18,10 +18,11 @@ for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
     if (currdq.Status == 'calling' & currdq.Channel == 'voice') { break; }
     } 
-if (!dq.length) { break; }
+//if (!dq.length) { break; } TODO
 
 dq.TryCount++;
-If (dq.MaxRetries > dq.TryCount) {   // retry
+if (dq.MaxRetries > dq.TryCount) {   
+    // retry
     dq.Status = 'retry';
 } else {
 // Retries are over, now check if another user is configured (Gasper Dispatch Block handling)
@@ -39,7 +40,7 @@ Workflow.DispatchQueueStringify = JSON.stringify (DispatchQueue);
 Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
 
 //  Kick off the sending of notifications
-Timer.start({ eventName: 'ei_send_dispatch', delayMs: 0 });
+Timer.create('ei_send_dispatch', 0);
 
 Log.info("Send Error for Voice Exiting...");
 //  --------------------------------------------------------------------------------
