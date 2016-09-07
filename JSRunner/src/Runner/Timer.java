@@ -35,10 +35,10 @@ public class Timer {
     public void start(ScriptObjectMirror mirror) {
         String eventName = "";
         long delayMs = 0;
-        Double dm;
+        Double dd;
+        String dm;
         eventName = (String) mirror.get("eventName");
-        dm = (Double) mirror.get("delayMs");
-        delayMs = dm.longValue();
+        delayMs = (new Double (Double.parseDouble(mirror.get("delayMs").toString()))).longValue();
         if (eventName.isEmpty() || delayMs == 0) {
             throw new IllegalArgumentException("eventName=" + eventName + ", delayMs=" + delayMs);
         }

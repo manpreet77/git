@@ -63,7 +63,9 @@ Workflow.ArRslSLA = Event.slaresolve;       //Resolve SLA
 Workflow.WfLifecycle = 'Create';
 Workflow.WfStatus = 'new';
 // Start Timer for Ack SLA (ei_ack_sla_breach)
+
 if (Workflow.ArAckSLA > 0) {
+    Log.info('Start Timer');
     Timer.start({
         eventName: 'ei_ack_sla_breach',
         delayMs: Workflow.ArAckSLA * 60 * 1000
