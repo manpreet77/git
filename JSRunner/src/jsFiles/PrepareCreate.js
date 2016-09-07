@@ -60,7 +60,7 @@ Workflow.AtmMake = Event.atmmake;
 // Set WorkFlow State
 //  Workflow Details
 Workflow.WfStatus = 'new';
-Workflow.WfLifeCycle = 'Create';
+Workflow.WfLifecycle = 'Create';
 Workflow.WfId = 'undefined';
 Workflow.WfStartTime = new Date().toISOString();
 
