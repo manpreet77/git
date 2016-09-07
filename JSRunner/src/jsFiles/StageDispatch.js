@@ -20,6 +20,14 @@ if (DispatchQueue === 'undefined') {
     Log.info("Initializing DispatchQueue...");
     DispatchQueue = new Array();
 
+    var AtmSched = 'NextHrs';
+    if (Workflow.OprHrs == 'Y') {
+        AtmSched = 'OprHrs'
+    } else if (Workflow.AftHrs == 'Y') {
+        AtmSched = 'AftHrs'
+    } else if (Workflow.OffHrs == 'Y') {
+        AtmSched = 'OffHrs'
+    }
     Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + "lifecycle= " + Workflow.WfLifecycle);
     var queryArResult = Contact.queryActionRule({
         actionRule: Workflow.ArName,
@@ -31,14 +39,22 @@ if (DispatchQueue === 'undefined') {
     Log.info("Dispatch Maps Name =  " + queryArResult.partyName + ", dmaps size = " + dmaps.length);
     Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
 
+    var BaseDispatchStartTimeAsDate;
+    var DispatchStartTimeAsDate;
+    var BaseStatus = 'new'
+    if (AtmSched == 'NextHrs') {
+        BaseDispatchStartTimeAsDate = new Date(Date.parse(queryArResult.nextWindow));
+        BaseStatus = 'defef';
+    } else {
+        BaseDispatchStartTimeasDate = new Date(Date.parse(Workflow.InStartTime));
+    }
     for (var i in dmaps) {
         var dq = {};
         /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
-        var sendTime = new Date(Date.parse(Workflow.InStartTime));
-        var sendTime2 = sendTime.setMinutes(sendTime.getMinutes() + dmaps[i].duration.baseValueMinutes);
-        /* When to be sent           */ dq.SendTime = new Date(sendTime2).toISOString();
+        var DispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+        /* When to be sent           */ dq.SendTime = new Date(DispatchStartTime).toISOString();
         /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
-        /* wait, done, retry, error  */ dq.Status = 'new';
+        /* wait, done, retry, error  */ dq.Status = BaseStatus;
         /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
         /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
         /* Base, Level-1...          */ dq.Level = dmaps[i].level;
@@ -58,8 +74,6 @@ if (DispatchQueue === 'undefined') {
         DispatchQueue.push(dq);
     }
 }
-//  Call global function for atmScheduleHandling
-
 //  Sort the Queue by sendtime
 DispatchQueue.sort(function (a, b) {
     if (a.SendTime > b.SendTime)
@@ -73,6 +87,15 @@ Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
 
 //  Kick off the sending of notifications
+var delayMs = 0;
+if (AtmSched == 'NextHrs') {
+    var currTime = new Date();
+    Log.info('currTime: ' + currTime.toISOString());
+    var goTime = new Date(Date.parse(dq.DispatchStartTimeAsDate));
+    Log.info('goTime: ' + goTime.toISOString());
+    var delayGapinMins = new Date (goTime - currTime).getMinutes();
+    delayMs = delayGapMins * 60 * 1000;
+}
 Timer.start({
     eventName: 'ei_send_dispatch',
     delayMs: 0
