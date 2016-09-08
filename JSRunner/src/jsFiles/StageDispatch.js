@@ -8,7 +8,7 @@
  Then it emits an event with a 0 delay to kickoff the send email loop
  --------------------------------------------------------------------------------
  */
-Log.info("Stage Dispatch Entered...");
+Log.info("Stage Dispatch Entered.....");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
@@ -47,7 +47,9 @@ if (Workflow.InIsInATMBranchHours === "0" &&
 
 } else {
     //in normal case set the DSP Start time as Incident Start Time
-    var BaseDispatchStartTimeAsDate = new Date(Date.parse(Workflow.InStartTime));
+  	Log.info(Workflow.InStartTime);
+    var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime); 
+  	
     //Incident Time falls in one of the atm schedule
     if (Workflow.InIsInATMBranchHours === "1") {
         Log.info("StageDispatch: staging dispatch normal");
@@ -89,101 +91,35 @@ if (Workflow.InIsInATMBranchHours === "0" &&
     
     Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
     
-    /*var queryArResult = Contact.queryActionRule({
+    var queryArResultString = Contact.queryActionRule({
         actionRule: Workflow.ArName,
         tenantId: Workflow.TenantId,
-        schedule: AtmSched,
+        atmSchedule: AtmSched,
         lifecycle: Workflow.WfLifecycle
-    });*/
-                        
-    var queryArResult = {
-    "partyName": "name1473177051782",
-    "partyDetails": [{
-            "user": {
-                "firstName": "Rajiv",
-                "lastName": "Beri",
-                "address": "rajiv.beri@esq.com"
-            },
-            "lifeCycle": "Create",
-            "contactType": "Notification",
-            "level": "Base",
-            "contactChannel": "Email",
-            "atmSchedule": "BranchHours",
-            "duration": {
-                "name": "somesystemgeneratedname",
-                "baseValueMinutes": 0,
-                "graceValueMinutes": 0
-            },
-            "template": {
-                "name": "NotificationEmailTemplate",
-                "description": "EmailTemplatefortenants",
-                "templateType": "email",
-                "subject": "IncidentAlertNotification-IncidentId: %Workflow.IncidentId%-ATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%-%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%",
-                "body": "Theproblem\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%occurredonATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%withIncidentId=%Workflow.IncidentId%.\\n<br>\\nPleaseresolvetheincidentwithindefinedSLA%Workflow.TimeBefore1Escalation%Hoursinordertoavoidescalation.\\n</br>\\n<br><br><b>\\nThisisanauto-generatedemail.PleasedonotreplyorwritebacktothisEmailID.\\n</b></br></br>\\n\\n"
-            }
-        },
-        {
-            "user": {
-                "firstName": "Shridhar",
-                "lastName": "V",
-                "address": "sv@esq.com"
-            },
-            "lifeCycle": "Create",
-            "contactType": "Notification",
-            "level": "Base",
-            "contactChannel": "Email",
-            "atmSchedule": "AfterHours",
-            "duration": {
-                "name": "somesystemgeneratedname",
-                "baseValueMinutes": 0,
-                "graceValueMinutes": 0
-            },
-            "template": {
-                "name": "NotificationEmailTemplate",
-                "description": "EmailTemplatefortenants",
-                "templateType": "email",
-                "subject": "IncidentAlertNotification-IncidentId: %Workflow.IncidentId%-ATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%-%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%",
-                "body": "Theproblem\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%occurredonATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%withIncidentId=%Workflow.IncidentId%.\\n<br>\\nPleaseresolvetheincidentwithindefinedSLA%Workflow.TimeBefore1Escalation%Hoursinordertoavoidescalation.\\n</br>\\n<br><br><b>\\nThisisanauto-generatedemail.PleasedonotreplyorwritebacktothisEmailID.\\n</b></br></br>\\n\\n"
-            }
-        },
-        {
-            "user": {
-                "firstName": "Manpreet",
-                "lastName": "Singh",
-                "address": "ms@esq.com"
-            },
-            "lifeCycle": "Create",
-            "contactType": "Escalation",
-            "level": "Level-1",
-            "contactChannel": "Email",
-            "atmSchedule": "OperationalHours",
-            "duration": {
-                "name": "somesystemgeneratedname",
-                "baseValueMinutes": 3,
-                "graceValueMinutes": 0
-            },
-            "template": {
-                "name": "Level-1EmailTemplate",
-                "description": "L1-EmailTemplatefortenants",
-                "templateType": "email",
-                "subject": "EscalationlevelL1-IncidentId: %Workflow.IncidentId%-ATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%-%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%",
-                "body": "Duetonon-resolutionoftheIncidentId: \\n%Workflow.IncidentId%-%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%fortheATMID: SITEID=%Workflow.TermId%: %Workflow.SiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
-            }
-        }]
-};  
+    });
+  
+            //Log.info("QueryResult : " + JSON.stringify(queryArResult));
+            
+  
+      var queryArResult = eval('(' + queryArResultString + ')');
     
     
     var dmaps = queryArResult.partyDetails;
-    Log.info("Dispatch Maps Name =  " + queryArResult.partyName + ", dmaps size = " + dmaps.length);
-    Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
-    if (dmaps !== 'undefined') {
+        if (dmaps != 'undefined') {
+          
+        Log.info("Dispatch Maps Name =  " + queryArResult.partyName + ", dmaps size = " + dmaps.length);
+        Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
+        Log.info("BaseDispatchstartTime = " + BaseDispatchStartTimeAsDate);  
         for (var i in dmaps) {
             var dq = {};
             /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
-            var DispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+          
+          var DispatchStartTimeAsDate = new Date();
+          DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+          
             /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
             /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
-            /* wait, done, retry, error  */ dq.Status = dmaps[i].Status;
+            /* wait, done, retry, error  */ dq.Status = "new";
             /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
             /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
             /* Base, Level-1...          */ dq.Level = dmaps[i].level;
@@ -207,6 +143,8 @@ if (Workflow.InIsInATMBranchHours === "0" &&
     DispatchQueue.sort(function (a, b) {
         if (a.SendTime > b.SendTime)
             return 1;
+        if (a.SendTime < b.SendTime)
+            return -1;
         return 0;
     });
 //  Save the Queue away

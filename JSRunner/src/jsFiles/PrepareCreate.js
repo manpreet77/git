@@ -63,6 +63,7 @@ Workflow.WfStatus = 'new';
 Workflow.WfLifecycle = 'Create';
 Workflow.WfId = 'undefined';
 Workflow.WfStartTime = new Date().toISOString();
+Log.info("Workflow.WfStartTime");
 
 // Start Timer for Ack SLA (ei_ack_sla_breach)
 if (Workflow.ArAckSLA > 0) {

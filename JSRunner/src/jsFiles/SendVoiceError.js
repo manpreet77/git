@@ -35,11 +35,15 @@ if (dq.MaxRetries > dq.TryCount) {
 }
 
 //  Sort the Queue by sendtime
-DispatchQueue.sort(function (a, b) {
-    if (a.SendTime > b.SendTime)
-        return 1;
-    return 0;
-});
+    //  Sort the Queue by sendtime
+    DispatchQueue.sort(function (a, b) {
+        if (a.SendTime > b.SendTime)
+            return 1;
+        if (a.SendTime < b.SendTime)
+            return -1;
+        return 0;
+    });    
+
 
 //  Save the Queue away
 Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);

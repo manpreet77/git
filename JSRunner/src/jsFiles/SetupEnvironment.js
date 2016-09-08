@@ -32,6 +32,8 @@ Workflow.InStatus                           ='undefined';
 Workflow.InSubStatus                        ='undefined';
 Workflow.InAssigneeParty                    ='undefined';
 Workflow.InPartyId                          ='undefined';
+Workflow.InStartTime                        ='undefined';
+
 //  Fault Details   
 Workflow.FltFaults                          ='undefined';
 Workflow.FltMstatus                         ='undefined';

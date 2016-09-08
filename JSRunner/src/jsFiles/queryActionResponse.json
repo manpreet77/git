@@ -13,7 +13,7 @@
             "atmSchedule": "BranchHours",
             "duration": {
                 "name": "somesystemgeneratedname",
-                "baseValueMinutes": 0,
+                "baseValueMinutes": 10,
                 "graceValueMinutes": 0
             },
             "template": {

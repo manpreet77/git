@@ -5,13 +5,11 @@
  */
 package Runner;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.slf4j.Logger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  *
@@ -25,24 +23,16 @@ public class Contact {
         this.Log = l;
     }
 
-    public String queryActionRule(ScriptObjectMirror mirror) throws FileNotFoundException, IOException {
+    public String queryActionRule(ScriptObjectMirror mirror) throws  IOException {
 
         String responseFile;
         responseFile = System.getProperty("user.dir") + System.getProperty("file.separator")
                 + "src" + System.getProperty("file.separator")
                 + "jsFiles" + System.getProperty("file.separator")
                 + "queryActionResponse.json";
-        File rf = new File(responseFile);
-        StringBuilder response = new StringBuilder();
-        try (
-                BufferedReader br = new BufferedReader(new FileReader(rf))) {
-            String sCurrentLine;
-            while ((sCurrentLine = br.readLine()) != null) {
-                response.append(sCurrentLine);
-            }
-        } catch (IOException e) {
-            Log.error(e.getMessage());
-        }
-        return response.toString().replace('"', '\'');
+        
+        String content = new String (Files.readAllBytes(Paths.get(responseFile)), "UTF-8");
+               
+        return content;
     }
 }
