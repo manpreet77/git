@@ -26,10 +26,11 @@ class DspRun {
         Timer t = new Timer(tl, l);
         AdaptorEmail ae = new AdaptorEmail(l);
         Contact ct = new Contact(l);
+        HelpDesk hd = new HelpDesk(l);
 
         String j = "nashorn";
 
-        JSRunner r = new JSRunner(w, e, t, l, j,ae,ct);
+        JSRunner r = new JSRunner(w, e, t, l, j,ae,ct,hd);
 
         CmdLine cmd = new CmdLine(r, tl, t, l);
         cmd.Loop();

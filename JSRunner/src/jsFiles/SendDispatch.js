@@ -65,15 +65,18 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
         {
             case 'email':
             {
-                EmailTemplate = Contact.replaceVariables({template: dq.Template, Workflow: Workflow});
+         //       EmailTemplate = Contact.replaceVariables({template: dq.Template, Workflow: Workflow});
                 email.send({to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true"});
                 Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= ' + dq.Level + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + dq.FirstName + ', LastName = ' + dq.LastName + ', Address = ' + dq.Address);
-                /*SendActivity ( Workflow.InIncidentId,  /*OperationalType* /"ACTIVITY",  /*OperationalName* /"Email Notify",
-                 /*Status* /null,             /*SubStatus* /null,
-                 /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
-                 /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
-                 /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
-                 /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
+
+                helpdesk.send({              IncidentId: Workflow.InIncidentId, OperationalType: "ACTIVITY",  OperationalName: "Email Notify",
+                Status: "Open",              SubStatus: 'new',
+                Category: "What",            SubCategory: "the",                 ActivityTime: "0000:01:02:03:04:05Z",
+                ExternalTicketId: "1234",    ExternalTicketStatus: "null",       ExternalTicketSubStatus: "null",    ExternalCategory: "null",   ExternalSubCategory: "null",     
+                Result: "0",                 ResultText: "null",                 Remarks: "null",                 
+                TargetParty: "null",         TargetPartyId: "null",              AdditionalInfo: Event
+               });
+   
                 dq.Status = 'done';
                 break;
             }

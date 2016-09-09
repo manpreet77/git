@@ -33,8 +33,9 @@ class JSRunner {
     String jsFile;
     AdaptorEmail ae;
     Contact ct;
+    HelpDesk h;
 
-    public JSRunner(HashMap w, HashMap e, Timer t, Logger l, String js, AdaptorEmail aemail, Contact c) {
+    public JSRunner(HashMap w, HashMap e, Timer t, Logger l, String js, AdaptorEmail aemail, Contact c, HelpDesk hd) {
         Workflow = w;
         Event = e;
         Timer = t;
@@ -42,6 +43,7 @@ class JSRunner {
         jsType = js;
         ae = aemail;
         ct = c;
+        h = hd;
     }
 
     public void RunJS(String theFile) {
@@ -71,6 +73,7 @@ class JSRunner {
             engine.put("Log", Log);
             engine.put("email", ae);
             engine.put("Contact", ct);
+            engine.put("helpdesk",h);
             
             String scriptFilePath = System.getProperty("user.dir") + System.getProperty("file.separator")
                     + "src" + System.getProperty("file.separator")                    
