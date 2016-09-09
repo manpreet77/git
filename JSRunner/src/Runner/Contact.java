@@ -10,6 +10,9 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.slf4j.Logger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import jdk.nashorn.internal.parser.JSONParser;
+import jdk.nashorn.internal.runtime.JSONFunctions;
+import jdk.nashorn.internal.runtime.Source;
 
 /**
  *
@@ -23,7 +26,7 @@ public class Contact {
         this.Log = l;
     }
 
-    public String queryActionRule(ScriptObjectMirror mirror) throws  IOException {
+    public Object queryActionRule(ScriptObjectMirror mirror) throws  IOException {
 
         String responseFile;
         responseFile = System.getProperty("user.dir") + System.getProperty("file.separator")
@@ -32,7 +35,7 @@ public class Contact {
                 + "queryActionResponse.json";
         
         String content = new String (Files.readAllBytes(Paths.get(responseFile)), "UTF-8");
-               
-        return content;
+        return JSONFunctions.parse(content, mirror);
+        //return content;
     }
 }

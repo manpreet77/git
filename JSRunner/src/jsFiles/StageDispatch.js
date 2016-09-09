@@ -36,8 +36,8 @@ if (Workflow.InIsInATMBranchHours === "0" &&
     var goTime = new Date(Date.parse(Workflow.InNextATMSchedAvailableTime));
     Log.info('goTime: ' + goTime.toISOString());
     var delayGapinMins = new Date(goTime - currTime).getMinutes();
-    
-    
+
+
     Log.info("Going to sleep for " + delayGapinMins + " mins");
     Workflow.InNextATMSchedAvailableTime = 'undefined';
     Timer.start({
@@ -47,9 +47,9 @@ if (Workflow.InIsInATMBranchHours === "0" &&
 
 } else {
     //in normal case set the DSP Start time as Incident Start Time
-  	Log.info(Workflow.InStartTime);
-    var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime); 
-  	
+    Log.info(Workflow.InStartTime);
+    var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
+
     //Incident Time falls in one of the atm schedule
     if (Workflow.InIsInATMBranchHours === "1") {
         Log.info("StageDispatch: staging dispatch normal");
@@ -67,11 +67,11 @@ if (Workflow.InIsInATMBranchHours === "0" &&
         Log.info("StageDispatch: staging dispatch after sleep");
         //in case of coming back after sleeping, set base DSPstarttime as current time
         BaseDispatchStartTimeAsDate = new Date();
-        switch(Workflow.InNextATMSchedAvailable){
+        switch (Workflow.InNextATMSchedAvailable) {
             case 'OPERHR':
                 AtmSched = "OperationalHours";
                 break;
-            case 'BRNCHR': 
+            case 'BRNCHR':
                 AtmSched = "BranchHours";
                 break;
             case 'AFTRHR':
@@ -80,43 +80,32 @@ if (Workflow.InIsInATMBranchHours === "0" &&
             case 'OTHRHR':
                 AtmSched = "OtherHours";
                 break;
-            //TODO case 'PEAKHR':
-            //TODO case 'OFPKHR':
+                //TODO case 'PEAKHR':
+                //TODO case 'OFPKHR':
             default:
                 break;
         }
-    } 
-    
-    
-    
-    Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
-    
-    var queryArResultString = Contact.queryActionRule({
+    }
+    var queryArResult = Contact.queryActionRule({
         actionRule: Workflow.ArName,
         tenantId: Workflow.TenantId,
         atmSchedule: AtmSched,
         lifecycle: Workflow.WfLifecycle
     });
-  
-            //Log.info("QueryResult : " + JSON.stringify(queryArResult));
-            
-  
-      var queryArResult = eval('(' + queryArResultString + ')');
-    
-    
+
     var dmaps = queryArResult.partyDetails;
-        if (dmaps != 'undefined') {
-          
+    if (dmaps != 'undefined') {
+
         Log.info("Dispatch Maps Name =  " + queryArResult.partyName + ", dmaps size = " + dmaps.length);
         Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
-        Log.info("BaseDispatchstartTime = " + BaseDispatchStartTimeAsDate);  
+        Log.info("BaseDispatchstartTime = " + BaseDispatchStartTimeAsDate);
         for (var i in dmaps) {
             var dq = {};
             /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
-          
-          var DispatchStartTimeAsDate = new Date();
-          DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
-          
+
+            var DispatchStartTimeAsDate = new Date();
+            DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+
             /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
             /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
             /* wait, done, retry, error  */ dq.Status = "new";
@@ -150,7 +139,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
 //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
     Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
-    
+
     //  Kick off the sending of notifications
     Timer.start({
         eventName: 'ei_send_dispatch',
