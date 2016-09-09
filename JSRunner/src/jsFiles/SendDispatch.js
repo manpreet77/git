@@ -36,7 +36,7 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
         if (dq.Status === 'done')
             continue;
 
-        Log.info('Dispatch Data:(' + i + ') delayMs: ' + dq.DelayMins + ' Status: ' + dq.Status);
+        Log.info('Dispatch Data:(' + i + ') delayMins: ' + dq.DelayMins + ' Status: ' + dq.Status);
 
         var currTime = new Date();
         Log.info('currTime: ' + currTime.toISOString());
@@ -49,7 +49,7 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
                 Log.info("Setting the next timer for = {} mins", dq.DelayMins);
                 Timer.start({
                     eventName: 'ei_ack_sla_breach',
-                    delayMs: dq-DelayMins * 60 * 1000
+                    delayMs: dq.DelayMins * 60 * 1000
                 });
                 dq.Status = 'wait';
                 break;
@@ -65,7 +65,7 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
         {
             case 'email':
             {
-                EmailTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});
+                EmailTemplate = Contact.replaceVariables({template: dq.Template, Workflow: Workflow});
                 email.send({to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true"});
                 Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= ' + dq.Level + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + dq.FirstName + ', LastName = ' + dq.LastName + ', Address = ' + dq.Address);
                 /*SendActivity ( Workflow.InIncidentId,  /*OperationalType* /"ACTIVITY",  /*OperationalName* /"Email Notify",
