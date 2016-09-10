@@ -35,6 +35,15 @@ Workflow.InSubStatus                        ='undefined';
 Workflow.InAssigneeParty                    ='undefined';
 Workflow.InPartyId                          ='undefined';
 Workflow.InStartTime                        ='undefined';
+Workflow.InIsInATMBranchHours               ='undefined';
+Workflow.InIsInATMAfterHours                ='undefined';
+Workflow.InIsInATMOperationalHours          ='undefined';
+Workflow.InIsInATMOtherHours                ='undefined';
+Workflow.InIsInATMPeakHours                 ='undefined';
+Workflow.InIsInATMOffPeakHours              ='undefined';
+Workflow.InNextATMSchedAvailable            ='undefined';
+Workflow.InNextATMSchedAvailableTime        ='undefined';
+
 
 //  Fault Details   
 Workflow.FltFaults                          ='undefined';

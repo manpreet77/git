@@ -25,10 +25,9 @@ for (var i in DispatchQueue) {
 
 
 var dq, delayMins, currChannel;
-var sentAnyDispatch;
 
 //  See if the Incident is in suitable state
-if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
+if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
 
     for (var i in DispatchQueue) {
 
@@ -67,16 +66,10 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
         {
             case 'email':
             {
-                Contact.replaceVariables(dq.Template, {Workflow: Workflow});
-                var EmailTemplate=dq.Template;
-		email.send( {to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true" } );
+                Contact.replaceVariables(dq.Template, {Workflow: Workflow});                
+		email.send( {to: dq.Address, subject: dq.Template.subject, body: dq.Template.body, htmlEmail: "true" } );
                 Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
-                /*SendActivity (  Workflow.InIncidentId,  /*OperationalType* /"ACTIVITY",  /*OperationalName* /"Email Notify",
-                /*Status* /null,             /*SubStatus* /null,
-                /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
-                /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
-                /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
-                /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
+                helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Email", status: "", substatus:"", category: "Contact",subcategory:"EMAIL", activitytime: new Date(), result : "Success", resulttext: "", remarks : "Notification via Email", externalticketid:"",externalticketstatus:"", externalticketsubstatus:"",externalcategory:"",externalsubcategory: ""});
                 dq.Status = 'done';
                 break;
             }
@@ -86,8 +79,7 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
             }
             case 'voice' :
             {
-                //var VoiceTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});
-                /*voice.send( { to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true" } );*/
+                //var VoiceTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});                
               voxeo.call({
                 destinationNumber: "sip:toto@192.168.2.11:5060",
                 //destinationNumber: dq.Address,
@@ -108,12 +100,7 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
                 }
               });
                 Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
-                /*SendActivity (  Workflow.InIncidentId,  /*OperationalType* /"ACTIVITY",  /*OperationalName* /"Email Notify",
-                /*Status* /null,             /*SubStatus* /null,
-                /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
-                /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
-                /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
-                /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
+                helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Voice", status: "", substatus:"", category: "Contact",subcategory:"VOICE", activitytime: new Date(), result : "Initiated", resulttext: "", remarks : "Notification via Voice", externalticketid:"",externalticketstatus:"", externalticketsubstatus:"",externalcategory:"",externalsubcategory: ""});
                 dq.Status = 'calling';
                 break;
             }
@@ -144,7 +131,7 @@ function SendActivity ( IncidentId,     OperationType,  OperationName,
                         ExternalTicketStatus,           ExternalTicketSubStatus, 
                         ExternalCategory,               ExternalSubCategory,     
                         Result,         ResultText,     Remarks,                 
-                        TargetParty,    TargetPartyId,  Addit)
+                        TargetParty,    TargetPartyId)
 {
     var activity = {
         incidentid                  : IncidentId              ,
@@ -165,7 +152,7 @@ function SendActivity ( IncidentId,     OperationType,  OperationName,
         remarks                     : Remarks                 ,
         targetparty                 : TargetParty             ,
         targetpartyid               : TargetPartyId           ,
-        additionalInfo              : ""
+        additionalInfo              : {}
     };
     for (var i in Event) activity.additionalInfo[i] = Event[i];
         helpdesk.send(activity);

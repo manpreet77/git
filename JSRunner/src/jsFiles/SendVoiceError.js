@@ -30,7 +30,7 @@ if (dq.MaxRetries > dq.TryCount) {
     // retry
     dq.Status = 'retry';
 } else {
-// Retries are over, now check if another user is configured (Gasper Dispatch Block handling)
+// Retries are over, now check if another user is configured (G Dispatch Block handling)
 
 
     dq.Status = 'new';

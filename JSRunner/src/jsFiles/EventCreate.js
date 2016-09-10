@@ -43,14 +43,14 @@ Event.schedules_afhr                 = '0';
 Event.schedules_brhr                 = '1';
 Event.slaresolve                     = '480';
 Event.slaacknowledge                 = '30';
-Event.schedules_branchhours               = '1';
-Event.schedules_operhr               = '0';
-Event.schedules_othrhr               = '0';
-Event.schedules_aftrhr               = '0';
-Event.schedules_peakhr               = '0';
-Event.schedules_ofpkhr               = '0';
-Event.schedulesnext_categorycode     = 'BRNCHR';
-Event.schedulesnext_nextavailableschedulestarttime = '2016-09-07T15:35:53.957Z';
+Event.schedules_branchhours          = '1';
+Event.schedules_operationalhours     = '0';
+Event.schedules_otherhours           = '0';
+Event.schedules_afterhours           = '0';
+Event.schedules_peakhours            = '0';
+Event.schedules_offpeakhours         = '0';
+Event.schedulesnext_categoryname     = 'BranchHours';
+Event.schedulesnext_nextavailableschedulestarttime = '2016-09-10T12:35:53.957Z';
 
 
 

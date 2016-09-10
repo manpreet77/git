@@ -59,7 +59,12 @@ public class Contact {
         return JSONFunctions.parse(str3, mirror);
     }
     
-       private static final Pattern pattern = Pattern.compile("<%=\\s*([^%\\s]+\\s*)%>");
+    
+    
+    
+    
+    
+    private static final Pattern pattern = Pattern.compile("<%=\\s*([^%\\s]+\\s*)%>");
 
     public String repVariables(String input, Map<String, String> variables) {
         StringBuffer sb = new StringBuffer();
@@ -79,4 +84,38 @@ public class Contact {
         }
         return sb.toString();
     }
+    
+    /*
+    public void replaceVariables(Scriptable template, Scriptable... sources) throws Exception {
+        MessageTemplateVariables variables = loadVariables(sources);
+
+        JsObject jsTemplate = new JsObject(template);
+        Map<String, String> fields = jsTemplate.getMap();
+
+        Map<String, String> updatedFields = MessageTemplateEngine.replaceVariables(fields, variables);
+        for (String key : updatedFields.keySet()) {
+            jsTemplate.setString(key, updatedFields.get(key));
+        }
+    }
+
+    private MessageTemplateVariables loadVariables(Scriptable[] sources) {
+        MessageTemplateVariables variables = new MessageTemplateVariables();
+        if (sources == null) {
+            return variables;
+        }
+        for (Scriptable item : sources) {
+            JsObject jsObject = new JsObject(item);
+            for (String source : jsObject.getPropertyNames()) {
+                Map<String, String> map = jsObject.getMap(source);
+                variables.addSource(source, map);
+            }
+        }
+        return variables;
+    }
+    */
+    
+    
+    
+    
+    
 }
