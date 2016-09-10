@@ -1,3 +1,5 @@
+/* global Event */
+
 // FIELDS......................      CREATE.................................
 Event.Id                             = '601';
 Event.actionrulename                 = 'test';
@@ -41,7 +43,7 @@ Event.schedules_afhr                 = '0';
 Event.schedules_brhr                 = '1';
 Event.slaresolve                     = '480';
 Event.slaacknowledge                 = '30';
-Event.schedules_brnchr               = '1';
+Event.schedules_branchhours               = '1';
 Event.schedules_operhr               = '0';
 Event.schedules_othrhr               = '0';
 Event.schedules_aftrhr               = '0';

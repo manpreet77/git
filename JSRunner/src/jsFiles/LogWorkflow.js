@@ -6,6 +6,8 @@
    Utility for designer to view current workflow values
    --------------------------------------------------------------------------------
 */
+/* global Log, Workflow */
+
 Log.info("Logging Workflow Entering................................................");
 
 var s1 = Workflow.toString();

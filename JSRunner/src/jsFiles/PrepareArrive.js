@@ -6,12 +6,14 @@
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
  */
+/* global Log, Workflow, Timer */
+
 Log.info("Prepare for Arrive Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'active' || Workflow.WfStatus == 'acked') {
+if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked') {
     Workflow.WfLifecycle = 'arrived';
     Workflow.WfStatus = 'working';
     Timer.cancel('ei_arr_sla_breach');

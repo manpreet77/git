@@ -6,6 +6,8 @@
    This script inserts a Event with 0 time to simulate an RslSLABreach
    --------------------------------------------------------------------------------
 */
+/* global Log, Timer, Event */
+
 Log.info("Prepare Rsl SLA Breach Entered...");
 // Start Timer for Rsl SLA (ei_rsl_sla_breach)
   Timer.start({

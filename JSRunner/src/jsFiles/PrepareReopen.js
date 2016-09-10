@@ -6,12 +6,14 @@
    This action sets the stage and decides what needs to be done in this workflow
    --------------------------------------------------------------------------------
 */
+/* global Log, Workflow */
+
 Log.info("Prepare for Reopen Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'resolved') {
+if (Workflow.WfStatus === 'resolved') {
     Workflow.WfLifeCycle =  'reopen';
     Workflow.WfStatus    =  'reopened';
 }

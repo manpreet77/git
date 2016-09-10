@@ -1,3 +1,5 @@
+/* global Event */
+
 // FIELDS......................      SWITCH.........................................
 Event.Id                             = '601';
 Event.actionrulename                 = 'test';

@@ -6,6 +6,8 @@
    This script inserts a TimerEvent with 0 time to simulate an AckSLABreach
    --------------------------------------------------------------------------------
 */
+/* global Log, Timer, Event */
+
 Log.info("Prepare Ack SLA Breach Entered...");
 // Start Timer for Ack SLA (ei_ack_sla_breach)
 Timer.start({

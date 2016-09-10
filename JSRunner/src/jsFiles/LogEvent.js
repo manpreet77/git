@@ -6,6 +6,8 @@
    Utility for designer to view current Event values
    --------------------------------------------------------------------------------
 */
+/* global Log, Event */
+
 Log.info("Logging Event Entering................................................");
 
 var s1 = Event.toString();

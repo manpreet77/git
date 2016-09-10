@@ -7,6 +7,8 @@
  For Create it also queues the next contact to be contacted as needed
  --------------------------------------------------------------------------------
  */
+/* global Log, Workflow, currdq */
+
 Log.info("Send Error for Voice Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
@@ -17,7 +19,7 @@ delayMs = 0;
 
 for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
-    if (currdq.Status == 'calling' & currdq.Channel == 'voice') {
+    if (currdq.Status === 'calling' & currdq.Channel === 'voice') {
         break;
     }
 }

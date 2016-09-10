@@ -7,16 +7,18 @@
     For Create it also queues the next contact to be contacted as needed
     --------------------------------------------------------------------------------
 */
+/* global Log, Workflow, currdq, Timer */
+
 Log.info("Send Error for Voice Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 
-var dq; delayMs = 0;
+var currdq; delayMs = 0;
 
 for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
-    if (currdq.Status == 'calling' & currdq.Channel == 'voice') { break; }
+    if (currdq.Status === 'calling' & currdq.Channel === 'voice') { break; }
     } 
 //if (!dq.length) { break; } TODO
 DispatchQueue[i].pop;

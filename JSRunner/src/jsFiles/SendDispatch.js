@@ -3,13 +3,15 @@
  --------------------------------------------------------------------------------
  Dispatcher Standard Workflow V 1.0
  SendDispatch
- This action is initially triggered by the ei_send_notifications event
+ This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
  If there are any more that require a delay it starts a Timer
  This action can also be triggered by ei_call_voice_error
  TBD
  --------------------------------------------------------------------------------
  */
+/* global Log, Workflow, Timer, Contact, email, voxeo, Event, helpdesk */
+
 Log.info("Send Dispatch Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = JSON.parse(Workflow.DispatchQueueStringify);
@@ -42,19 +44,19 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
         Log.info('currTime: ' + currTime.toISOString());
         var goTime = new Date(Date.parse(dq.SendTime));
         Log.info('goTime: ' + goTime.toISOString());
-
-        if (dq.Status == 'new' || dq.Status == 'retry' || dq.Status == 'defer') {
+        
+        if (dq.Status === 'new' || dq.Status === 'retry') {
             if (goTime > currTime) {
                 //set Timer for next notification
                 Log.info("Setting the next timer for = {} mins", dq.DelayMins);
                 Timer.start({
-                    eventName: 'ei_ack_sla_breach',
+                    eventName: 'ei_send_dispatch',
                     delayMs: dq.DelayMins * 60 * 1000
                 });
                 dq.Status = 'wait';
                 break;
             }
-        } else if (dq.Status != 'wait') {
+        } else if (dq.Status !== 'wait') {
             break;
         }
         // All new with 0 delay and waits
@@ -65,18 +67,16 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
         {
             case 'email':
             {
-         //       EmailTemplate = Contact.replaceVariables({template: dq.Template, Workflow: Workflow});
-                email.send({to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true"});
-                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= ' + dq.Level + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + dq.FirstName + ', LastName = ' + dq.LastName + ', Address = ' + dq.Address);
-
-                helpdesk.send({              IncidentId: Workflow.InIncidentId, OperationalType: "ACTIVITY",  OperationalName: "Email Notify",
-                Status: "Open",              SubStatus: 'new',
-                Category: "What",            SubCategory: "the",                 ActivityTime: "0000:01:02:03:04:05Z",
-                ExternalTicketId: "1234",    ExternalTicketStatus: "null",       ExternalTicketSubStatus: "null",    ExternalCategory: "null",   ExternalSubCategory: "null",     
-                Result: "0",                 ResultText: "null",                 Remarks: "null",                 
-                TargetParty: "null",         TargetPartyId: "null",              AdditionalInfo: Event
-               });
-   
+                Contact.replaceVariables(dq.Template, {Workflow: Workflow});
+                var EmailTemplate=dq.Template;
+		email.send( {to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true" } );
+                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
+                /*SendActivity (  Workflow.InIncidentId,  /*OperationalType* /"ACTIVITY",  /*OperationalName* /"Email Notify",
+                /*Status* /null,             /*SubStatus* /null,
+                /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
+                /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
+                /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
+                /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
                 dq.Status = 'done';
                 break;
             }
@@ -88,13 +88,32 @@ if (Workflow.WfStatus != 'null' && Workflow.WfStatus != '') {
             {
                 //var VoiceTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});
                 /*voice.send( { to: dq.Address, subject: EmailTemplate.subject, body: EmailTemplate.body, htmlEmail: "true" } );*/
-                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= ' + dq.Level + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + dq.FirstName + ', LastName = ' + dq.LastName + ', Address = ' + dq.Address);
+              voxeo.call({
+                destinationNumber: "sip:toto@192.168.2.11:5060",
+                //destinationNumber: dq.Address,
+                dialogId: "dispatchNotification/dispatchInfo.vxml",
+                retries:"2",
+                report:"true",
+                responseProperties:{
+                  "terminal id":Workflow.InTermId, 
+                  IncidentId:Workflow.InIncidentId},
+              
+                content: {
+                 reason: "Technical Help Required for Policy, " + Workflow.InPolicyName ,
+                  incidentId: Workflow.InIncidentId,
+                  note: "",
+                  terminalId: Workflow.InTermId,
+                  eta:false,
+                  lang:"en-US"
+                }
+              });
+                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
                 /*SendActivity (  Workflow.InIncidentId,  /*OperationalType* /"ACTIVITY",  /*OperationalName* /"Email Notify",
-                 /*Status* /null,             /*SubStatus* /null,
-                 /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
-                 /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
-                 /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
-                 /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
+                /*Status* /null,             /*SubStatus* /null,
+                /*Category* /null,           /*SubCategory* /null,                /*ActivityTime* /null,
+                /*ExternalTicketId* /null,   /*ExternalTicketStatus* /null,       /*ExternalTicketSubStatus* /null,    /*ExternalCategory* /null,   /*ExternalSubCategory* /null,     
+                /*Result* /null,             /*ResultText* /null,                 /*Remarks* /null,                 
+                /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
                 dq.Status = 'calling';
                 break;
             }
@@ -151,12 +170,6 @@ function SendActivity ( IncidentId,     OperationType,  OperationName,
     for (var i in Event) activity.additionalInfo[i] = Event[i];
         helpdesk.send(activity);
 }
-// --------------------------------------------------------------------------------
-// ESQ Management Solutions / ESQ Business Services
-// --------------------------------------------------------------------------------
-
-
-
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services
 // --------------------------------------------------------------------------------

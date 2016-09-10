@@ -2,24 +2,29 @@
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
    Dispatcher Standard Workflow V 1.0
-   PrepareAckSLABreach
-   This script inserts a TimerEvent with 0 time to simulate an AckSLABreach
+   PrepareAck
+   This action sets the stage and decides what needs to be done in this workflow
    --------------------------------------------------------------------------------
 */
-Log.info("Prepare Ack Entered...");
-// Start Timer for Ack SLA (ei_ack_sla_breach)
+Log.info("Prepare for Ack Entered...");
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'reopened' || Workflow.WfStatus == 'resumed') {
-    Workflow.WfLifecycle = 'ack';
-    Workflow.WfStatus = 'acked';
+if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfStatus == 'reopened') {
+    Workflow.WfLifecycle =  'ack';
+    Workflow.WfStatus    =  'acked';
     Timer.cancel('ei_ack_sla_breach');
+    // Copy Ack details into WorkFlow [ack time, ack user]
+    
 }
-// Copy Ack details into WorkFlow [arrive time, arrive user]
 
-
-Log.info(Event);
-Log.info("Prepare Ack Exiting...");
+Log.info("Prepare for Ack Exiting...");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services
 // --------------------------------------------------------------------------------
+
+
+
+
+

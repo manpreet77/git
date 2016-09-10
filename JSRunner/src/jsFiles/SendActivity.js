@@ -7,6 +7,8 @@
  --------------------------------------------------------------------------------
 */
 
+/* global Event, helpdesk */
+
 function SendActivity ( IncidentId,     OperationType,  OperationName,
                         Status, SubStatus,
                         Category,       SubCategory,    ActivityTime,   ExternalTicketId,

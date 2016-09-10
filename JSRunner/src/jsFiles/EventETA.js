@@ -1,3 +1,5 @@
+/* global Event */
+
 // FIELDS......................      ETA.........................................
 Event.Id                             = '601';
 Event.actionrulename                 = 'test';

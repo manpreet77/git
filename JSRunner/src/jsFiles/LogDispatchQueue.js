@@ -7,6 +7,8 @@
  --------------------------------------------------------------------------------
  */
 
+/* global Log, Workflow */
+
 Log.info("Log DispatchQueue Entering................................................");
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 Log.info('EventType       SendTime                     DelayMins  Status  Channel ContactType     Level   AtmSchedule             WillRespond     Ttl     MaxRetries  TryCount    FirstName   LastName    Address         FirstName2  LastName2   Address2        Content         Template         ');

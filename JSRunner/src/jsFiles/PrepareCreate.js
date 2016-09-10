@@ -6,6 +6,8 @@
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
  */
+/* global Workflow, Event, Log, Timer */
+
 Log.info("Prepare Work for Create Entered...");
 
 // Copy Incident details from Event into Workflow like CreateTime, ATMHour, DefaultAssignedParty...
@@ -20,7 +22,7 @@ Workflow.InPolicyName = Event.policyname;
 Workflow.InTermId = Event.assetid;
 Workflow.InSiteId = Event.siteid;
 Workflow.InIncidentType = Event.incidenttype;
-Workflow.InIsLinked = Event.islinked
+Workflow.InIsLinked = Event.islinked;
 Workflow.InParentIncident = 'undefined';
 Workflow.InCategory = Event.policydetails1;
 Workflow.InSubCategory = Event.policydetails2;
@@ -29,13 +31,13 @@ Workflow.InStatus = 'undefined';
 Workflow.InSubStatus = 'undefined';
 Workflow.InAssigneeParty = Event.targetpartyid;
 Workflow.InPartyId = 'undefined';
-Workflow.InIsInATMBranchHours = Event.schedules_brnchr; // 1 or 0
-Workflow.InIsInATMAfterHours = Event.schedules_aftrhr; // 1 or 0
-Workflow.InIsInATMOperHours = Event.schedules_operhr; // 1 or 0
-Workflow.InIsInATMOtherHours = Event.schedules_othrhr; // 1 or 0
-Workflow.InIsInATMPeakHours = Event.schedules_peakhr; // 1 or 0
-Workflow.InIsInATMOffPeakHours = Event.schedules_ofpkhr; // 1 or 0
-Workflow.InNextATMSchedAvailable= Event.schedulesnext_categorycode;  // any of OPERHR,BRNCHR,AFTRHR,OTHRHR,PEAKHR,OFPKHR
+Workflow.InIsInATMBranchHours = Event.schedules_branchhours; // 1 or 0
+Workflow.InIsInATMAfterHours = Event.schedules_afterhours; // 1 or 0
+Workflow.InIsInATMOperationalHours = Event.schedules_operationalhours; // 1 or 0
+Workflow.InIsInATMOtherHours = Event.schedules_otherhours; // 1 or 0
+Workflow.InIsInATMPeakHours = Event.schedules_peakhours; // 1 or 0
+Workflow.InIsInATMOffPeakHours = Event.schedules_offpeakhours; // 1 or 0
+Workflow.InNextATMSchedAvailable= Event.schedulesnext_categoryname;  // Name: BranchHours, AfterHours, OtherHours, OperationalHours, PeakHours,OffPeakHours  etc.
 Workflow.InNextATMSchedAvailableTime= Event.schedulesnext_nextavailableschedulestarttime; //next avl time - e.g. 2016-08-30T00:00:00
 
 // Action Rule Details

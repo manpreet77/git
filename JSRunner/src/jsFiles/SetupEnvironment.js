@@ -6,6 +6,8 @@
    This action defines all globals and is included in initial rule of a workflow.
     --------------------------------------------------------------------------------
  */
+/* global Log, Workflow */
+
 Log.info("Setup Environment Entered...");
 
 // Tenant Details
