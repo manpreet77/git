@@ -14,7 +14,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
 if (Workflow.WfStatus !== 'closed') {
-    Workflow.WfLifecycle =  'close';
+    Workflow.WfLifecycle =  'Close';
     Workflow.WfStatus    =  'closed';
 } else {
     Log.info(': current State = ' + Workflow.WfStatus + ' event ignored');

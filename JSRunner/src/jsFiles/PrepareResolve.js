@@ -14,7 +14,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
 if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked' || Workflow.WfStatus ===  'working') {
-    Workflow.WfLifecycle =  'resolve';
+    Workflow.WfLifecycle =  'Resolve';
     Workflow.WfStatus    =  'resolved';
     Timer.cancel('ei_rsl_sla_breach');
 }

@@ -12,7 +12,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
 if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfStatus == 'reopened') {
-    Workflow.WfLifecycle =  'ack';
+    Workflow.WfLifecycle =  'Ack';
     Workflow.WfStatus    =  'acked';
     Timer.cancel('ei_ack_sla_breach');
     // Copy Ack details into WorkFlow [ack time, ack user]
