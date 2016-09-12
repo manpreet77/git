@@ -37,7 +37,7 @@ public class AdaptorEmail {
         htmlEmail           = (String) mirror.get("htmlEmail");
 
         if (to.isEmpty() || subject.isEmpty() || body.isEmpty() ||
-            !htmlEmail.equalsIgnoreCase("Y")) {
+            !htmlEmail.equalsIgnoreCase("true")) {
             throw new IllegalArgumentException("email.send received bad parameters");
         }
         Log.info ("AdaptorEmail: "+to+" || "+cc+" || "+subject+" || "+body+" || "+htmlEmail);
