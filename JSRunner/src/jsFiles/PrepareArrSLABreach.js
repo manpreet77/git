@@ -10,6 +10,18 @@
 
 Log.info("Prepare Arr SLA Breach Entered...");
 
+// Set Variable WorkFlow.LifeCycle.State to 'Arrive'
+if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked') {
+    Workflow.WfLifecycle = 'Arrive';
+    Workflow.WfStatus = 'breached';
+    
+    
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
+
+}
+
 
 Log.info("Prepare Arr SLA Breach Exiting...");
 // --------------------------------------------------------------------------------

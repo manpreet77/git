@@ -12,13 +12,17 @@ Log.info("Prepare for Resolve Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
-// Set Variable WorkFlow.LifeCycle.State to 'acked'
+// Set Variable WorkFlow.LifeCycle.State to 'resolved'
 if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked' || Workflow.WfStatus ===  'working') {
     Workflow.WfLifecycle =  'Resolve';
     Workflow.WfStatus    =  'resolved';
     Timer.cancel('ei_rsl_sla_breach');
+    
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
+
 }
-// Copy Resolve details into WorkFlow [resolve time, resolve user]
 
 Log.info("Prepare for Resolve Exiting...");
 // --------------------------------------------------------------------------------

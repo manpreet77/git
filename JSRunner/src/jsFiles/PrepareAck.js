@@ -15,8 +15,11 @@ if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfS
     Workflow.WfLifecycle =  'Ack';
     Workflow.WfStatus    =  'acked';
     Timer.cancel('ei_ack_sla_breach');
-    // Copy Ack details into WorkFlow [ack time, ack user]
+    //TODO Copy Ack details into WorkFlow [ack time, ack user]
     
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
 }
 
 Log.info("Prepare for Ack Exiting...");

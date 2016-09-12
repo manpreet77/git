@@ -17,6 +17,11 @@ if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked') {
     Workflow.WfLifecycle = 'Arrive';
     Workflow.WfStatus = 'working';
     Timer.cancel('ei_arr_sla_breach');
+    
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
+
 }
 // Copy Arrive details into WorkFlow [arrive time, arrive user]
 

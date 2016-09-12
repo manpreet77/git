@@ -14,7 +14,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
 if (Workflow.WfStatus === 'resolved') {
-    Workflow.WfLifeCycle =  'reopen';
+    Workflow.WfLifecycle =  'reopen';
     Workflow.WfStatus    =  'reopened';
 }
 // Copy reopem details into WorkFlow [reopen time, reopen user]

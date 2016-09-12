@@ -33,10 +33,11 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
 
         //  dequeue next email to be sent
         dq = DispatchQueue[i];
+        
         //check if this notification has already been processed
         if (dq.Status === 'done')
             continue;
-
+                
         Log.info('Dispatch Data:(' + i + ') delayMins: ' + dq.DelayMins + ' Status: ' + dq.Status);
 
         var currTime = new Date();
