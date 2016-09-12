@@ -13,7 +13,9 @@ import java.util.regex.Pattern;
  *
  * @author Shridhar
  */
-public class MessageTemplateVariables {    private static final Pattern splitPattern = Pattern.compile("\\.");
+public class MessageTemplateVariables {    
+    private static final Pattern splitPattern = Pattern.compile("\\.");
+    
     private final Map<String, VariableSource> variableSourcesMap = new HashMap<String, VariableSource>();
     
     public void addSource(String sourceName, Map<String, String> variables) {
