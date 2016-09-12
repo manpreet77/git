@@ -12,7 +12,7 @@ Log.info("Prepare for Arrive Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
-// Set Variable WorkFlow.LifeCycle.State to 'acked'
+// Set Variable WorkFlow.LifeCycle.State to 'Arrive'
 if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked') {
     Workflow.WfLifecycle = 'Arrive';
     Workflow.WfStatus = 'working';

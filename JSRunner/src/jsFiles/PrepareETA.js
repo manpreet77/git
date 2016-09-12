@@ -20,8 +20,6 @@ if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.W
         eventName: 'ei_arr_sla_breach',
         delayMs: Workflow.ArrSLABreachDelay * 60 * 1000
     });
-    // Copy Ack details into WorkFlow [ack time, ack user]
-
 }
 Log.info("Prepare for ETA Exiting...");
 // --------------------------------------------------------------------------------

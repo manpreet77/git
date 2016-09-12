@@ -69,7 +69,8 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 Contact.replaceVariables(dq.Template, {Workflow: Workflow});                
 		email.send( {to: dq.Address, subject: dq.Template.subject, body: dq.Template.body, htmlEmail: "true" } );
                 Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
-                helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Email", status: "", substatus:"", category: "Contact",subcategory:"EMAIL", activitytime: new Date(), result : "Success", resulttext: "", remarks : "Notification via Email", externalticketid:"",externalticketstatus:"", externalticketsubstatus:"",externalcategory:"",externalsubcategory: ""});
+                //helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Email", status: "", substatus:"", category: "Contact",subcategory:"EMAIL", activitytime: new Date().toISOString(), result : "Success", resulttext: "", remarks : "Notification via Email", externalticketid:"",externalticketstatus:"", externalticketsubstatus:"",externalcategory:"",externalsubcategory: ""});
+                helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Email", category: "Contact",subcategory:"EMAIL", activitytime: new Date().toISOString(), result : "Success", remarks : "Notification via Email", resulttext: ""});
                 dq.Status = 'done';
                 break;
             }
@@ -81,7 +82,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
             {
                 //var VoiceTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});                
               voxeo.call({
-                destinationNumber: "sip:toto@192.168.2.11:5060",
+                destinationNumber: "sip:toto@192.168.1.99:5060",
                 //destinationNumber: dq.Address,
                 dialogId: "dispatchNotification/dispatchInfo.vxml",
                 retries:"2",
@@ -100,8 +101,10 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 }
               });
                 Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
-                helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Voice", status: "", substatus:"", category: "Contact",subcategory:"VOICE", activitytime: new Date(), result : "Initiated", resulttext: "", remarks : "Notification via Voice", externalticketid:"",externalticketstatus:"", externalticketsubstatus:"",externalcategory:"",externalsubcategory: ""});
                 dq.Status = 'calling';
+                //helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Voice", status: "", substatus:"", category: "Contact",subcategory:"VOICE", activitytime: new Date(), result : "Initiated", resulttext: "", remarks : "Notification via Voice", externalticketid:"",externalticketstatus:"", externalticketsubstatus:"",externalcategory:"",externalsubcategory: ""});
+                helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Voice", category: "Contact",subcategory:"TELEPHONE", activitytime: new Date().toISOString(), result : dq.Status, remarks : "Notification via Voice", resulttext: ""});
+                
                 break;
             }
             case 'edi' :

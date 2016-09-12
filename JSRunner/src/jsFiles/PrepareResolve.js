@@ -18,7 +18,7 @@ if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked' || Workflow.WfS
     Workflow.WfStatus    =  'resolved';
     Timer.cancel('ei_rsl_sla_breach');
 }
-// Copy Arrive details into WorkFlow [resolve time, resolve user]
+// Copy Resolve details into WorkFlow [resolve time, resolve user]
 
 Log.info("Prepare for Resolve Exiting...");
 // --------------------------------------------------------------------------------
