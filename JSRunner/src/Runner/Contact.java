@@ -10,12 +10,11 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.slf4j.Logger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import jdk.nashorn.internal.parser.JSONParser;
 import jdk.nashorn.internal.runtime.JSONFunctions;
-import jdk.nashorn.internal.runtime.Source;
 
 /**
  *
@@ -29,41 +28,37 @@ public class Contact {
         this.Log = l;
     }
 
-    public Object queryActionRule(ScriptObjectMirror mirror) throws  IOException {
+    public Object queryActionRule(ScriptObjectMirror mirror) throws IOException {
 
         String responseFile;
         responseFile = System.getProperty("user.dir") + System.getProperty("file.separator")
                 + "src" + System.getProperty("file.separator")
                 + "jsFiles" + System.getProperty("file.separator")
                 + "queryActionResponse.json";
-        
-        String content = new String (Files.readAllBytes(Paths.get(responseFile)), "UTF-8");
+
+        String content = new String(Files.readAllBytes(Paths.get(responseFile)), "UTF-8");
         return JSONFunctions.parse(content, mirror);
         //return content;
     }
+
     //EmailTemplate = Contact.replaceVariables(dq.Template, {Workflow: Workflow});
-    public Object replaceVariables (ScriptObjectMirror mirror) throws IOException {
-     
-        Map tmp =(Map) mirror.get("template");
+    public Object replaceVariables(ScriptObjectMirror mirror) throws IOException {
+
+        Map tmp = (Map) mirror.get("template");
         Map mp = (Map) mirror.get("Workflow");
-        
+
         StringBuilder sb = new StringBuilder();
-        sb.append( (String) tmp.get("name"));
-        sb.append( (String) tmp.get("body"));
-        sb.append( (String) tmp.get("description"));
-        sb.append( (String) tmp.get("subject"));
-        sb.append( (String) tmp.get("templateType"));
+        sb.append((String) tmp.get("name"));
+        sb.append((String) tmp.get("body"));
+        sb.append((String) tmp.get("description"));
+        sb.append((String) tmp.get("subject"));
+        sb.append((String) tmp.get("templateType"));
         String str1 = sb.toString();
         String str2 = str1.replace("Workflow.", "");
-        String str3 = repVariables(str2, mp);      
+        String str3 = repVariables(str2, mp);
         return JSONFunctions.parse(str3, mirror);
     }
-    
-    
-    
-    
-    
-    
+
     private static final Pattern pattern = Pattern.compile("<%=\\s*([^%\\s]+\\s*)%>");
 
     public String repVariables(String input, Map<String, String> variables) {
@@ -84,38 +79,33 @@ public class Contact {
         }
         return sb.toString();
     }
-    
-    /*
-    public void replaceVariables(Scriptable template, Scriptable... sources) throws Exception {
-        MessageTemplateVariables variables = loadVariables(sources);
 
-        JsObject jsTemplate = new JsObject(template);
-        Map<String, String> fields = jsTemplate.getMap();
+    // This is the original signature that exists in dispatcher
+//    public void replaceVariables(ScriptObjectMirror template, ScriptObjectMirror... sources) throws Exception {
+//        MessageTemplateVariables variables = loadVariables(sources);
+//
+////        JsObject jsTemplate = new JsObject(template);
+////        Map<String, String> fields = jsTemplate.getMap();
+////
+////        Map<String, String> updatedFields = MessageTemplateEngine.replaceVariables(fields, variables);
+////        for (String key : updatedFields.keySet()) {
+////            jsTemplate.setString(key, updatedFields.get(key));
+////        }
+//    }
 
-        Map<String, String> updatedFields = MessageTemplateEngine.replaceVariables(fields, variables);
-        for (String key : updatedFields.keySet()) {
-            jsTemplate.setString(key, updatedFields.get(key));
-        }
-    }
+//    private MessageTemplateVariables loadVariables(Scriptable[] sources) {
+//        MessageTemplateVariables variables = new MessageTemplateVariables();
+//        if (sources == null) {
+//            return variables;
+//        }
+////        for (Scriptable item : sources) {
+////            JsObject jsObject = new JsObject(item);
+////            for (String source : jsObject.getPropertyNames()) {
+////                Map<String, String> map = jsObject.getMap(source);
+////                variables.addSource(source, map);
+////            }
+////        }
+//        return variables;
+//    }
 
-    private MessageTemplateVariables loadVariables(Scriptable[] sources) {
-        MessageTemplateVariables variables = new MessageTemplateVariables();
-        if (sources == null) {
-            return variables;
-        }
-        for (Scriptable item : sources) {
-            JsObject jsObject = new JsObject(item);
-            for (String source : jsObject.getPropertyNames()) {
-                Map<String, String> map = jsObject.getMap(source);
-                variables.addSource(source, map);
-            }
-        }
-        return variables;
-    }
-    */
-    
-    
-    
-    
-    
 }
