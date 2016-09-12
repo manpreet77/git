@@ -80,7 +80,7 @@ public class Contact {
         return sb.toString();
     }
 
-    // This is the original signature that exists in dispatcher
+    // This is the original signature that exists in dispatcher Need to be worked on
 //    public void replaceVariables(ScriptObjectMirror template, ScriptObjectMirror... sources) throws Exception {
 //        MessageTemplateVariables variables = loadVariables(sources);
 //
