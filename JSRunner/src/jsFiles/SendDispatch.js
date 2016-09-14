@@ -17,10 +17,10 @@ Log.info("Send Dispatch Entered...");
 var DispatchQueue = JSON.parse(Workflow.DispatchQueueStringify);
 
     
-Log.info('EventType       SendTime                     DelayMins  Status  Channel ContactType     Level   AtmSchedule             WillRespond     Ttl     MaxRetries  TryCount    FirstName   LastName    Address         FirstName2  LastName2   Address2        Content         Template         ');
+Log.info('EventType       SendTime                     DelayMins  Status  Channel ContactType      AtmSchedule             WillRespond     Ttl     MaxRetries  TryCount    FirstName   LastName    Address         FirstName2  LastName2   Address2        Content         Template         ');
 for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
-    Log.info(dq.EventType + "\t\t" + dq.SendTime + "\t" + dq.DelayMins + "\t" + dq.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.Level + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + dq.TryCount + "\t" + dq.FirstName + " " + dq.LastName + " " + dq.Address + "\t\t" + dq.FirstName2 + " " + dq.LastName2 + " " + dq.Address2 + "\t\t" + dq.Content + "\t" + dq.Template);
+    Log.info(dq.EventType + "\t\t" + dq.SendTime + "\t" + dq.DelayMins + "\t" + dq.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + dq.TryCount + "\t" + dq.FirstName + " " + dq.LastName + " " + dq.Address + "\t\t" + dq.FirstName2 + " " + dq.LastName2 + " " + dq.Address2 + "\t\t" + dq.Content + "\t" + dq.Template);
 }
 
 
@@ -69,7 +69,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
             {
                 Contact.replaceVariables(dq.Template, {Workflow: Workflow});                
 		email.send( {to: dq.Address, subject: dq.Template.subject, body: dq.Template.body, htmlEmail: "true" } );
-                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
+                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
                 //helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Email", status: "", substatus:"", category: "Contact",subcategory:"EMAIL", activitytime: new Date().toISOString(), result : "Success", resulttext: "", remarks : "Notification via Email", externalticketid:"",externalticketstatus:"", externalticketsubstatus:"",externalcategory:"",externalsubcategory: ""});
                 helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Email", category: "Contact",subcategory:"EMAIL", activitytime: new Date().toISOString(), result : "Success", remarks : "Notification via Email", resulttext: ""});
                 dq.Status = 'done';
@@ -101,7 +101,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                   lang:"en-US"
                 }
               });
-                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', Level= '+ dq.Level +', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
+                Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = '+dq.AtmSchedule +', FirstName = '+dq.FirstName+', LastName = '+dq.LastName+', Address = '+dq.Address);
                 dq.Status = 'calling';
                 //helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Voice", status: "", substatus:"", category: "Contact",subcategory:"VOICE", activitytime: new Date(), result : "Initiated", resulttext: "", remarks : "Notification via Voice", externalticketid:"",externalticketstatus:"", externalticketsubstatus:"",externalcategory:"",externalsubcategory: ""});
                 helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:"ACTIVITY", operationame: "Voice", category: "Contact",subcategory:"TELEPHONE", activitytime: new Date().toISOString(), result : dq.Status, remarks : "Notification via Voice", resulttext: ""});

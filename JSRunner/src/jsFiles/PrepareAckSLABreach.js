@@ -23,10 +23,6 @@ if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfS
     Workflow.DispatchQueueStringify ='undefined';
 }
 
-
-
-
-
 Log.info("Prepare Ack SLA Breach Exiting...");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services

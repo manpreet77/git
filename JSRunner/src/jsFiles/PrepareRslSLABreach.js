@@ -10,6 +10,9 @@
 
 Log.info("Prepare Rsl SLA Breach Entered...");
 
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+
 if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked' || Workflow.WfStatus ===  'working') {
     Workflow.WfLifecycle =  'Resolve';
     Workflow.WfStatus    =  'breached';

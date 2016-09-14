@@ -19,6 +19,7 @@ Workflow.WfLifecycle                        ='undefined';   // The state of the 
 Workflow.WfStatus                           ='undefined';   // The state of the work (active, acked...)
 Workflow.WfId                               ='undefined';   // The Dispatchers Workflow Instance Id
 Workflow.WfStartTime                        ='undefined';   // When this Workflow started
+Workflow.delayGapinMinsDueToNextAvailableAtmSchedule = 'undefined'; //used for finding out delay in case next atm schedule kicks in 
 // Incident Details
 Workflow.InIncidentId                       ='undefined';
 Workflow.InPolicyName                       ='undefined';

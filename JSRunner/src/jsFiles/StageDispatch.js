@@ -13,7 +13,7 @@
 Log.info("Stage Dispatch Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
-var AtmSched = "BranchHours"; //default Atm Schedule
+
 
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 
@@ -23,61 +23,21 @@ if (DispatchQueue === 'undefined') {
     DispatchQueue = new Array();
 }
 
-//for the case of "Create" lifecycle 
-//check for atmschedules: either current time falls in one of the atmschedules or not
-//in case it does not, sleep till next available time
-if (Workflow.WfLifecycle === "Create") {
-    if (Workflow.InIsInATMBranchHours === "0" &&
-            Workflow.InIsInATMAfterHours === "0" &&
-            Workflow.InIsInATMOtherHours === "0" &&
-            Workflow.InIsInATMOperationalHours === "0" &&
-            Workflow.InNextATMSchedAvailableTime !== 'undefined') {
-
-        Log.info("StageDispatch: no current schedules found, will have to sleep..");
-//  Kick off the stage delay since no current schedules are there
-        // Go to Sleep until next open time and come here instead of SendDispatch
-        var currTime = new Date();
-        Log.info('currTime: ' + currTime.toISOString());
-        var goTime = new Date(Date.parse(Workflow.InNextATMSchedAvailableTime));
-        Log.info('goTime: ' + goTime.toISOString());
-        var delayGapinMins = new Date(goTime - currTime).getMinutes();
 
 
-        Log.info("Going to sleep for " + delayGapinMins + " mins");
-        Workflow.InNextATMSchedAvailableTime = 'undefined';
-        Timer.start({
-            eventName: 'ei_stage_dispatch',
-            delayMs: delayGapinMins * 60 * 1000
-        });
+//for all other lifecycle events there is no need of ATM Schedule
+// we will default to AnyHours in this case
+var AtmSched = "AnyHours"; //default Atm Schedule
 
-    } else {
-        //in normal case set the DSP Start time as Incident Start Time
-        Log.info(Workflow.InStartTime);
-        var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
-
-        //Incident Time falls in one of the atm schedule
-        if (Workflow.InIsInATMBranchHours === "1") {
-            AtmSched = 'BranchHours';
-        } else if (Workflow.InIsInATMAfterHours === "1") {
-            AtmSched = 'AfterHours';
-        } else if (Workflow.InIsInATMOtherHours === "1") {
-            AtmSched = 'OtherHours';
-        } else if (Workflow.InIsInATMOperHours === "1") {
-            AtmSched = 'OperationalHours';
-        } else {
-            Log.info("StageDispatch: staging dispatch after sleep");
-            //in case of coming back after sleeping, set base DSPstarttime as current time
-            BaseDispatchStartTimeAsDate = new Date();
-            AtmSched = Workflow.InNextATMSchedAvailable;
-            //TODO case 'PeakHours':
-            //TODO case 'OffPeakHours':
-        }
-    }
-} else {
-    //for all other lifecycle events there is no need of ATM Schedule
-    // we will default to AnyHours in this case
-    AtmSched = "AnyHours";
+//Do the time calcuation in case there was a delay due to nextAvailableATMSchedule during Create time
+var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
+if( Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null){
+    Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
+    BaseDispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);                
 }
+    
+
+
 
 
 Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
@@ -103,16 +63,32 @@ if (!queryArResult) {
         for (var i in dmaps) {
             var dq = {};
             /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
-            
-            var DispatchStartTimeAsDate = new Date();
-            DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
-
-            /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
-            /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
             /* wait, done, retry, error  */ dq.Status = "new";
             /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
             /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
-            /* Base, Level-1...          */ dq.Level = dmaps[i].level;
+            
+            //handling of SendTime and delay based on ContactType
+            var DispatchStartTimeAsDate = new Date(BaseDispatchStartTimeAsDate);
+            if(dq.ContactType === "Pre Breach Reminder"){
+                //special handling of Pre-breach type 
+                //in this case the duration has to be subtracted from the SLA and accordingly adjusted
+                if(Workflow.WfLifecycle === "Ack"){
+                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArAckSLA) - dmaps[i].duration.baseValueMinutes);                
+                    
+                }else if (Workflow.WfLifecycle === "Resolve"){
+                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArRslSLA) - dmaps[i].duration.baseValueMinutes);                
+                }
+                
+            }
+            else{
+                //for all other cases like notifications and escalations, duration needs to be added to basetime
+                DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);                
+            }
+            
+            
+            
+            /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
+            /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;            
             /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
             /* FN of the person          */ dq.FirstName = dmaps[i].user.firstName;
             /* LN of the person          */ dq.LastName = dmaps[i].user.lastName;
@@ -136,6 +112,12 @@ if (!queryArResult) {
                     //do not add to Q
                     continue;
                 }
+            }else if( Workflow.WfStatus    ===  'acked' || Workflow.WfStatus    ===  'resolved'){
+                if (dq.ContactType !== 'Notification')
+                    continue;
+            }else if( Workflow.WfStatus    ===  'new'){
+                if (dq.ContactType !== 'Pre Breach Reminder')
+                    continue;
             }
             
             DispatchQueue.push(dq);

@@ -32,11 +32,23 @@ public class Contact {
 
     public Object queryActionRule(ScriptObjectMirror mirror) throws IOException {
 
-        String responseFile;
-        responseFile = System.getProperty("user.dir") + System.getProperty("file.separator")
+        String responseFileName = "";
+        
+        if((String) mirror.get("lifecycle") == "Create"){
+            responseFileName = "queryActionCreateResponse.json";
+        }
+        else if((String) mirror.get("lifecycle") == "Ack"){
+            responseFileName = "queryActionAckResponse.json";
+        }
+        else if((String) mirror.get("lifecycle") == "Resolve"){
+            responseFileName = "queryActionResolveResponse.json";
+        }
+        
+        
+        String responseFile = System.getProperty("user.dir") + System.getProperty("file.separator")
                 + "src" + System.getProperty("file.separator")
                 + "jsFiles" + System.getProperty("file.separator")
-                + "queryActionResponse.json";
+                + responseFileName;
 
         String content = new String(Files.readAllBytes(Paths.get(responseFile)), "UTF-8");
         return JSONFunctions.parse(content, mirror);

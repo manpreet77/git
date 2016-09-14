@@ -8,7 +8,6 @@
             },
             "lifeCycle": "Create",
             "contactType": "Notification",
-            "level": "Base",
             "contactChannel": "Email",
             "atmSchedule": "BranchHours",
             "duration": {
@@ -32,7 +31,6 @@
             },
             "lifeCycle": "Create",
             "contactType": "Notification",
-            "level": "Base",
             "contactChannel": "Email",
             "atmSchedule": "AfterHours",
             "duration": {
@@ -47,29 +45,6 @@
                 "subject": "IncidentAlertNotification-IncidentId: %Workflow.InIncidentId%-ATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%",
                 "body": "The problem\\n%Workflow.InCategory%:%Workflow.InSubCategory%:%Workflow.InSubSubCategory% occurred on ATMID: SITEID= %Workflow.InTermId%: %Workflow.InSiteId% with IncidentId= %Workflow.InIncidentId%.\\n<br>\\nPlease resolve the incident within defined SLA %Workflow.TimeBefore1Escalation%Hours in order to avoid escalation.\\n</br>\\n<br><br><b>\\nThisisanauto-generated email. Please do not reply or write back to this EmailID.\\n</b></br></br>\\n\\n"
             }
-        },
-        {
-            "user": {
-                "firstName": "Manpreet",
-                "lastName": "Singh",
-                "address": "ms@esq.com"
-            },
-            "lifeCycle": "Create",
-            "contactType": "Escalation",
-            "level": "Level-1",
-            "contactChannel": "Email",
-            "atmSchedule": "OperationalHours",
-            "duration": {
-                "name": "somesystemgeneratedname",
-                "baseValueMinutes": 3,
-                "graceValueMinutes": 0
-            },
-            "template": {
-                "name": "Level-1EmailTemplate",
-                "description": "L1-EmailTemplatefortenants",
-                "templateType": "email",
-                "subject": "EscalationlevelL1-IncidentId: %Workflow.InIncidentId% -ATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%",
-                "body": "Due to non-resolution of the IncidentId: \\n%Workflow.InIncidentId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%fortheATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
-            }
-        }]
+        }        
+        ]
 }

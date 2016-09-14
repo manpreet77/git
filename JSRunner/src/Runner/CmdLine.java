@@ -85,15 +85,24 @@ public class CmdLine {
                     r.RunJS("SetupEnvironment.js");
                     Log.info("Run PrepareCreate.js..................................");
                     r.RunJS("PrepareCreate.js");
+                    Log.info("Run StageDispatchForCreate.js..................................");
+                    r.RunJS("StageDispatchForCreate.js");
+                    r.RunJS("PrepareAckPreBreachReminder.js");
+                    Log.info("Run PrepareAckPreBreachReminder.js..................................");
+                    r.RunJS("StageDispatch.js");                    
                     Log.info("Run StageDispatch.js..................................");
+                    r.RunJS("PrepareRslPreBreachReminder.js");
+                    Log.info("Run PrepareRslPreBreachReminder.js..................................");
                     r.RunJS("StageDispatch.js");
+                    Log.info("Run SetLifecycleToCreate.js..................................");
+                    r.RunJS("SetLifecycleToCreate.js");                                        
                     break;
                 case 2:
                     Log.info("Run EventAck.js................   ....................");
                     r.RunJS("EventAck.js");
                     Log.info("Run PrepareAck.js.....................................");
                     r.RunJS("PrepareAck.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 3:
