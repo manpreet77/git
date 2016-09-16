@@ -40,7 +40,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
     var goTime = new Date(Date.parse(Workflow.InNextATMSchedAvailableTime));
     Log.info('goTime: ' + goTime.toISOString());
     var delayGapinMins = new Date(goTime - currTime).getMinutes();
-    
+
     Workflow.delayGapinMinsDueToNextAvailableAtmSchedule = delayGapinMins;
 
     Log.info("Going to sleep for " + delayGapinMins + " mins");
@@ -75,7 +75,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
 
     Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
 
-    var queryArResult = Contact.queryActionRule({
+    var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
         actionRule: Workflow.ArName,
         tenantId: Workflow.TenantId,
         atmSchedule: AtmSched,
@@ -100,25 +100,84 @@ if (Workflow.InIsInATMBranchHours === "0" &&
                 var DispatchStartTimeAsDate = new Date();
                 DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
 
+
                 /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
                 /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
                 /* wait, done, retry, error  */ dq.Status = "new";
                 /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
-                /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;                
+                /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
                 /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
-                /* FN of the person          */ dq.FirstName = dmaps[i].user.firstName;
-                /* LN of the person          */ dq.LastName = dmaps[i].user.lastName;
-                /* Emailid, PhoneNum..       */ dq.Address = dmaps[i].user.address;
-                /* FN of the person          */ dq.FirstName2 = dmaps[i].user.firstName;
-                /* LN of the person          */ dq.LastName2 = dmaps[i].user.lastName;
-                /* Emailid, PhoneNum..       */ dq.Address2 = dmaps[i].user.address;
-                /* Data to be sent           */ dq.Content = 'undefined';
-                /* Template for adaptor      */ dq.Template = dmaps[i].template;
-                /* If response can come      */ dq.WillRespond = 'yes';
-                /* Time To Live              */ dq.Ttl = 3600;
-                /* Max Retries to be done    */ dq.MaxRetries = 0;
-                /* Num of tries so far       */ dq.TryCount = 0;
-                DispatchQueue.push(dq);
+
+                /* unique id for all contacts belonging in this record*/
+                dq.contactMapping = dmaps[i].contactMapping;
+
+                /* if we have to wait for next contact or continue with next*/
+                dq.waitForNextContact = dmaps[i].waitForNextContact;
+
+
+                /* Template Type */
+                dq.TemplateType = dmaps[i].template.templateType;
+                /* Template for adaptor      */
+                if (!dmaps[i].template.jsonDefinition) {
+                    dq.Template = '';
+                } else {
+                    dq.Template = JSON.parse(dmaps[i].template.jsonDefinition);
+                }
+
+                /* If response can come      */
+                if (dq.Channel === 'Voice' || dq.Channel === 'NCR-EDI' || dq.Channel === 'DECAL')
+                    dq.WillRespond = 'yes';
+                else
+                    dq.WillRespond = 'no';
+
+                if (dq.TemplateType === 'other') {
+                    //template body has JSON for all the properties needed by this dispatch
+                    //stored in the template
+                    if (!dq.Template.body) {
+                        dq.Template = '';
+                    } else {
+                        dq.Template.body = JSON.parse(dq.Template.body);
+                    }
+
+                    /* Time To Live */
+                    if (dq.Template.body.Ttl) {
+                        dq.Ttl = dq.Template.body.Ttl;
+                    } else {
+                        dq.Ttl = 3600;
+                    }
+
+                    /* Max Retries to be done */
+                    if (dq.Template.body.MaxRetries) {
+                        dq.MaxRetries = dq.Template.body.MaxRetries;
+                    } else {
+                        dq.MaxRetries = 0;
+                    }
+                }
+
+
+                if (processUserBlockForCalendar(dmaps[i].user, dq)) {
+                    if (dq.nextAvailableTime) {
+
+                        Log.info("StageDispatchForCreate: no current schedules found for the user, will have to sleep..");
+                        // Kick off the stage delay since no current schedules are there
+                        // Go to Sleep until next open time and come here instead of SendDispatch
+                        var currTime = new Date();
+                        Log.info('currTime: ' + currTime.toISOString());
+                        var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                        Log.info('goTime: ' + goTime.toISOString());
+                        var delayGapinMins = new Date(goTime - currTime).getMinutes();
+
+                        Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+
+                        Timer.start({
+                            eventName: 'ei_stage_dispatch',
+                            delayMs: delayGapinMins * 60 * 1000
+                        });
+                    }
+                    else {
+                        DispatchQueue.push(dq);
+                    }
+                }
             }
         }
         //  Sort the Queue by sendtime
@@ -133,16 +192,70 @@ if (Workflow.InIsInATMBranchHours === "0" &&
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
     Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
-
-    //  Kick off dispatch
-    Timer.start({
-        eventName: 'ei_send_dispatch',
-        delayMs: 0
-    });
 }
 
 Log.info("Stage Dispatch For Create Exiting...");
 
+
+function processUserBlockForCalendar(users, dq) {
+    var result = false;
+    //  Sort the user array by seqNo
+    if (users && users.length > 0) {
+        users.sort(function (a, b) {
+            if (a.sequenceNo > b.sequenceNo)
+                return 1;
+            if (a.sequenceNo < b.sequenceNo)
+                return -1;
+            return 0;
+        });
+    }
+
+    for (var i in users) {
+        var user = users[i];
+
+        processForUserAddress(user, dq);
+
+        if (user.isAvailable === true) {
+            result = true;
+            break;
+        } else {
+            if (dq.waitForNextContact) {
+                dq.nextAvailableTime = user.nextAvailableTime;
+                result = true;
+                break;
+            } else {
+                continue;
+            }
+        }
+    }
+    return result;
+}
+
+
+function processForUserAddress(user, dq) {
+    /* FN of the person          */
+    dq.FirstName = user.firstName;
+    /* LN of the person          */
+    dq.LastName = user.lastName;
+
+    /* Address Processing for Emailid, PhoneNum..       
+     * check if there is a comma, there can be 2 addresses for one user
+     * */
+    var addressString = user.address;
+    if (!addressString) {
+        Log.info("No Address provided for this contact record, skipping it..");
+        dq.Status = "error";
+    } else {
+        //try splitting on comma
+        var addrArray = addressString.split(',');
+        dq.Address = addrArray[0].trim();
+        if (addrArray[1])
+            dq.Address2 = addrArray[1].trim();
+    }
+}
+
 //  --------------------------------------------------------------------------------
 //  ESQ Management Solutions / ESQ Business Services
 //  --------------------------------------------------------------------------------
+
+

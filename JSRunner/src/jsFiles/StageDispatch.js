@@ -31,7 +31,7 @@ var AtmSched = "AnyHours"; //default Atm Schedule
 
 //Do the time calcuation in case there was a delay due to nextAvailableATMSchedule during Create time
 var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
-if( Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null){
+if(Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null){
     Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
     BaseDispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);                
 }
@@ -93,15 +93,10 @@ if (!queryArResult) {
             /* FN of the person          */ dq.FirstName = dmaps[i].user.firstName;
             /* LN of the person          */ dq.LastName = dmaps[i].user.lastName;
             /* Emailid, PhoneNum..       */ dq.Address = dmaps[i].user.address;
-            /* FN of the person          */ dq.FirstName2 = dmaps[i].user.firstName;
-            /* LN of the person          */ dq.LastName2 = dmaps[i].user.lastName;
-            /* Emailid, PhoneNum..       */ dq.Address2 = dmaps[i].user.address;
-            /* Data to be sent           */ dq.Content = 'undefined';
             /* Template for adaptor      */ dq.Template = dmaps[i].template;
             /* If response can come      */ dq.WillRespond = 'yes';
             /* Time To Live              */ dq.Ttl = 3600;
             /* Max Retries to be done    */ dq.MaxRetries = 0;
-            /* Num of tries so far       */ dq.TryCount = 0;
             
             //in case of breach ignore Notification and Pre-Breach Reminder type of Dispatch rules
             //only load Breach and Escalation Types
@@ -145,7 +140,67 @@ Timer.start({
 
 Log.info("Stage Dispatch Exiting...");
 
+
+function processUserBlockForCalendar(users, dq) {
+    var result = false;
+    //  Sort the user array by seqNo
+    if (users && users.length > 0) {
+        users.sort(function (a, b) {
+            if (a.sequenceNo > b.sequenceNo)
+                return 1;
+            if (a.sequenceNo < b.sequenceNo)
+                return -1;
+            return 0;
+        });
+    }
+
+    for (var i in users) {
+        var user = users[i];
+
+        processForUserAddress(user, dq);
+
+        if (user.isAvailable === true) {
+            result = true;
+            break;
+        } else {
+            if (dq.waitForNextContact) {
+                dq.nextAvailableTime = user.nextAvailableTime;
+                result = true;
+                break;
+            } else {
+                continue;
+            }
+        }
+    }
+    return result;
+}
+
+
+function processForUserAddress(user, dq) {
+    /* FN of the person          */
+    dq.FirstName = user.firstName;
+    /* LN of the person          */
+    dq.LastName = user.lastName;
+
+    /* Address Processing for Emailid, PhoneNum..       
+     * check if there is a comma, there can be 2 addresses for one user
+     * */
+    var addressString = user.address;
+    if (!addressString) {
+        Log.info("No Address provided for this contact record, skipping it..");
+        dq.Status = "error";
+    } else {
+        //try splitting on comma
+        var addrArray = addressString.split(',');
+        dq.Address = addrArray[0].trim();
+        if (addrArray[1])
+            dq.Address2 = addrArray[1].trim();
+    }
+}
+
 //  --------------------------------------------------------------------------------
 //  ESQ Management Solutions / ESQ Business Services
 //  --------------------------------------------------------------------------------
+
+
 

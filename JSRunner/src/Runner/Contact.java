@@ -51,9 +51,37 @@ public class Contact {
                 + responseFileName;
 
         String content = new String(Files.readAllBytes(Paths.get(responseFile)), "UTF-8");
-        return JSONFunctions.parse(content, mirror);
-        //return content;
+        return JSONFunctions.parse(content, mirror);        
     }
+    
+    
+            
+    public Object queryActionRuleWithNextAvaialbleUser(ScriptObjectMirror mirror) throws IOException {
+
+        String responseFileName = "";
+        
+        if((String) mirror.get("lifecycle") == "Create"){
+            responseFileName = "queryActionNextAvlUserCreateResponse.json";
+        }
+        else if((String) mirror.get("lifecycle") == "Ack"){
+            responseFileName = "queryActionAckResponse.json";
+        }
+        else if((String) mirror.get("lifecycle") == "Resolve"){
+            responseFileName = "queryActionResolveResponse.json";
+        }
+        
+        
+        String responseFile = System.getProperty("user.dir") + System.getProperty("file.separator")
+                + "src" + System.getProperty("file.separator")
+                + "jsFiles" + System.getProperty("file.separator")
+                + responseFileName;
+
+        String content = new String(Files.readAllBytes(Paths.get(responseFile)), "UTF-8");
+        return JSONFunctions.parse(content, mirror);
+    }
+    
+    
+    
     private static final Pattern pattern = Pattern.compile("<%=\\s*([^%\\s]+\\s*)%>");
 
 //  This is the original signature that exists in dispatcher Need to be worked on

@@ -7,9 +7,14 @@
  For Create it also queues the next contact to be contacted as needed
  --------------------------------------------------------------------------------
  */
-/* global Log, Workflow, currdq */
+/* global Log, Workflow, currdq, Event */
 
 Log.info("Send Error for Voice Entered...");
+
+Log.info("Error received in Voice call");
+for (var i in Event)
+  Log.info(Event[i]);
+
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
@@ -23,18 +28,9 @@ for (var i in DispatchQueue) {
         break;
     }
 }
-//if (!dq.length) { break; } TODO
 
-dq.TryCount++;
-if (dq.MaxRetries > dq.TryCount) {
-    // retry
-    dq.Status = 'retry';
-} else {
-// Retries are over, now check if another user is configured (G Dispatch Block handling)
-
-
-    dq.Status = 'new';
-}
+//need to check the error and then decide
+// Check if another user is configured (G Dispatch Block handling)
 
 //  Sort the Queue by sendtime
     //  Sort the Queue by sendtime

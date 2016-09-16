@@ -9,9 +9,8 @@
 */
 /* global Log, Workflow, currdq, Timer */
 
-Log.info("Send Error for Voice Entered...");
+Log.info("Send Ack for Voice Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
-
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 
 var currdq; delayMs = 0;
