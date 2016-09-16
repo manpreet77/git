@@ -1,0 +1,72 @@
+{
+    "partyName": "name1473177051782",
+    "partyDetails": [{
+            "user": {
+                "firstName": "Manpreet",
+                "lastName": "Singh",
+                "address": "ms@esq.com"
+            },
+            "lifeCycle": "Resolve",
+            "contactType": "Pre Breach Reminder",
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "duration": {
+                "name": "somesystemgeneratedname",
+                "baseValueMinutes": 5,
+                "graceValueMinutes": 0
+            },
+            "template": {
+                "name": "Level-1EmailTemplate",
+                "description": "L1-EmailTemplatefortenants",
+                "templateType": "email",
+                "subject": "EscalationlevelL1-IncidentId: %Workflow.InIncidentId% -ATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%",
+                "body": "Due to non-resolution of the IncidentId: \\n%Workflow.InIncidentId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%fortheATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
+            }
+        },
+        {
+            "user": {
+                "firstName": "Manish",
+                "lastName": "Arora",
+                "address": "ma@esq.com"
+            },
+            "lifeCycle": "Resolve",
+            "contactType": "Breach",
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "duration": {
+                "name": "somesystemgeneratedname",
+                "baseValueMinutes": 0,
+                "graceValueMinutes": 0
+            },
+            "template": {
+                "name": "Level-1EmailTemplate",
+                "description": "L1-EmailTemplatefortenants",
+                "templateType": "email",
+                "subject": "EscalationlevelL1-IncidentId: %Workflow.InIncidentId% -ATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%",
+                "body": "Due to non-resolution of the IncidentId: \\n%Workflow.InIncidentId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%fortheATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
+            }
+        },
+        {
+            "user": {
+                "firstName": "Mukesh",
+                "lastName": "Chaurasia",
+                "address": "mc@esq.com"
+            },
+            "lifeCycle": "Resolve",
+            "contactType": "Escalation-L3",
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "duration": {
+                "name": "somesystemgeneratedname",
+                "baseValueMinutes": 10,
+                "graceValueMinutes": 0
+            },
+            "template": {
+                "name": "Level-1EmailTemplate",
+                "description": "L1-EmailTemplatefortenants",
+                "templateType": "email",
+                "subject": "EscalationlevelL1-IncidentId: %Workflow.InIncidentId% -ATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%",
+                "body": "Due to non-resolution of the IncidentId: \\n%Workflow.InIncidentId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%fortheATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
+            }
+        }]
+}

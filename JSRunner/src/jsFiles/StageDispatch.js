@@ -2,7 +2,7 @@
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
  Dispatcher Standard Workflow V 1.0
- StageDispatchs
+ StageDispatch
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
  Then it emits an event with a 0 delay to kickoff the dispatch loop
@@ -42,20 +42,20 @@ if(Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workf
 
 Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
 
-var queryArResult = Contact.queryActionRule({
-    actionRule: Workflow.ArName,
-    tenantId: Workflow.TenantId,
-    atmSchedule: AtmSched,
-    lifecycle: Workflow.WfLifecycle
-});
+    var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
+        actionRule: Workflow.ArName,
+        tenantId: Workflow.TenantId,
+        atmSchedule: AtmSched,
+        lifecycle: Workflow.WfLifecycle
+    });
 
-if (!queryArResult) {
-    Log.info("No contacts for dispatch were returned in QueryResult");
-} else {
-    Log.info("QueryResult : " + JSON.stringify(queryArResult));
+    if (!queryArResult) {
+        Log.info("No contacts for dispatch were returned in QueryResult");
+    } else {
+        Log.info("QueryResult : " + JSON.stringify(queryArResult));
 
-    var dmaps = queryArResult.partyDetails;
-    if (dmaps) {
+        var dmaps = queryArResult.partyDetails;
+        if (dmaps) {
 
         Log.info("Dispatch Maps Name =  " + queryArResult.partyName + ", dmaps size = " + dmaps.length);
         Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
@@ -88,16 +88,51 @@ if (!queryArResult) {
             
             
             /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
-            /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;            
-            /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
-            /* FN of the person          */ dq.FirstName = dmaps[i].user.firstName;
-            /* LN of the person          */ dq.LastName = dmaps[i].user.lastName;
-            /* Emailid, PhoneNum..       */ dq.Address = dmaps[i].user.address;
-            /* Template for adaptor      */ dq.Template = dmaps[i].template;
-            /* If response can come      */ dq.WillRespond = 'yes';
-            /* Time To Live              */ dq.Ttl = 3600;
-            /* Max Retries to be done    */ dq.MaxRetries = 0;
-            
+/* unique id for all contacts belonging in this record*/
+                dq.contactMapping = dmaps[i].contactMapping;
+
+                /* if we have to wait for next contact or continue with next*/
+                dq.waitForNextContact = dmaps[i].waitForNextContact;
+
+
+                /* Template Type */
+                dq.TemplateType = dmaps[i].template.templateType;
+                /* Template for adaptor      */
+                if (!dmaps[i].template.jsonDefinition) {
+                    dq.Template = '';
+                } else {
+                    dq.Template = JSON.parse(dmaps[i].template.jsonDefinition);
+                }
+
+                /* If response can come      */
+                if (dq.Channel === 'Voice' || dq.Channel === 'NCR-EDI' || dq.Channel === 'DECAL')
+                    dq.WillRespond = 'yes';
+                else
+                    dq.WillRespond = 'no';
+
+                if (dq.TemplateType === 'other') {
+                    //template body has JSON for all the properties needed by this dispatch
+                    //stored in the template
+                    if (!dq.Template.body) {
+                        dq.Template = '';
+                    } else {
+                        dq.Template.body = JSON.parse(dq.Template.body);
+                    }
+
+                    /* Time To Live */
+                    if (dq.Template.body.Ttl) {
+                        dq.Ttl = dq.Template.body.Ttl;
+                    } else {
+                        dq.Ttl = 3600;
+                    }
+
+                    /* Max Retries to be done */
+                    if (dq.Template.body.MaxRetries) {
+                        dq.MaxRetries = dq.Template.body.MaxRetries;
+                    } else {
+                        dq.MaxRetries = 0;
+                    }
+                }            
             //in case of breach ignore Notification and Pre-Breach Reminder type of Dispatch rules
             //only load Breach and Escalation Types
             if(Workflow.WfStatus    ===  'breached'){
@@ -115,7 +150,29 @@ if (!queryArResult) {
                     continue;
             }
             
-            DispatchQueue.push(dq);
+            if (processUserBlockForCalendar(dmaps[i].user, dq)) {
+                    if (dq.nextAvailableTime) {
+
+                        Log.info("StageDispatchForAck: no current schedules found for the user, will have to sleep..");
+                        // Kick off the stage delay since no current schedules are there
+                        // Go to Sleep until next open time and come here instead of SendDispatch
+                        var currTime = new Date();
+                        Log.info('currTime: ' + currTime.toISOString());
+                        var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                        Log.info('goTime: ' + goTime.toISOString());
+                        var delayGapinMins = new Date(goTime - currTime).getMinutes();
+
+                        Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+
+                        Timer.start({
+                            eventName: 'ei_stage_dispatch',
+                            delayMs: delayGapinMins * 60 * 1000
+                        });
+                    }
+                    else {
+                        DispatchQueue.push(dq);
+                    }
+                }
         }
     }
     //  Sort the Queue by sendtime

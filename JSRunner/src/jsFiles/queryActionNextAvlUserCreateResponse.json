@@ -13,9 +13,7 @@
             "atmSchedule": "BranchHours",
             "contactChannel": "Voice",
             "duration": {
-                "name": "sla_name 1474003465304",
-                "graceValueMinutes": 0,
-                "baseValueMinutes": 0
+               "baseValueMinutes": 0
             },
             "level": "A. Branch",
             "contactType": "Notification",
@@ -53,8 +51,6 @@
             "atmSchedule": "BranchHours",
             "contactChannel": "Email",
             "duration": {
-                "name": "sla_name 1474003465304",
-                "graceValueMinutes": 0,
                 "baseValueMinutes": 0
             },
             "level": "A. Branch",

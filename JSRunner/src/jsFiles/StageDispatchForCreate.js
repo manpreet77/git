@@ -74,7 +74,6 @@ if (Workflow.InIsInATMBranchHours === "0" &&
     }
 
     Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
-
     var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
         actionRule: Workflow.ArName,
         tenantId: Workflow.TenantId,
