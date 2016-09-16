@@ -89,8 +89,8 @@ public class CmdLine {
                     r.RunJS("StageDispatchForCreate.js");
                     r.RunJS("PrepareAckPreBreachReminder.js");
                     Log.info("Run PrepareAckPreBreachReminder.js..................................");
-                    r.RunJS("StageDispatch.js");                    
-                    Log.info("Run StageDispatch.js..................................");
+                    r.RunJS("StageDispatchForAck.js");                    
+                    Log.info("Run StageDispatchForAck.js..................................");
                     r.RunJS("PrepareRslPreBreachReminder.js");
                     Log.info("Run PrepareRslPreBreachReminder.js..................................");
                     r.RunJS("StageDispatch.js");

@@ -64,10 +64,10 @@ public class Contact {
             responseFileName = "queryActionNextAvlUserCreateResponse.json";
         }
         else if((String) mirror.get("lifecycle") == "Ack"){
-            responseFileName = "queryActionAckResponse.json";
+            responseFileName = "queryActionNextAvlUserAckResponse.json";
         }
         else if((String) mirror.get("lifecycle") == "Resolve"){
-            responseFileName = "queryActionResolveResponse.json";
+            responseFileName = "queryActionNextAvlUserResolveResponse.json";
         }
         
         
