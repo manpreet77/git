@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 1.0
+ Dispatcher Standard Workflow V 2.8.7.1
  StageDispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -89,7 +89,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
         var dmaps = queryArResult.partyDetails;
         if (dmaps) {
 
-            Log.info("Dispatch Maps Name =  " + queryArResult.partyName + ", dmaps size = " + dmaps.length);
+            Log.info("Dispatch Maps size = " + dmaps.length);
             Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
             Log.info("BaseDispatchstartTime = " + BaseDispatchStartTimeAsDate);
             for (var i in dmaps) {
@@ -154,7 +154,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
                 }
 
 
-                if (processUserBlockForCalendar(dmaps[i].user, dq)) {
+                if (processUserBlockForCalendar(dmaps[i].users, dq)) {
                     if (dq.nextAvailableTime) {
 
                         Log.info("StageDispatchForCreate: no current schedules found for the user, will have to sleep..");

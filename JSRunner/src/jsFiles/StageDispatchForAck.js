@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 1.0
+ Dispatcher Standard Workflow V 2.8.7.1
  Stage Dispatch for Ack
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -57,7 +57,7 @@ Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid
         var dmaps = queryArResult.partyDetails;
         if (dmaps) {
 
-        Log.info("Dispatch Maps Name =  " + queryArResult.partyName + ", dmaps size = " + dmaps.length);
+        Log.info("Dispatch Maps  size = " + dmaps.length);
         Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
         Log.info("BaseDispatchstartTime = " + BaseDispatchStartTimeAsDate);
         for (var i in dmaps) {
@@ -150,7 +150,7 @@ Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid
                     continue;
             }
             
-            if (processUserBlockForCalendar(dmaps[i].user, dq)) {
+            if (processUserBlockForCalendar(dmaps[i].users, dq)) {
                     if (dq.nextAvailableTime) {
 
                         Log.info("StageDispatchForAck: no current schedules found for the user, will have to sleep..");
