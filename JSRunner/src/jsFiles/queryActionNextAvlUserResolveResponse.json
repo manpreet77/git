@@ -37,14 +37,14 @@
             }
         },
         {
-            "users": {
+            "users": [{
                  "nextAvailableTime": "",
                 "lastName": "Arora",
                 "address": "ka@esq.com, krishan@esq.com",
                 "firstName": "Krishan",
                 "isAvailable": true,
                 "sequenceNo":0
-            },
+            }],
             "lifeCycle": "Resolve",
             "contactType": "Breach",
             "contactChannel": "Email",

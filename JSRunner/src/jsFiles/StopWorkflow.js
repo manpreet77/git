@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.1
+   Dispatcher Standard Workflow V 2.8.7.2
    Stop Workflow
    This script stops the Workflow
    --------------------------------------------------------------------------------

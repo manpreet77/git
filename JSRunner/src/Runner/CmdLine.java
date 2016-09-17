@@ -107,10 +107,10 @@ public class CmdLine {
                     break;
                 case 3:
                     Log.info("Run EventAckSLABreach.js...............................");
-                    r.RunJS("EventAckBreach.js");
+                    r.RunJS("EventAckSLABreach.js");
                     Log.info("Run PrepareAckSLABreach.js...............................");
-                    r.RunJS("PrepareAckBreach.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    r.RunJS("PrepareAckSLABreach.js");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 4:

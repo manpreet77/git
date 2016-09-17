@@ -1,0 +1,173 @@
+17 Sep 2016;18:08:16.913 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Starting DSPWorkFlowPackager.....
+17 Sep 2016;18:08:16.913 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Loading Properties file from path: Y:\dev\git\JSRunner\workflowpackager\conf\DSPWorkFlowPackager.properties
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Properties file loaded successfully
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Loading StandardDispatchWorkflowFile file from path: target\Dispatcher-StandardDispatchWorkflow-V2871.xml
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - StandardDispatchWorkflowFile File loaded successfully
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Creating back of StandardDispatchWorkflowFile file
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Back of StandardDispatchWorkflowFile file created successfully at path: target\Dispatcher-StandardDispatchWorkflow-V2871_Backup_20160917-180816.xml
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Loading ActionNameNJSFileNameMapping file from path: target\ActionNameNJSFileNameMapping.xml
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - ActionNameNJSFileNameMapping File loaded successfully
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Script version replacement pattern: (?mi)(\sV\s)([\d.]*)($)
+17 Sep 2016;18:08:16.929 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Processing XML files
+17 Sep 2016;18:08:17.098 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully processed XML files
+17 Sep 2016;18:08:17.098 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Setup Environment" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.098 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Setup Environment"
+17 Sep 2016;18:08:17.114 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Setup Environment": ..\src\jsFiles\SetupEnvironment.js
+17 Sep 2016;18:08:17.114 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: SetupEnvironment.js 
+17 Sep 2016;18:08:17.114 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: SetupEnvironment.js 
+17 Sep 2016;18:08:17.114 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.129 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.129 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Setup Environment" script tag value in cache XML
+17 Sep 2016;18:08:17.129 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Setup Environment" script tag value in cache XML
+17 Sep 2016;18:08:17.129 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Create" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.129 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Create"
+17 Sep 2016;18:08:17.129 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Create": ..\src\jsFiles\PrepareCreate.js
+17 Sep 2016;18:08:17.129 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareCreate.js 
+17 Sep 2016;18:08:17.147 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareCreate.js 
+17 Sep 2016;18:08:17.149 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.151 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.151 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Create" script tag value in cache XML
+17 Sep 2016;18:08:17.151 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Create" script tag value in cache XML
+17 Sep 2016;18:08:17.151 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Stage Dispatch For Create" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.151 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Stage Dispatch For Create"
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Stage Dispatch For Create": ..\src\jsFiles\StageDispatchForCreate.js
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: StageDispatchForCreate.js 
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: StageDispatchForCreate.js 
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Stage Dispatch For Create" script tag value in cache XML
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Stage Dispatch For Create" script tag value in cache XML
+17 Sep 2016;18:08:17.167 [main] WARN  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Ack PreBreachReminder" not found in ActionNameNJSFileNameMapping file.Skipping it
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Stage Dispatch For Ack" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.167 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Stage Dispatch For Ack"
+17 Sep 2016;18:08:17.183 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Stage Dispatch For Ack": ..\src\jsFiles\StageDispatchForAck.js
+17 Sep 2016;18:08:17.183 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: StageDispatchForAck.js 
+17 Sep 2016;18:08:17.183 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: StageDispatchForAck.js 
+17 Sep 2016;18:08:17.183 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.183 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.183 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Stage Dispatch For Ack" script tag value in cache XML
+17 Sep 2016;18:08:17.183 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Stage Dispatch For Ack" script tag value in cache XML
+17 Sep 2016;18:08:17.183 [main] WARN  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Resolve PreBreachReminder" not found in ActionNameNJSFileNameMapping file.Skipping it
+17 Sep 2016;18:08:17.183 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Stage Dispatch" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.198 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Stage Dispatch"
+17 Sep 2016;18:08:17.198 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Stage Dispatch": ..\src\jsFiles\StageDispatch.js
+17 Sep 2016;18:08:17.198 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: StageDispatch.js 
+17 Sep 2016;18:08:17.198 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: StageDispatch.js 
+17 Sep 2016;18:08:17.198 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.198 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.214 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Stage Dispatch" script tag value in cache XML
+17 Sep 2016;18:08:17.214 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Stage Dispatch" script tag value in cache XML
+17 Sep 2016;18:08:17.214 [main] WARN  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Set Lifecycle To Create" not found in ActionNameNJSFileNameMapping file.Skipping it
+17 Sep 2016;18:08:17.214 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Ack" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.214 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Ack"
+17 Sep 2016;18:08:17.214 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Ack": ..\src\jsFiles\PrepareAck.js
+17 Sep 2016;18:08:17.214 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareAck.js 
+17 Sep 2016;18:08:17.214 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareAck.js 
+17 Sep 2016;18:08:17.229 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.229 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.229 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Ack" script tag value in cache XML
+17 Sep 2016;18:08:17.229 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Ack" script tag value in cache XML
+17 Sep 2016;18:08:17.229 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For ETA" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.229 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For ETA"
+17 Sep 2016;18:08:17.229 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For ETA": ..\src\jsFiles\PrepareETA.js
+17 Sep 2016;18:08:17.229 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareETA.js 
+17 Sep 2016;18:08:17.246 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareETA.js 
+17 Sep 2016;18:08:17.247 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.250 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.251 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For ETA" script tag value in cache XML
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For ETA" script tag value in cache XML
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Arrived" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Arrived"
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Arrived": ..\src\jsFiles\PrepareArrive.js
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareArrive.js 
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareArrive.js 
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Arrived" script tag value in cache XML
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Arrived" script tag value in cache XML
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Hold" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.252 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Hold"
+17 Sep 2016;18:08:17.267 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Hold": ..\src\jsFiles\PrepareHold.js
+17 Sep 2016;18:08:17.267 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareHold.js 
+17 Sep 2016;18:08:17.267 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareHold.js 
+17 Sep 2016;18:08:17.267 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.267 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.267 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Hold" script tag value in cache XML
+17 Sep 2016;18:08:17.267 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Hold" script tag value in cache XML
+17 Sep 2016;18:08:17.267 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Resolve" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Resolve"
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Resolve": ..\src\jsFiles\PrepareResolve.js
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareResolve.js 
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareResolve.js 
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Resolve" script tag value in cache XML
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Resolve" script tag value in cache XML
+17 Sep 2016;18:08:17.283 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Close" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.298 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Close"
+17 Sep 2016;18:08:17.298 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Close": ..\src\jsFiles\PrepareClose.js
+17 Sep 2016;18:08:17.298 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareClose.js 
+17 Sep 2016;18:08:17.298 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareClose.js 
+17 Sep 2016;18:08:17.298 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.298 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.298 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Close" script tag value in cache XML
+17 Sep 2016;18:08:17.298 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Close" script tag value in cache XML
+17 Sep 2016;18:08:17.314 [main] WARN  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Stop WorkFlow" not found in ActionNameNJSFileNameMapping file.Skipping it
+17 Sep 2016;18:08:17.314 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Ack SLA Breach" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.314 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Ack SLA Breach"
+17 Sep 2016;18:08:17.314 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Ack SLA Breach": ..\src\jsFiles\PrepareAckSLABreach.js
+17 Sep 2016;18:08:17.314 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareAckSLABreach.js 
+17 Sep 2016;18:08:17.314 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareAckSLABreach.js 
+17 Sep 2016;18:08:17.314 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.330 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.330 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Ack SLA Breach" script tag value in cache XML
+17 Sep 2016;18:08:17.330 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Ack SLA Breach" script tag value in cache XML
+17 Sep 2016;18:08:17.330 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Resolution SLA Breach" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.330 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Resolution SLA Breach"
+17 Sep 2016;18:08:17.330 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Resolution SLA Breach": ..\src\jsFiles\PrepareRslSLABreach.js
+17 Sep 2016;18:08:17.330 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareRslSLABreach.js 
+17 Sep 2016;18:08:17.347 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareRslSLABreach.js 
+17 Sep 2016;18:08:17.348 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.351 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Resolution SLA Breach" script tag value in cache XML
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Resolution SLA Breach" script tag value in cache XML
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Send Dispatch" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Send Dispatch"
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Send Dispatch": ..\src\jsFiles\SendDispatch.js
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: SendDispatch.js 
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: SendDispatch.js 
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.352 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Send Dispatch" script tag value in cache XML
+17 Sep 2016;18:08:17.367 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Send Dispatch" script tag value in cache XML
+17 Sep 2016;18:08:17.367 [main] WARN  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Send Ack Activity to IMS " not found in ActionNameNJSFileNameMapping file.Skipping it
+17 Sep 2016;18:08:17.367 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Reopen" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.367 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Reopen"
+17 Sep 2016;18:08:17.367 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Reopen": ..\src\jsFiles\PrepareReopen.js
+17 Sep 2016;18:08:17.367 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareReopen.js 
+17 Sep 2016;18:08:17.367 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareReopen.js 
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Reopen" script tag value in cache XML
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Reopen" script tag value in cache XML
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Prepare For Start Work or Resume Work" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Prepare For Start Work or Resume Work"
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Prepare For Start Work or Resume Work": ..\src\jsFiles\PrepareStartOrResume.js
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: PrepareStartOrResume.js 
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: PrepareStartOrResume.js 
+17 Sep 2016;18:08:17.383 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Prepare For Start Work or Resume Work" script tag value in cache XML
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Prepare For Start Work or Resume Work" script tag value in cache XML
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Mapping for action "Send Voice Error" found in ActionNameNJSFileNameMapping file
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Getting js file path for action "Send Voice Error"
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Js file path for action "Send Voice Error": ..\src\jsFiles\SendVoiceError.js
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Reading content form file: SendVoiceError.js 
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Successfully read content form file: SendVoiceError.js 
+17 Sep 2016;18:08:17.399 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.414 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated Script version to "2.8.7.2" in file content
+17 Sep 2016;18:08:17.414 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updating action "Send Voice Error" script tag value in cache XML
+17 Sep 2016;18:08:17.414 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Updated action "Send Voice Error" script tag value in cache XML
+17 Sep 2016;18:08:17.414 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - Writing content of cache XML in StandardDispatchWorkflowFile
+17 Sep 2016;18:08:17.430 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - StandardDispatchWorkflowFile updated successfully
+17 Sep 2016;18:08:17.430 [main] INFO  c.e.d.s.DSPWorkFlowPackagerRunner - DSPWorkFlowPackager execution SUCCESSFULLY completed.....

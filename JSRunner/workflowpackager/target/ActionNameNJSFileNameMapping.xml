@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
 	<ActionNameAndJSFileNameMapping>
-		<Action Name="Prepare For Create" JSFileName="PrepareCreate.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Ack" JSFileName="PrepareAck.js" Version="2.8.7.1" />
-		<Action Name="Prepare For ETA" JSFileName="PrepareETA.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Arrived" JSFileName="PrepareArrive.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Hold" JSFileName="PrepareHold.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Start Work or Resume Work" JSFileName="PrepareStartOrResume.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Resolve" JSFileName="PrepareResolve.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Close" JSFileName="PrepareClose.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Ack SLA Breach" JSFileName="PrepareAckSLABreach.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Resolution SLA Breach" JSFileName="PrepareRslSLABreach.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Arrival SLA Breach" JSFileName="PrepareArrSLABreach.js" Version="2.8.7.1" />
-		<Action Name="Prepare ResolvePreBreachReminder" JSFileName="PrepareRslPreBreachReminder.js" Version="2.8.7.1" />
-		<Action Name="Prepare For AckPreBreachReminder" JSFileName="PrepareAckPreBreachReminder.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Link" JSFileName="PrepareLink.js" Version="2.8.7.1" />
-		<Action Name="Prepare For Reopen" JSFileName="PrepareReopen.js" Version="2.8.7.1" />
-		<Action Name="Setup Environment" JSFileName="SetupEnvironment.js" Version="2.8.7.1" />
-		<Action Name="Stage Dispatch For Create" JSFileName="StageDispatchForCreate.js" Version="2.8.7.1" />
-		<Action Name="Stage Dispatch For Ack" JSFileName="StageDispatchForAck.js" Version="2.8.7.1" />
-		<Action Name="Stage Dispatch" JSFileName="StageDispatch.js" Version="2.8.7.1" />
-		<Action Name="Send Dispatch" JSFileName="SendDispatch.js" Version="2.8.7.1" />
-		<Action Name="Send VoiceDone" JSFileName="SendVoiceDone.js" Version="2.8.7.1" />
-		<Action Name="Send Voice Error" JSFileName="SendVoiceError.js" Version="2.8.7.1" />
-		<Action Name="Send Ack Activity To IMS" JSFileName="SendVoiceAckToIMS.js" Version="2.8.7.1" />
-		<Action Name="Set Lifecycle to Create" JSFileName="SetLifecycleToCreate.js" Version="2.8.7.1" />
-		<Action Name="Send Dispatch For Create" JSFileName="StageDispatchForCreate.js" Version="2.8.7.1" />
-		<Action Name="Stop Workflow" JSFileName="StopWorkflow.js" Version="2.8.7.1" />
+		<Action Name="Prepare For Create" JSFileName="PrepareCreate.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Ack" JSFileName="PrepareAck.js" Version="2.8.7.2" />
+		<Action Name="Prepare For ETA" JSFileName="PrepareETA.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Arrived" JSFileName="PrepareArrive.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Hold" JSFileName="PrepareHold.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Start Work or Resume Work" JSFileName="PrepareStartOrResume.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Resolve" JSFileName="PrepareResolve.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Close" JSFileName="PrepareClose.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Ack SLA Breach" JSFileName="PrepareAckSLABreach.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Resolution SLA Breach" JSFileName="PrepareRslSLABreach.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Arrival SLA Breach" JSFileName="PrepareArrSLABreach.js" Version="2.8.7.2" />
+		<Action Name="Prepare ResolvePreBreachReminder" JSFileName="PrepareRslPreBreachReminder.js" Version="2.8.7.2" />
+		<Action Name="Prepare For AckPreBreachReminder" JSFileName="PrepareAckPreBreachReminder.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Link" JSFileName="PrepareLink.js" Version="2.8.7.2" />
+		<Action Name="Prepare For Reopen" JSFileName="PrepareReopen.js" Version="2.8.7.2" />
+		<Action Name="Setup Environment" JSFileName="SetupEnvironment.js" Version="2.8.7.2" />
+		<Action Name="Stage Dispatch For Create" JSFileName="StageDispatchForCreate.js" Version="2.8.7.2" />
+		<Action Name="Stage Dispatch For Ack" JSFileName="StageDispatchForAck.js" Version="2.8.7.2" />
+		<Action Name="Stage Dispatch" JSFileName="StageDispatch.js" Version="2.8.7.2" />
+		<Action Name="Send Dispatch" JSFileName="SendDispatch.js" Version="2.8.7.2" />
+		<Action Name="Send VoiceDone" JSFileName="SendVoiceDone.js" Version="2.8.7.2" />
+		<Action Name="Send Voice Error" JSFileName="SendVoiceError.js" Version="2.8.7.2" />
+		<Action Name="Send Ack Activity To IMS" JSFileName="SendVoiceAckToIMS.js" Version="2.8.7.2" />
+		<Action Name="Set Lifecycle to Create" JSFileName="SetLifecycleToCreate.js" Version="2.8.7.2" />
+		<Action Name="Send Dispatch For Create" JSFileName="StageDispatchForCreate.js" Version="2.8.7.2" />
+		<Action Name="Stop Workflow" JSFileName="StopWorkflow.js" Version="2.8.7.2" />
 	</ActionNameAndJSFileNameMapping>
 </Configuration>
 
