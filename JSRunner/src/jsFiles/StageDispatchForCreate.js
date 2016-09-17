@@ -102,7 +102,8 @@ if (Workflow.InIsInATMBranchHours === "0" &&
 
                 /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
                 /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
-                /* wait, done, retry, error  */ dq.Status = "new";
+
+                
                 /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
                 /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
                 /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
@@ -154,7 +155,18 @@ if (Workflow.InIsInATMBranchHours === "0" &&
                 }
 
 
-                if (processUserBlockForCalendar(dmaps[i].users, dq)) {
+                /* copy the sontacts array into dq and add a new Status variable*/
+                if (!dq.users) {
+                    dq.users = dmaps[i].users.slice();
+
+                    for (var x in dq.users) {
+                        var uu = dq.users[x];
+                        uu.Status = "new";
+                    }
+                }
+
+
+                if (processUserBlockForCalendar(dq)) {
                     if (dq.nextAvailableTime) {
 
                         Log.info("StageDispatchForCreate: no current schedules found for the user, will have to sleep..");
@@ -196,11 +208,11 @@ if (Workflow.InIsInATMBranchHours === "0" &&
 Log.info("Stage Dispatch For Create Exiting...");
 
 
-function processUserBlockForCalendar(users, dq) {
+function processUserBlockForCalendar(dq) {
     var result = false;
     //  Sort the user array by seqNo
-    if (users && users.length > 0) {
-        users.sort(function (a, b) {
+    if (dq.users && dq.users.length > 0) {
+        dq.users.sort(function (a, b) {
             if (a.sequenceNo > b.sequenceNo)
                 return 1;
             if (a.sequenceNo < b.sequenceNo)
@@ -209,14 +221,18 @@ function processUserBlockForCalendar(users, dq) {
         });
     }
 
-    for (var i in users) {
-        var user = users[i];
+    for (var i in dq.users) {
+        var user = dq.users[i];
 
-        processForUserAddress(user, dq);
+        processForUserAddress(user);
+        
+        if (user.Status === "staged" || user.Status === "wait" || user.Status === "done")
+            continue;
+        
 
-        if (user.isAvailable === true) {
+        if (user.isAvailable) {
+            user.Status = "staged";            
             result = true;
-            break;
         } else {
             if (dq.waitForNextContact) {
                 dq.nextAvailableTime = user.nextAvailableTime;
@@ -231,25 +247,21 @@ function processUserBlockForCalendar(users, dq) {
 }
 
 
-function processForUserAddress(user, dq) {
-    /* FN of the person          */
-    dq.FirstName = user.firstName;
-    /* LN of the person          */
-    dq.LastName = user.lastName;
-
+function processForUserAddress(user) {
+    
     /* Address Processing for Emailid, PhoneNum..       
      * check if there is a comma, there can be 2 addresses for one user
      * */
     var addressString = user.address;
     if (!addressString) {
         Log.info("No Address provided for this contact record, skipping it..");
-        dq.Status = "error";
+        user.Status = "error";
     } else {
         //try splitting on comma
         var addrArray = addressString.split(',');
-        dq.Address = addrArray[0].trim();
+        user.Address = addrArray[0].trim();
         if (addrArray[1])
-            dq.Address2 = addrArray[1].trim();
+            user.Address2 = addrArray[1].trim();
     }
 }
 

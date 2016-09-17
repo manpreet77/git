@@ -31,31 +31,31 @@ var AtmSched = "AnyHours"; //default Atm Schedule
 
 //Do the time calcuation in case there was a delay due to nextAvailableATMSchedule during Create time
 var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
-if(Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null){
+if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null) {
     Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
-    BaseDispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);                
+    BaseDispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
 }
-    
+
 
 
 
 
 Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
 
-    var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
-        actionRule: Workflow.ArName,
-        tenantId: Workflow.TenantId,
-        atmSchedule: AtmSched,
-        lifecycle: Workflow.WfLifecycle
-    });
+var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
+    actionRule: Workflow.ArName,
+    tenantId: Workflow.TenantId,
+    atmSchedule: AtmSched,
+    lifecycle: Workflow.WfLifecycle
+});
 
-    if (!queryArResult) {
-        Log.info("No contacts for dispatch were returned in QueryResult");
-    } else {
-        Log.info("QueryResult : " + JSON.stringify(queryArResult));
+if (!queryArResult) {
+    Log.info("No contacts for dispatch were returned in QueryResult");
+} else {
+    Log.info("QueryResult : " + JSON.stringify(queryArResult));
 
-        var dmaps = queryArResult.partyDetails;
-        if (dmaps) {
+    var dmaps = queryArResult.partyDetails;
+    if (dmaps) {
 
         Log.info("Dispatch Maps  size = " + dmaps.length);
         Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
@@ -63,116 +63,134 @@ Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid
         for (var i in dmaps) {
             var dq = {};
             /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
-            /* wait, done, retry, error  */ dq.Status = "new";
             /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
             /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
-            
+            /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
+            /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
+
             //handling of SendTime and delay based on ContactType
             var DispatchStartTimeAsDate = new Date(BaseDispatchStartTimeAsDate);
-            if(dq.ContactType === "Pre Breach Reminder"){
+            if (dq.ContactType === "Pre Breach Reminder") {
                 //special handling of Pre-breach type 
                 //in this case the duration has to be subtracted from the SLA and accordingly adjusted
-                if(Workflow.WfLifecycle === "Ack"){
-                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArAckSLA) - dmaps[i].duration.baseValueMinutes);                
-                    
-                }else if (Workflow.WfLifecycle === "Resolve"){
-                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArRslSLA) - dmaps[i].duration.baseValueMinutes);                
+                if (Workflow.WfLifecycle === "Ack") {
+                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArAckSLA) - dmaps[i].duration.baseValueMinutes);
+
+                } else if (Workflow.WfLifecycle === "Resolve") {
+                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArRslSLA) - dmaps[i].duration.baseValueMinutes);
                 }
-                
+
             }
-            else{
+            else {
                 //for all other cases like notifications and escalations, duration needs to be added to basetime
-                DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);                
+                DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
             }
             
             
-            
+
+                
+                
+                
+
+
+
             /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
-/* unique id for all contacts belonging in this record*/
-                dq.contactMapping = dmaps[i].contactMapping;
+            /* unique id for all contacts belonging in this record*/
+            dq.contactMapping = dmaps[i].contactMapping;
 
-                /* if we have to wait for next contact or continue with next*/
-                dq.waitForNextContact = dmaps[i].waitForNextContact;
+            /* if we have to wait for next contact or continue with next*/
+            dq.waitForNextContact = dmaps[i].waitForNextContact;
 
 
-                /* Template Type */
-                dq.TemplateType = dmaps[i].template.templateType;
-                /* Template for adaptor      */
-                if (!dmaps[i].template.jsonDefinition) {
+            /* Template Type */
+            dq.TemplateType = dmaps[i].template.templateType;
+            /* Template for adaptor      */
+            if (!dmaps[i].template.jsonDefinition) {
+                dq.Template = '';
+            } else {
+                dq.Template = JSON.parse(dmaps[i].template.jsonDefinition);
+            }
+
+            /* If response can come      */
+            if (dq.Channel === 'Voice' || dq.Channel === 'NCR-EDI' || dq.Channel === 'DECAL')
+                dq.WillRespond = 'yes';
+            else
+                dq.WillRespond = 'no';
+
+            if (dq.TemplateType === 'other') {
+                //template body has JSON for all the properties needed by this dispatch
+                //stored in the template
+                if (!dq.Template.body) {
                     dq.Template = '';
                 } else {
-                    dq.Template = JSON.parse(dmaps[i].template.jsonDefinition);
+                    dq.Template.body = JSON.parse(dq.Template.body);
                 }
 
-                /* If response can come      */
-                if (dq.Channel === 'Voice' || dq.Channel === 'NCR-EDI' || dq.Channel === 'DECAL')
-                    dq.WillRespond = 'yes';
-                else
-                    dq.WillRespond = 'no';
+                /* Time To Live */
+                if (dq.Template.body.Ttl) {
+                    dq.Ttl = dq.Template.body.Ttl;
+                } else {
+                    dq.Ttl = 3600;
+                }
 
-                if (dq.TemplateType === 'other') {
-                    //template body has JSON for all the properties needed by this dispatch
-                    //stored in the template
-                    if (!dq.Template.body) {
-                        dq.Template = '';
-                    } else {
-                        dq.Template.body = JSON.parse(dq.Template.body);
-                    }
-
-                    /* Time To Live */
-                    if (dq.Template.body.Ttl) {
-                        dq.Ttl = dq.Template.body.Ttl;
-                    } else {
-                        dq.Ttl = 3600;
-                    }
-
-                    /* Max Retries to be done */
-                    if (dq.Template.body.MaxRetries) {
-                        dq.MaxRetries = dq.Template.body.MaxRetries;
-                    } else {
-                        dq.MaxRetries = 0;
-                    }
-                }            
+                /* Max Retries to be done */
+                if (dq.Template.body.MaxRetries) {
+                    dq.MaxRetries = dq.Template.body.MaxRetries;
+                } else {
+                    dq.MaxRetries = 0;
+                }
+            }
             //in case of breach ignore Notification and Pre-Breach Reminder type of Dispatch rules
             //only load Breach and Escalation Types
-            if(Workflow.WfStatus    ===  'breached'){
-                if(dq.ContactType === 'Breach' || dq.ContactType.startsWith("Escalation")){
+            if (Workflow.WfStatus === 'breached') {
+                if (dq.ContactType === 'Breach' || dq.ContactType.startsWith("Escalation")) {
                     //add to Q
-                }else if (dq.ContactType === 'Notification' || dq.ContactType === "Pre Breach Reminder") {
+                } else if (dq.ContactType === 'Notification' || dq.ContactType === "Pre Breach Reminder") {
                     //do not add to Q
                     continue;
                 }
-            }else if( Workflow.WfStatus    ===  'acked' || Workflow.WfStatus    ===  'resolved'){
+            } else if (Workflow.WfStatus === 'acked' || Workflow.WfStatus === 'resolved') {
                 if (dq.ContactType !== 'Notification')
                     continue;
-            }else if( Workflow.WfStatus    ===  'new'){
+            } else if (Workflow.WfStatus === 'new') {
                 if (dq.ContactType !== 'Pre Breach Reminder')
                     continue;
             }
-            
-            if (processUserBlockForCalendar(dmaps[i].users, dq)) {
-                    if (dq.nextAvailableTime) {
 
-                        Log.info("StageDispatchForAck: no current schedules found for the user, will have to sleep..");
-                        // Kick off the stage delay since no current schedules are there
-                        // Go to Sleep until next open time and come here instead of SendDispatch
-                        var currTime = new Date();
-                        Log.info('currTime: ' + currTime.toISOString());
-                        var goTime = new Date(Date.parse(dq.nextAvailableTime));
-                        Log.info('goTime: ' + goTime.toISOString());
-                        var delayGapinMins = new Date(goTime - currTime).getMinutes();
 
-                        Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+            /* copy the sontacts array into dq and add a new Status variable*/
+            if (!dq.users) {
+                dq.users = dmaps[i].users.slice();
 
-                        Timer.start({
-                            eventName: 'ei_stage_dispatch',
-                            delayMs: delayGapinMins * 60 * 1000
-                        });
-                    }
-                    else {
-                        DispatchQueue.push(dq);
-                    }
+                for (var x in dq.users) {
+                    var uu = dq.users[x];
+                    uu.Status = "new";
                 }
+            }
+
+            if (processUserBlockForCalendar(dq)) {
+                if (dq.nextAvailableTime) {
+
+                    Log.info("StageDispatchForAck: no current schedules found for the user, will have to sleep..");
+                    // Kick off the stage delay since no current schedules are there
+                    // Go to Sleep until next open time and come here instead of SendDispatch
+                    var currTime = new Date();
+                    Log.info('currTime: ' + currTime.toISOString());
+                    var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                    Log.info('goTime: ' + goTime.toISOString());
+                    var delayGapinMins = new Date(goTime - currTime).getMinutes();
+
+                    Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+
+                    Timer.start({
+                        eventName: 'ei_stage_dispatch',
+                        delayMs: delayGapinMins * 60 * 1000
+                    });
+                }
+                else {
+                    DispatchQueue.push(dq);
+                }
+            }
         }
     }
     //  Sort the Queue by sendtime
@@ -190,11 +208,11 @@ Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
 Log.info("Stage Dispatch for Ack Exiting...");
 
 
-function processUserBlockForCalendar(users, dq) {
+function processUserBlockForCalendar(dq) {
     var result = false;
     //  Sort the user array by seqNo
-    if (users && users.length > 0) {
-        users.sort(function (a, b) {
+    if (dq.users && dq.users.length > 0) {
+        dq.users.sort(function (a, b) {
             if (a.sequenceNo > b.sequenceNo)
                 return 1;
             if (a.sequenceNo < b.sequenceNo)
@@ -203,14 +221,18 @@ function processUserBlockForCalendar(users, dq) {
         });
     }
 
-    for (var i in users) {
-        var user = users[i];
+    for (var i in dq.users) {
+        var user = dq.users[i];
 
-        processForUserAddress(user, dq);
+        processForUserAddress(user);
 
-        if (user.isAvailable === true) {
+        if (user.Status === "staged" || user.Status === "wait" || user.Status === "done")
+            continue;
+
+
+        if (user.isAvailable) {
+            user.Status = "staged";
             result = true;
-            break;
         } else {
             if (dq.waitForNextContact) {
                 dq.nextAvailableTime = user.nextAvailableTime;
@@ -225,11 +247,7 @@ function processUserBlockForCalendar(users, dq) {
 }
 
 
-function processForUserAddress(user, dq) {
-    /* FN of the person          */
-    dq.FirstName = user.firstName;
-    /* LN of the person          */
-    dq.LastName = user.lastName;
+function processForUserAddress(user) {
 
     /* Address Processing for Emailid, PhoneNum..       
      * check if there is a comma, there can be 2 addresses for one user
@@ -237,13 +255,13 @@ function processForUserAddress(user, dq) {
     var addressString = user.address;
     if (!addressString) {
         Log.info("No Address provided for this contact record, skipping it..");
-        dq.Status = "error";
+        user.Status = "error";
     } else {
         //try splitting on comma
         var addrArray = addressString.split(',');
-        dq.Address = addrArray[0].trim();
+        user.Address = addrArray[0].trim();
         if (addrArray[1])
-            dq.Address2 = addrArray[1].trim();
+            user.Address2 = addrArray[1].trim();
     }
 }
 

@@ -14,7 +14,10 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 Log.info('EventType       SendTime                     DelayMins  Status  Channel ContactType      AtmSchedule             WillRespond     Ttl     MaxRetries     FirstName   LastName    Address        Address2        Template         ');
 for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
-    Log.info(dq.EventType + "\t\t" + dq.SendTime + "\t" + dq.DelayMins + "\t" + dq.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" +  dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + dq.FirstName + " " + dq.LastName + " " + dq.Address + "\t\t" + dq.Address2 + "\t\t" +  dq.Template);
+    for (var j in dq.users){
+        var user = dq.users[i];
+        Log.info(dq.EventType + "\t\t" + dq.SendTime + "\t" + dq.DelayMins + "\t" + dq.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" +  dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + user.FirstName + " " + user.LastName + " " + user.Address + "\t\t" + user.Address2 + "\t\t" +  dq.Template);
+    }
 }
 Log.info("Log DispatchQueue Exitting ...............................................");
 // --------------------------------------------------------------------------------

@@ -1,72 +1,97 @@
-{
-    "partyName": "name1473177051782",
+{    
     "partyDetails": [{
-            "user": {
-                "firstName": "Manpreet",
-                "lastName": "Singh",
-                "address": "ms@esq.com"
+            "users": [{
+                "nextAvailableTime": "",
+                "lastName": "Arora",
+                "address": "vs@esq.com, vishal@esq.com",
+                "firstName": "Vishal",
+                "isAvailable": true,
+                "sequenceNo":0
             },
+            {
+                "nextAvailableTime": "",
+                "lastName": "Pooja",
+                "address": "pooja@esq.com",
+                "firstName": "Ud",
+                "isAvailable": true,
+                "sequenceNo":1
+            }
+            ],
             "lifeCycle": "Resolve",
             "contactType": "Pre Breach Reminder",
             "contactChannel": "Email",
             "atmSchedule": "AnyHours",
+            "waitForNextContact" : "false",
+            "contactMapping": "25-34-38-43-0",
             "duration": {
-                "name": "somesystemgeneratedname",
-                "baseValueMinutes": 5,
-                "graceValueMinutes": 0
+                "baseValueMinutes": 30
             },
             "template": {
-                "name": "Level-1EmailTemplate",
-                "description": "L1-EmailTemplatefortenants",
+                "id": 9,
+                "name": "Email Notification Template",
                 "templateType": "email",
-                "subject": "EscalationlevelL1-IncidentId: %Workflow.InIncidentId% -ATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%",
-                "body": "Due to non-resolution of the IncidentId: \\n%Workflow.InIncidentId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%fortheATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 1300,
+                "addressTypeId": 3,
+                "channelId": 38
             }
         },
         {
-            "user": {
-                "firstName": "Manish",
+            "users": {
+                 "nextAvailableTime": "",
                 "lastName": "Arora",
-                "address": "ma@esq.com"
+                "address": "ka@esq.com, krishan@esq.com",
+                "firstName": "Krishan",
+                "isAvailable": true,
+                "sequenceNo":0
             },
             "lifeCycle": "Resolve",
             "contactType": "Breach",
             "contactChannel": "Email",
             "atmSchedule": "AnyHours",
+            "waitForNextContact" : "false",
+            "contactMapping": "25-34-38-43-0",,
             "duration": {
                 "name": "somesystemgeneratedname",
                 "baseValueMinutes": 0,
                 "graceValueMinutes": 0
             },
             "template": {
-                "name": "Level-1EmailTemplate",
-                "description": "L1-EmailTemplatefortenants",
+                "id": 9,
+                "name": "Email Notification Template",
                 "templateType": "email",
-                "subject": "EscalationlevelL1-IncidentId: %Workflow.InIncidentId% -ATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%",
-                "body": "Due to non-resolution of the IncidentId: \\n%Workflow.InIncidentId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%fortheATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 1300,
+                "addressTypeId": 3,
+                "channelId": 38
             }
         },
         {
-            "user": {
-                "firstName": "Mukesh",
-                "lastName": "Chaurasia",
-                "address": "mc@esq.com"
-            },
-            "lifeCycle": "Resolve",
-            "contactType": "Escalation-L3",
+            "users": [{
+                 "nextAvailableTime": "",
+                "lastName": "Bhatia",
+                "address": "vb@esq.com, varun@esq.com",
+                "firstName": "Varun",
+                "isAvailable": true,
+                "sequenceNo":0
+            }],
+            "lifeCycle": "Ack",
+            "contactType": "Escalation-L1",
             "contactChannel": "Email",
             "atmSchedule": "AnyHours",
+            "contactMapping": "25-34-38-43-0",
+             "waitForNextContact" : "false",
             "duration": {
-                "name": "somesystemgeneratedname",
-                "baseValueMinutes": 10,
-                "graceValueMinutes": 0
+                "baseValueMinutes": 20
             },
             "template": {
-                "name": "Level-1EmailTemplate",
-                "description": "L1-EmailTemplatefortenants",
+                "id": 9,
+                "name": "Email Notification Template",
                 "templateType": "email",
-                "subject": "EscalationlevelL1-IncidentId: %Workflow.InIncidentId% -ATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%",
-                "body": "Due to non-resolution of the IncidentId: \\n%Workflow.InIncidentId%-%Workflow.InCategory%.%Workflow.InSubCategory%.%Workflow.InSubSubCategory%fortheATMID: SITEID=%Workflow.InTermId%: %Workflow.InSiteId%, It has been escalated to LevelL1.<br>Please resolve the incident in order to avoid further escalation</br>\\n\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\n"
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 1300,
+                "addressTypeId": 3,
+                "channelId": 38
             }
         }]
 }

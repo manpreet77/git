@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">      
+			<evaluator>
+				<expression>if(marker != null){return marker.contains("PrintOnConsole");}else{return false;}</expression>
+			</evaluator>
+			<OnMismatch>DENY</OnMismatch>
+			<OnMatch>ACCEPT</OnMatch>
+		</filter>
+
+		<encoder>
+			<pattern>%msg %n</pattern>
+		</encoder>
+		
+	</appender>
+
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+
+		<append>false</append>
+		<File>logs/DSPWorkFlowPackager.log</File>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{dd MMM yyyy;HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+		</encoder>
+
+	</appender>		
+
+	<logger name="com.esq.filescollector" level="INFO"/>
+
+	<root level="INFO">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>
