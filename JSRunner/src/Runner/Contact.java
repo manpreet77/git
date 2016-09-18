@@ -24,7 +24,7 @@ import jdk.nashorn.internal.runtime.JSONFunctions;
  */
 public class Contact {
 
-    private Logger Log;
+    private final Logger Log;
 
     public Contact(Logger l) {
         this.Log = l;
@@ -34,14 +34,16 @@ public class Contact {
 
         String responseFileName = "";
         
-        if((String) mirror.get("lifecycle") == "Create"){
-            responseFileName = "queryActionCreateResponse.json";
-        }
-        else if((String) mirror.get("lifecycle") == "Ack"){
-            responseFileName = "queryActionAckResponse.json";
-        }
-        else if((String) mirror.get("lifecycle") == "Resolve"){
-            responseFileName = "queryActionResolveResponse.json";
+        switch ((String) mirror.get("lifecycle")) {
+            case "Create":
+                responseFileName = "queryActionCreateResponse.json";
+                break;
+            case "Ack":
+                responseFileName = "queryActionAckResponse.json";
+                break;
+            case "Resolve":
+                responseFileName = "queryActionResolveResponse.json";
+                break;
         }
         
         
@@ -60,14 +62,17 @@ public class Contact {
 
         String responseFileName = "";
         
-        if((String) mirror.get("lifecycle") == "Create"){
-            responseFileName = "queryActionNextAvlUserCreateResponse.json";
-        }
-        else if((String) mirror.get("lifecycle") == "Ack"){
-            responseFileName = "queryActionNextAvlUserAckResponse.json";
-        }
-        else if((String) mirror.get("lifecycle") == "Resolve"){
-            responseFileName = "queryActionNextAvlUserResolveResponse.json";
+        switch ((String) mirror.get("lifecycle")) {
+            case "Create":
+                //responseFileName = "queryActionNextAvlUserCreateResponse.json";
+                responseFileName = "queryActionNextAvlUserCreateResponseWithNextAvlTIme.json";
+                break;
+            case "Ack":
+                responseFileName = "queryActionNextAvlUserAckResponse.json";
+                break;
+            case "Resolve":
+                responseFileName = "queryActionNextAvlUserResolveResponse.json";
+                break;
         }
         
         

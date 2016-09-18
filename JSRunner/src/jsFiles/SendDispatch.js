@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.3
+ Dispatcher Standard Workflow V 2.8.7.4
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -22,7 +22,8 @@ for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
     for (var j in dq.users) {
         var user = dq.users[j];
-        Log.info(dq.EventType + "\t\t" + dq.SendTime + "\t" + dq.DelayMins + "\t" + user.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + user.firstName + " " + user.lastName + " " + user.Address + "\t\t" + user.Address2 + "\t\t" + dq.Template);
+         
+        Log.info(dq.EventType + "\t\t" + (user.isAvailable === true ? dq.SendTime : user.nextAvailableTime) + "\t" + dq.DelayMins + "\t" + user.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + user.firstName + " " + user.lastName + " " + user.Address + "\t\t" + user.Address2 + "\t\t" + dq.Template);
     }
 }
 
@@ -37,6 +38,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
         //  dequeue next dispatch to be sent
         dq = DispatchQueue[i];
 
+        var breakAndWait = false;
         for (var j in dq.users) {
             
             var user = dq.users[j];
@@ -50,20 +52,35 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
             var currTime = new Date();
             Log.info('currTime: ' + currTime.toISOString());
             var goTime = new Date(Date.parse(dq.SendTime));
+            var delayGapinMins = dq.DelayMins;
+            
+            //in case there are multiple users in the dq, we check the 
+            if(user.Status === 'new' && user.isAvailable === false && user.nextAvailableTime !== 'undefined'){
+                // Go to Sleep until next available time for this user and come here again
+                goTime = new Date(Date.parse(user.nextAvailableTime));
+                
+                Log.info('goTime: ' + goTime.toISOString() + 'for user ' + user.firstName);
+                delayGapinMins = new Date(goTime - currTime).getMinutes() + dq.DelayMins;
+
+                Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+            }
+            
             Log.info('goTime: ' + goTime.toISOString());
 
             if (user.Status === 'new' || user.Status === 'retry') {
                 if (goTime > currTime) {
                     //set Timer for next notification
-                    Log.info("Setting the next timer for = {} mins", dq.DelayMins);
+                    Log.info("Setting the next timer for = {} " + delayGapinMins + " mins" );
                     Timer.start({
                         eventName: 'ei_send_dispatch',
                         delayMs: dq.DelayMins * 60 * 1000
                     });
                     user.Status = 'wait';
+                    breakAndWait = true;
                     break;
                 }
             } else if (user.Status !== 'wait') {
+                breakAndWait = true;
                 break;
             }
             // All new with 0 delay and waits
@@ -77,7 +94,33 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                     Contact.replaceVariables(dq.Template, {Workflow: Workflow});
                     email.send({to: user.Address, subject: dq.Template.subject, body: dq.Template.body, htmlEmail: "true"});
                     Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
-                    helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: "ACTIVITY", operationame: "Email", category: "Contact", subcategory: "EMAIL", activitytime: new Date().toISOString(), result: "Success", remarks: "Notification via Email", resulttext: ""});
+                    var category, subcategory, remarks;
+                    if (dq.ContactType === "Notification") {
+                        category = "Contact";
+                        subcategory = "EMAIL";
+                        remarks = "Initial Notification via Email.";
+                    } else if (dq.ContactType === "Pre Breach Reminder") {
+                        category = "Contact";
+                        subcategory = "EMAIL";
+                        remarks = "Pre Breach Reminder Notification via Email.";
+                    } else if (dq.ContactType === "Breach") {
+                        category = "SLA ACK";
+                        subcategory = "Breached";
+                        remarks = "SLA Breach Notification via Email.";
+                    } else {
+                        category = "Escalate";
+                        subcategory = "EMAIL";
+                        if (dq.ContactType === "Escalation-L1")
+                            remarks = "L1 Escalation via Email.";
+                        else if (dq.ContactType === "Escalation-L2")
+                            remarks = "L2 Escalation via Email.";
+                        else if (dq.ContactType === "Escalation-L3")
+                            remarks = "L3 Escalation via Email.";
+                        else if (dq.ContactType === "Escalation-L4")
+                            remarks = "L4 Escalation via Email.";
+                    }
+                    
+                    helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: "ACTIVITY", operationame: "Email", category: category, subcategory: subcategory, activitytime: new Date().toISOString(), result: "Success", remarks: remarks, resulttext: ""});
                     user.Status = 'done';
                     break;
                 }
@@ -127,6 +170,10 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 }
             }
         }
+        
+        //only one dispatch at a time
+        if(breakAndWait)
+            break;
     }
 
     //  Save the Queue away
