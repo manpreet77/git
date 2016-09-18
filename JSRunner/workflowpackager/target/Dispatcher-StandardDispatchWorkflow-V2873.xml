@@ -1,0 +1,2067 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:DispatchSystem xmlns:ns2="com.esq.dispatcher.model.def">
+    <alertMapping eventName="ee_incident_created" id="13">
+        <description>eventForIncidentCreation_287</description>
+        <filter>acttype:eq:Create</filter>
+        <filter>incidentid:exist:</filter>
+        <idExpression>Alert.incidentid</idExpression>
+        <isActive>true</isActive>
+        <note>Alert received for 287 onwards</note>
+        <source>OB</source>
+        <updatedTime>2016-09-06T11:53:54.233Z</updatedTime>
+    </alertMapping>
+    <alertMapping eventName="ee_incident_acked" id="19">
+        <description></description>
+        <filter>incidentid:exist:</filter>
+        <filter>incidenttosubstatus:eq:02</filter>
+        <filter>incidenttostatus:eq:01</filter>
+        <filter>acttype:eq:Update</filter>
+        <idExpression>Alert.incidentid</idExpression>
+        <isActive>true</isActive>
+        <note>Alert received for 287 onwards</note>
+        <source>OB</source>
+        <updatedTime>2016-09-15T08:28:34.767Z</updatedTime>
+    </alertMapping>
+    <alertMapping eventName="ee_incident_hold" id="29">
+        <description></description>
+        <filter>incidentid:exist:</filter>
+        <filter>incidenttostatus:eq:03</filter>
+        <filter>acttype:eq:Update</filter>
+        <idExpression>Alert.incidentid</idExpression>
+        <isActive>true</isActive>
+        <note></note>
+        <source>OB</source>
+        <updatedTime>2016-09-15T08:32:14.327Z</updatedTime>
+    </alertMapping>
+    <alertMapping eventName="ee_incident_resolved" id="27">
+        <description></description>
+        <filter>incidentid:exist:</filter>
+        <filter>acttype:eq:Update</filter>
+        <filter>incidenttostatus:eq:05</filter>
+        <idExpression>Alert.incidentid</idExpression>
+        <isActive>true</isActive>
+        <note></note>
+        <source>OB</source>
+        <updatedTime>2016-09-15T08:32:15.793Z</updatedTime>
+    </alertMapping>
+    <alertMapping eventName="ee_incident_closed" id="16">
+        <description>eventForIncidentCreation_287</description>
+        <filter>acttype:eq:Close</filter>
+        <filter>incidentid:exist:</filter>
+        <idExpression>Alert.incidentid</idExpression>
+        <isActive>true</isActive>
+        <note>Alert received for 287 onwards</note>
+        <source>OB</source>
+        <updatedTime>2016-09-15T08:24:15.733Z</updatedTime>
+    </alertMapping>
+    <alertMapping eventName="ei_voice_ack_done" id="21">
+        <description>Receives Ack from IVR</description>
+        <filter>incidentid:exist:</filter>
+        <filter>terminalId:exist:</filter>
+        <filter>acknowledge:eq:yes</filter>
+        <idExpression>Alert.incidentid</idExpression>
+        <isActive>true</isActive>
+        <note></note>
+        <source>IVR</source>
+        <updatedTime>2016-09-15T14:30:37.853Z</updatedTime>
+    </alertMapping>
+    <alertMapping eventName="ee_incident_reopened" id="31">
+        <description></description>
+        <filter>incidentid:exist:</filter>
+        <filter>incidentfromstatus:eq:05</filter>
+        <filter>incidenttostatus:eq:01</filter>
+        <filter>incidenttosubstatus:eq:04</filter>
+        <filter>acttype:eq:Update</filter>
+        <idExpression>Alert.incidentid</idExpression>
+        <isActive>true</isActive>
+        <note>Alert received for 287 onwards</note>
+        <source>OB</source>
+        <updatedTime>2016-09-15T08:46:25.723Z</updatedTime>
+    </alertMapping>
+    <alertMapping eventName="ee_incident_work" id="30">
+        <description></description>
+        <filter>incidentid:exist:</filter>
+        <filter>incidenttostatus:eq:04</filter>
+        <filter>acttype:eq:Update</filter>
+        <idExpression>Alert.incidentid</idExpression>
+        <isActive>true</isActive>
+        <note></note>
+        <source>OB</source>
+        <updatedTime>2016-09-15T08:43:22.257Z</updatedTime>
+    </alertMapping>
+    <alertMapping eventName="ei_voice_error" id="26">
+        <description>Receives Error from IVR</description>
+        <filter>IncidentId:exist:</filter>
+        <filter>adaperResponseStatus:in_list:BUSY,ERROR</filter>
+        <idExpression>Alert.Incidentid</idExpression>
+        <isActive>true</isActive>
+        <note></note>
+        <source>Adapter</source>
+        <updatedTime>2016-09-16T12:14:49.763Z</updatedTime>
+    </alertMapping>
+    <workflow id="10" name="Standard Dispatch Workflow">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:18:08.99Z</updatedTime>
+    </workflow>
+    <rule id="15" name="Incident Created">
+        <actionId>49</actionId>
+        <actionId>44</actionId>
+        <actionId>84</actionId>
+        <actionId>79</actionId>
+        <actionId>85</actionId>
+        <actionId>80</actionId>
+        <actionId>48</actionId>
+        <actionId>81</actionId>
+        <description></description>
+        <eventName>ee_incident_created</eventName>
+        <isActive>true</isActive>
+        <note>This rule will fire actions that will query and setup Dispatch Contacts and emit events related to various methods of dispatch </note>
+        <updatedTime>2016-09-17T05:28:45.097Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="16" name="Incident Acknowledged">
+        <actionId>45</actionId>
+        <actionId>48</actionId>
+        <description></description>
+        <eventName>ee_incident_acked</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <property key="ResumeWorkflowInstance" value=""></property>
+        <updatedTime>2016-09-08T15:20:25.967Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="17" name="Incident ETA Received">
+        <actionId>56</actionId>
+        <description></description>
+        <eventName>ee_incident_eta_rcvd</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:06:55.42Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="18" name="Incident ATA/Arrived">
+        <actionId>57</actionId>
+        <description></description>
+        <eventName>ei_ata_arrived</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-06T07:38:13.107Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="23" name="Incident Hold">
+        <actionId>58</actionId>
+        <description></description>
+        <eventName>ee_incident_hold</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:03:34.053Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="24" name="Incident Resolved">
+        <actionId>61</actionId>
+        <actionId>48</actionId>
+        <description></description>
+        <eventName>ee_incident_resolved</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:02:31.023Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="25" name="Incident Closed">
+        <actionId>63</actionId>
+        <actionId>1</actionId>
+        <description></description>
+        <eventName>ee_incident_closed</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <property key="ResumeWorkflowInstance" value=""></property>
+        <updatedTime>2016-09-17T08:06:46.547Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="26" name="Incident Ack SLA Breached">
+        <actionId>68</actionId>
+        <actionId>48</actionId>
+        <description></description>
+        <eventName>ei_ack_sla_breach</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:21:40.33Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="27" name="Incident Resolution SLA Breached">
+        <actionId>77</actionId>
+        <description></description>
+        <eventName>ei_rsl_sla_breach</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:21:50.037Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="28" name="Send Dispatches">
+        <actionId>51</actionId>
+        <description>Send dispatches when internal event for trigger is received</description>
+        <eventName>ei_send_dispatch</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:22:14.893Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="31" name="Stage Dispatches">
+        <actionId>48</actionId>
+        <description></description>
+        <eventName>ei_stage_dispatch</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:22:28.333Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="34" name="Incident Acknowledge Rcv from Voice">
+        <actionId>78</actionId>
+        <description></description>
+        <eventName>ei_voice_ack_done</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:22:42.753Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="36" name="Incident Reopened">
+        <actionId>64</actionId>
+        <description></description>
+        <eventName>ee_incident_reopened</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:20:25.713Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="37" name="Incident Work">
+        <actionId>69</actionId>
+        <description></description>
+        <eventName>ee_incident_work</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T08:33:47.483Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <rule id="38" name="Error Received from Voice">
+        <actionId>87</actionId>
+        <description></description>
+        <eventName>ei_voice_error</eventName>
+        <isActive>true</isActive>
+        <note></note>
+        <updatedTime>2016-09-15T13:12:48.957Z</updatedTime>
+        <workflowId>10</workflowId>
+    </rule>
+    <action id="49" name="Setup Environment">
+        <description></description>
+        <isActive>true</isActive>
+        <note>Set up the environment with global variables and functions that will be used across workflow rules and actions.</note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   SetupEnvironment
+   This action defines all globals and is included in initial rule of a workflow.
+    --------------------------------------------------------------------------------
+ */
+/* global Log, Workflow */
+
+Log.info(&quot;Setup Environment Entered...&quot;);
+
+// Tenant Details
+Workflow.TenantId                           ='undefined';   // Tenant Id of the ATM being dispatched
+Workflow.TenantCode                         ='undefined';   // The Tenant short name (eg: ATB)
+Workflow.TenantName                         ='undefined';   // The Name of the Root Organization
+//  Workflow Details
+Workflow.WfLifecycle                        ='undefined';   // The state of the work (create,ack....)
+Workflow.WfStatus                           ='undefined';   // The state of the work (active, acked...)
+Workflow.WfId                               ='undefined';   // The Dispatchers Workflow Instance Id
+Workflow.WfStartTime                        ='undefined';   // When this Workflow started
+Workflow.delayGapinMinsDueToNextAvailableAtmSchedule = 'undefined'; //used for finding out delay in case next atm schedule kicks in 
+// Incident Details
+Workflow.InIncidentId                       ='undefined';
+Workflow.InPolicyName                       ='undefined';
+Workflow.InTermId                           ='undefined';
+Workflow.InSiteId                           ='undefined';
+Workflow.InIncidentType                     ='undefined';
+Workflow.InIsLinked                         ='undefined';
+Workflow.InParentIncident                   ='undefined';
+Workflow.InCategory                         ='undefined';
+Workflow.InSubCategory                      ='undefined';
+Workflow.InSubSubCategory                   ='undefined';
+Workflow.InStatus                           ='undefined';
+Workflow.InSubStatus                        ='undefined';
+Workflow.InAssigneeParty                    ='undefined';
+Workflow.InPartyId                          ='undefined';
+Workflow.InStartTime                        ='undefined';
+Workflow.InIsInATMBranchHours               ='undefined';
+Workflow.InIsInATMAfterHours                ='undefined';
+Workflow.InIsInATMOperationalHours          ='undefined';
+Workflow.InIsInATMOtherHours                ='undefined';
+Workflow.InIsInATMPeakHours                 ='undefined';
+Workflow.InIsInATMOffPeakHours              ='undefined';
+Workflow.InNextATMSchedAvailable            ='undefined';
+Workflow.InNextATMSchedAvailableTime        ='undefined';
+
+
+//  Fault Details   
+Workflow.FltFaults                          ='undefined';
+Workflow.FltMstatus                         ='undefined';
+Workflow.FltMdata                           ='undefined';
+Workflow.FltModule                          ='undefined';
+Workflow.FltChronic                         ='undefined';
+//  ATM Details
+Workflow.AtmMake                            ='undefined';
+Workflow.AtmID                              ='undefined';
+Workflow.AtmOpHrs                           ='undefined';
+Workflow.AtmBrnHrs                          ='undefined';
+Workflow.AtmOffHrs                          ='undefined';
+Workflow.AtmPeakHrs                         ='undefined';
+Workflow.AtmOffPeakHrs                      ='undefined';
+Workflow.AtmModel                           ='undefined';
+Workflow.AtmMfgr                            ='undefined';
+Workflow.AtmType                            ='undefined';
+Workflow.AtmState                           ='undefined';
+Workflow.AtmSubState                        ='undefined';
+Workflow.AtmRegion                          ='undefined';
+Workflow.AtmDistrict                        ='undefined';
+Workflow.AtmBranch                          ='undefined';
+Workflow.AtmNotes                           ='undefined';
+Workflow.AtmOffSite                         ='undefined';
+// Action 
+Workflow.ArName                             ='undefined';   // Action Rule Name
+Workflow.ArAtmSelector                      ='undefined';   // The Atm Expression
+Workflow.ArVendorId                         ='undefined';   // Vendor or Dept Id default assignee
+Workflow.ArVendorName                       ='undefined';   // Name of the Organization
+Workflow.ArAckSLA                           ='undefined';   // Default SLA for ack for this ActionRule
+Workflow.ArArrSLA                           ='undefined';   // Default SLA for arr for this ActionRule
+Workflow.ArWorkSLA                          ='undefined';   // Default SLA for wrk for this ActionRule
+Workflow.ArRslSLA                           ='undefined';   // Default SLA for rsl for this ActionRule
+// Dispatch Map Array
+Workflow.DispatchQueueStringify             ='undefined';   // Stringify Version of the Dispatch Queue
+
+Log.info(&quot;Setup Environment Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+
+
+
+
+</script>
+        <updatedTime>2016-09-13T13:15:36.673Z</updatedTime>
+    </action>
+    <action id="44" name="Prepare For Create">
+        <description></description>
+        <isActive>true</isActive>
+        <note>Prepare the workload for this incident's dispatch and assignment on creation</note>
+        <script>/* --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.3
+ PrepareWorkForCreate
+ This action sets the stage and decides what needs to be done in this workflow
+ --------------------------------------------------------------------------------
+ */
+/* global Workflow, Event, Log, Timer */
+
+Log.info(&quot;Prepare Work for Create Entered...&quot;);
+
+// Copy Incident details from Event into Workflow like CreateTime, ATMHour, DefaultAssignedParty...
+
+Workflow.TenantId = Event.tenantid;
+Workflow.TenantCode = 'undefined';//Event.TenantCode; does not come//
+Workflow.TenantName = 'undefined';//Event.TenantName; does not come//
+// Incident Details
+Workflow.InIncidentId = Event.incidentid;
+Workflow.InStartTime = Event.starttime;
+Workflow.InPolicyName = Event.policyname;
+Workflow.InTermId = Event.assetid;
+Workflow.InSiteId = Event.siteid;
+Workflow.InIncidentType = Event.incidenttype;
+Workflow.InIsLinked = Event.islinked;
+Workflow.InParentIncident = 'undefined';
+Workflow.InCategory = Event.policydetails1;
+Workflow.InSubCategory = Event.policydetails2;
+Workflow.InSubSubCategory = Event.policydetails3;
+Workflow.InStatus = 'undefined';
+Workflow.InSubStatus = 'undefined';
+Workflow.InAssigneeParty = Event.targetpartyid;
+Workflow.InPartyId = 'undefined';
+Workflow.InIsInATMBranchHours = Event.schedules_branchhours; // 1 or 0
+Workflow.InIsInATMAfterHours = Event.schedules_afterhours; // 1 or 0
+Workflow.InIsInATMOperationalHours = Event.schedules_operationalhours; // 1 or 0
+Workflow.InIsInATMOtherHours = Event.schedules_otherhours; // 1 or 0
+Workflow.InIsInATMPeakHours = Event.schedules_peakhours; // 1 or 0
+Workflow.InIsInATMOffPeakHours = Event.schedules_offpeakhours; // 1 or 0
+Workflow.InNextATMSchedAvailable= Event.schedulesnext_categoryname;  // Name: BranchHours, AfterHours, OtherHours, OperationalHours, PeakHours,OffPeakHours  etc.
+Workflow.InNextATMSchedAvailableTime= Event.schedulesnext_nextavailableschedulestarttime; //next avl time - e.g. 2016-08-30T00:00:00
+
+// Action Rule Details
+Workflow.ArId = Event.actionruleid;
+Workflow.ArName = Event.actionrulename;   // Action Rule Name
+Workflow.ArServiceRole = Event.policyrole;
+Workflow.ArAtmSelector = 'undefined';            // The Atm Expression
+Workflow.ArVendorId = Event.targetpartyid;    // Vendor or Dept Id default assignee
+Workflow.ArVendorName = Event.targetparty;      // Name of the Organization
+Workflow.ArAckSLA = Event.slaacknowledge;   //Ack SLA
+Workflow.ArArrSLA = 'undefined';            //Arrival SLA 
+Workflow.ArWorkSLA = 'undefined';            //Work SLA       
+Workflow.ArRslSLA = Event.slaresolve;       //Resolve SLA   
+
+// Copy ATM details from Event into  Workflow
+Workflow.AtmMake = Event.atmmake;
+
+// Copy Fault details from Event into Workflow
+
+// Copy Incident Stats into Workflow
+
+// Set WorkFlow State
+//  Workflow Details
+Workflow.WfStatus = 'new';
+Workflow.WfLifecycle = 'Create';
+Workflow.WfId = 'undefined';
+Workflow.WfStartTime = new Date().toISOString();
+Log.info(&quot;Workflow.WfStartTime&quot;);
+
+// Start Timer for Ack SLA (ei_ack_sla_breach)
+if (Workflow.ArAckSLA &gt; 0) {
+    Log.info('Start Timer');
+    Timer.start({
+        eventName: 'ei_ack_sla_breach',
+        delayMs: Workflow.ArAckSLA * 60 * 1000
+    });
+}
+// Start Timer for Resolve SLA (ei_rsl_sla_breach)
+if (Workflow.ArRslSLA &gt; 0) {
+    Timer.start({
+        eventName: 'ei_rsl_sla_breach',
+        delayMs: Workflow.ArRslSLA * 60 * 1000
+    });
+}
+
+//Log.info(Event);
+Log.info(&quot;Prepare Work for Create Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+</script>
+        <updatedTime>2016-09-10T12:40:34.16Z</updatedTime>
+    </action>
+    <action id="84" name="Stage Dispatch For Create">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/*  --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.3
+ StageDispatch for Create
+ This action loads dispatch maps and prepares a queue of dispatchs to be sent
+ Sorted by ascending order of send time
+ Then it emits an event with a 0 delay to kickoff the dispatch loop
+ --------------------------------------------------------------------------------
+ */
+/* global Log, Workflow, Timer, Contact */
+
+Log.info(&quot;Stage Dispatch for Create Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+
+var AtmSched = &quot;BranchHours&quot;; //default Atm Schedule
+
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
+
+
+if (DispatchQueue === 'undefined') {
+    Log.info(&quot;Initializing DispatchQueue...&quot;);
+    DispatchQueue = new Array();
+}
+
+
+//check for atmschedules: either current time falls in one of the atmschedules or not
+//in case it does not, sleep till next available time
+if (Workflow.InIsInATMBranchHours === &quot;0&quot; &amp;&amp;
+        Workflow.InIsInATMAfterHours === &quot;0&quot; &amp;&amp;
+        Workflow.InIsInATMOtherHours === &quot;0&quot; &amp;&amp;
+        Workflow.InIsInATMOperationalHours === &quot;0&quot; &amp;&amp;
+        Workflow.InNextATMSchedAvailableTime !== 'undefined') {
+
+    Log.info(&quot;StageDispatchForCreate: no current schedules found, will have to sleep..&quot;);
+//  Kick off the stage delay since no current schedules are there
+    // Go to Sleep until next open time and come here instead of SendDispatch
+    var currTime = new Date();
+    Log.info('currTime: ' + currTime.toISOString());
+    var goTime = new Date(Date.parse(Workflow.InNextATMSchedAvailableTime));
+    Log.info('goTime: ' + goTime.toISOString());
+    var delayGapinMins = new Date(goTime - currTime).getMinutes();
+
+    Workflow.delayGapinMinsDueToNextAvailableAtmSchedule = delayGapinMins;
+
+    Log.info(&quot;Going to sleep for &quot; + delayGapinMins + &quot; mins&quot;);
+    Workflow.InNextATMSchedAvailableTime = 'undefined';
+    Timer.start({
+        eventName: 'ei_stage_dispatch',
+        delayMs: delayGapinMins * 60 * 1000
+    });
+
+} else {
+    //in normal case set the DSP Start time as Incident Start Time
+    Log.info(Workflow.InStartTime);
+    var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
+
+    //Incident Time falls in one of the atm schedule
+    if (Workflow.InIsInATMBranchHours === &quot;1&quot;) {
+        AtmSched = 'BranchHours';
+    } else if (Workflow.InIsInATMAfterHours === &quot;1&quot;) {
+        AtmSched = 'AfterHours';
+    } else if (Workflow.InIsInATMOtherHours === &quot;1&quot;) {
+        AtmSched = 'OtherHours';
+    } else if (Workflow.InIsInATMOperHours === &quot;1&quot;) {
+        AtmSched = 'OperationalHours';
+    } else {
+        Log.info(&quot;StageDispatch: staging dispatch after sleep&quot;);
+        //in case of coming back after sleeping, set base DSPstarttime as current time
+        BaseDispatchStartTimeAsDate = new Date();
+        AtmSched = Workflow.InNextATMSchedAvailable;
+        //TODO case 'PeakHours':
+        //TODO case 'OffPeakHours':
+    }
+
+    Log.info(&quot;Args to QueryActionRule: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
+    var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
+        actionRule: Workflow.ArName,
+        tenantId: Workflow.TenantId,
+        atmSchedule: AtmSched,
+        lifecycle: Workflow.WfLifecycle
+    });
+
+    if (!queryArResult) {
+        Log.info(&quot;No contacts for dispatch were returned in QueryResult&quot;);
+    } else {
+        Log.info(&quot;QueryResult : &quot; + JSON.stringify(queryArResult));
+
+        var dmaps = queryArResult.partyDetails;
+        if (dmaps) {
+
+            Log.info(&quot;Dispatch Maps size = &quot; + dmaps.length);
+            Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
+            Log.info(&quot;BaseDispatchstartTime = &quot; + BaseDispatchStartTimeAsDate);
+            for (var i in dmaps) {
+                var dq = {};
+                /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
+
+                var DispatchStartTimeAsDate = new Date();
+                DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+
+
+                /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
+                /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
+
+                
+                /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
+                /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
+                /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
+
+                /* unique id for all contacts belonging in this record*/
+                dq.contactMapping = dmaps[i].contactMapping;
+
+                /* if we have to wait for next contact or continue with next*/
+                dq.waitForNextContact = dmaps[i].waitForNextContact;
+
+
+                /* Template Type */
+                dq.TemplateType = dmaps[i].template.templateType;
+                /* Template for adaptor      */
+                if (!dmaps[i].template.jsonDefinition) {
+                    dq.Template = '';
+                } else {
+                    dq.Template = JSON.parse(dmaps[i].template.jsonDefinition);
+                }
+
+                /* If response can come      */
+                if (dq.Channel === 'Voice' || dq.Channel === 'NCR-EDI' || dq.Channel === 'DECAL')
+                    dq.WillRespond = 'yes';
+                else
+                    dq.WillRespond = 'no';
+
+                if (dq.TemplateType === 'other') {
+                    //template body has JSON for all the properties needed by this dispatch
+                    //stored in the template
+                    if (!dq.Template.body) {
+                        dq.Template = '';
+                    } else {
+                        dq.Template.body = JSON.parse(dq.Template.body);
+                    }
+
+                    /* Time To Live */
+                    if (dq.Template.body.Ttl) {
+                        dq.Ttl = dq.Template.body.Ttl;
+                    } else {
+                        dq.Ttl = 3600;
+                    }
+
+                    /* Max Retries to be done */
+                    if (dq.Template.body.MaxRetries) {
+                        dq.MaxRetries = dq.Template.body.MaxRetries;
+                    } else {
+                        dq.MaxRetries = 0;
+                    }
+                }
+
+
+                /* copy the sontacts array into dq and add a new Status variable*/
+                if (!dq.users) {
+                    dq.users = dmaps[i].users.slice();
+
+                    for (var x in dq.users) {
+                        var uu = dq.users[x];
+                        uu.Status = &quot;new&quot;;
+                    }
+                }
+
+
+                if (processUserBlockForCalendar(dq)) {
+                    if (dq.nextAvailableTime) {
+
+                        Log.info(&quot;StageDispatchForCreate: no current schedules found for the user, will have to sleep..&quot;);
+                        // Kick off the stage delay since no current schedules are there
+                        // Go to Sleep until next open time and come here instead of SendDispatch
+                        var currTime = new Date();
+                        Log.info('currTime: ' + currTime.toISOString());
+                        var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                        Log.info('goTime: ' + goTime.toISOString());
+                        var delayGapinMins = new Date(goTime - currTime).getMinutes();
+
+                        Log.info(&quot;Going to sleep due to user not available for &quot; + delayGapinMins + &quot; mins&quot;);
+
+                        Timer.start({
+                            eventName: 'ei_stage_dispatch',
+                            delayMs: delayGapinMins * 60 * 1000
+                        });
+                    }
+                    else {
+                        DispatchQueue.push(dq);
+                    }
+                }
+            }
+        }
+        //  Sort the Queue by sendtime
+        DispatchQueue.sort(function (a, b) {
+            if (a.SendTime &gt; b.SendTime)
+                return 1;
+            if (a.SendTime &lt; b.SendTime)
+                return -1;
+            return 0;
+        });
+    }
+    //  Save the Queue away
+    Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
+    Log.info(&quot;DispatchQueue = {}&quot;, Workflow.DispatchQueueStringify);
+}
+
+Log.info(&quot;Stage Dispatch For Create Exiting...&quot;);
+
+
+function processUserBlockForCalendar(dq) {
+    var result = false;
+    //  Sort the user array by seqNo
+    if (dq.users &amp;&amp; dq.users.length &gt; 0) {
+        dq.users.sort(function (a, b) {
+            if (a.sequenceNo &gt; b.sequenceNo)
+                return 1;
+            if (a.sequenceNo &lt; b.sequenceNo)
+                return -1;
+            return 0;
+        });
+    }
+
+    for (var i in dq.users) {
+        var user = dq.users[i];
+
+        processForUserAddress(user);
+        
+        if (user.Status === &quot;wait&quot; || user.Status === &quot;done&quot;)
+            continue;
+        
+
+        if (user.isAvailable) {
+            user.Status = &quot;new&quot;;            
+            result = true;
+        } else {
+            if (dq.waitForNextContact) {
+                dq.nextAvailableTime = user.nextAvailableTime;
+                result = true;
+                break;
+            } else {
+                continue;
+            }
+        }
+    }
+    return result;
+}
+
+
+function processForUserAddress(user) {
+    
+    /* Address Processing for Emailid, PhoneNum..       
+     * check if there is a comma, there can be 2 addresses for one user
+     * */
+    var addressString = user.address;
+    if (!addressString) {
+        Log.info(&quot;No Address provided for this contact record, skipping it..&quot;);
+        user.Status = &quot;error&quot;;
+    } else {
+        //try splitting on comma
+        var addrArray = addressString.split(',');
+        user.Address = addrArray[0].trim();
+        if (addrArray[1])
+            user.Address2 = addrArray[1].trim();
+    }
+}
+
+//  --------------------------------------------------------------------------------
+//  ESQ Management Solutions / ESQ Business Services
+//  --------------------------------------------------------------------------------
+
+
+</script>
+        <updatedTime>2016-09-15T08:49:45.217Z</updatedTime>
+    </action>
+    <action id="79" name="Prepare For Ack PreBreachReminder">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 1.0
+ PrepareAckPreBreachReminder
+ This action sets the stage and decides what needs to be done in this workflow
+ --------------------------------------------------------------------------------
+ */
+
+Log.info(&quot;Prepare for AckPreBreachReminder ...&quot;);
+
+//fake out the WflifeCycle as &quot;Ack&quot; to load all pre-breach reminders nin Stage Dispatch
+Workflow.WfLifecycle =  'Ack';
+    
+
+Log.info(&quot;Prepare for AckPreBreachReminder Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+</script>
+        <updatedTime>2016-09-17T05:28:10.113Z</updatedTime>
+    </action>
+    <action id="85" name="Stage Dispatch For Ack">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/*  --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.3
+ Stage Dispatch for Ack
+ This action loads dispatch maps and prepares a queue of dispatchs to be sent
+ Sorted by ascending order of send time
+ Then it emits an event with a 0 delay to kickoff the dispatch loop
+ --------------------------------------------------------------------------------
+ */
+/* global Log, Workflow, Timer, Contact */
+
+Log.info(&quot;Stage Dispatch for Ack Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+
+
+
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
+
+
+if (DispatchQueue === 'undefined') {
+    Log.info(&quot;Initializing DispatchQueue...&quot;);
+    DispatchQueue = new Array();
+}
+
+
+
+//for all other lifecycle events there is no need of ATM Schedule
+// we will default to AnyHours in this case
+var AtmSched = &quot;AnyHours&quot;; //default Atm Schedule
+
+//Do the time calcuation in case there was a delay due to nextAvailableATMSchedule during Create time
+var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
+if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' &amp;&amp; Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null) {
+    Log.info(&quot;Adding &quot; + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + &quot; in all timers due to Next Available ATM Schedule&quot;);
+    BaseDispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
+}
+
+
+
+
+
+Log.info(&quot;Args to QueryActionRule: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
+
+var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
+    actionRule: Workflow.ArName,
+    tenantId: Workflow.TenantId,
+    atmSchedule: AtmSched,
+    lifecycle: Workflow.WfLifecycle
+});
+
+if (!queryArResult) {
+    Log.info(&quot;No contacts for dispatch were returned in QueryResult&quot;);
+} else {
+    Log.info(&quot;QueryResult : &quot; + JSON.stringify(queryArResult));
+
+    var dmaps = queryArResult.partyDetails;
+    if (dmaps) {
+
+        Log.info(&quot;Dispatch Maps  size = &quot; + dmaps.length);
+        Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
+        Log.info(&quot;BaseDispatchstartTime = &quot; + BaseDispatchStartTimeAsDate);
+        for (var i in dmaps) {
+            var dq = {};
+            /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
+            /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
+            /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
+            /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
+            /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
+
+            //handling of SendTime and delay based on ContactType
+            var DispatchStartTimeAsDate = new Date(BaseDispatchStartTimeAsDate);
+            if (dq.ContactType === &quot;Pre Breach Reminder&quot;) {
+                //special handling of Pre-breach type 
+                //in this case the duration has to be subtracted from the SLA and accordingly adjusted
+                if (Workflow.WfLifecycle === &quot;Ack&quot;) {
+                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArAckSLA) - dmaps[i].duration.baseValueMinutes);
+
+                } else if (Workflow.WfLifecycle === &quot;Resolve&quot;) {
+                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArRslSLA) - dmaps[i].duration.baseValueMinutes);
+                }
+
+            }
+            else {
+                //for all other cases like notifications and escalations, duration needs to be added to basetime
+                DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+            }
+            
+            
+
+                
+                
+                
+
+
+
+            /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
+            /* unique id for all contacts belonging in this record*/
+            dq.contactMapping = dmaps[i].contactMapping;
+
+            /* if we have to wait for next contact or continue with next*/
+            dq.waitForNextContact = dmaps[i].waitForNextContact;
+
+
+            /* Template Type */
+            dq.TemplateType = dmaps[i].template.templateType;
+            /* Template for adaptor      */
+            if (!dmaps[i].template.jsonDefinition) {
+                dq.Template = '';
+            } else {
+                dq.Template = JSON.parse(dmaps[i].template.jsonDefinition);
+            }
+
+            /* If response can come      */
+            if (dq.Channel === 'Voice' || dq.Channel === 'NCR-EDI' || dq.Channel === 'DECAL')
+                dq.WillRespond = 'yes';
+            else
+                dq.WillRespond = 'no';
+
+            if (dq.TemplateType === 'other') {
+                //template body has JSON for all the properties needed by this dispatch
+                //stored in the template
+                if (!dq.Template.body) {
+                    dq.Template = '';
+                } else {
+                    dq.Template.body = JSON.parse(dq.Template.body);
+                }
+
+                /* Time To Live */
+                if (dq.Template.body.Ttl) {
+                    dq.Ttl = dq.Template.body.Ttl;
+                } else {
+                    dq.Ttl = 3600;
+                }
+
+                /* Max Retries to be done */
+                if (dq.Template.body.MaxRetries) {
+                    dq.MaxRetries = dq.Template.body.MaxRetries;
+                } else {
+                    dq.MaxRetries = 0;
+                }
+            }
+            //in case of breach ignore Notification and Pre-Breach Reminder type of Dispatch rules
+            //only load Breach and Escalation Types
+            if (Workflow.WfStatus === 'breached') {
+                if (dq.ContactType === 'Breach' || dq.ContactType.startsWith(&quot;Escalation&quot;)) {
+                    //add to Q
+                } else if (dq.ContactType === 'Notification' || dq.ContactType === &quot;Pre Breach Reminder&quot;) {
+                    //do not add to Q
+                    continue;
+                }
+            } else if (Workflow.WfStatus === 'acked' || Workflow.WfStatus === 'resolved') {
+                if (dq.ContactType !== 'Notification')
+                    continue;
+            } else if (Workflow.WfStatus === 'new') {
+                if (dq.ContactType !== 'Pre Breach Reminder')
+                    continue;
+            }
+
+
+            /* copy the sontacts array into dq and add a new Status variable*/
+            if (!dq.users) {
+                dq.users = dmaps[i].users.slice();
+
+                for (var x in dq.users) {
+                    var uu = dq.users[x];
+                    uu.Status = &quot;new&quot;;
+                }
+            }
+
+            if (processUserBlockForCalendar(dq)) {
+                if (dq.nextAvailableTime) {
+
+                    Log.info(&quot;StageDispatchForAck: no current schedules found for the user, will have to sleep..&quot;);
+                    // Kick off the stage delay since no current schedules are there
+                    // Go to Sleep until next open time and come here instead of SendDispatch
+                    var currTime = new Date();
+                    Log.info('currTime: ' + currTime.toISOString());
+                    var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                    Log.info('goTime: ' + goTime.toISOString());
+                    var delayGapinMins = new Date(goTime - currTime).getMinutes();
+
+                    Log.info(&quot;Going to sleep due to user not available for &quot; + delayGapinMins + &quot; mins&quot;);
+
+                    Timer.start({
+                        eventName: 'ei_stage_dispatch',
+                        delayMs: delayGapinMins * 60 * 1000
+                    });
+                }
+                else {
+                    DispatchQueue.push(dq);
+                }
+            }
+        }
+    }
+    //  Sort the Queue by sendtime
+    DispatchQueue.sort(function (a, b) {
+        if (a.SendTime &gt; b.SendTime)
+            return 1;
+        if (a.SendTime &lt; b.SendTime)
+            return -1;
+        return 0;
+    });
+}
+//  Save the Queue away
+Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
+Log.info(&quot;DispatchQueue = {}&quot;, Workflow.DispatchQueueStringify);
+Log.info(&quot;Stage Dispatch for Ack Exiting...&quot;);
+
+
+function processUserBlockForCalendar(dq) {
+    var result = false;
+    //  Sort the user array by seqNo
+    if (dq.users &amp;&amp; dq.users.length &gt; 0) {
+        dq.users.sort(function (a, b) {
+            if (a.sequenceNo &gt; b.sequenceNo)
+                return 1;
+            if (a.sequenceNo &lt; b.sequenceNo)
+                return -1;
+            return 0;
+        });
+    }
+
+    for (var i in dq.users) {
+        var user = dq.users[i];
+
+        processForUserAddress(user);
+
+        if (user.Status === &quot;wait&quot; || user.Status === &quot;done&quot;)
+            continue;
+
+
+        if (user.isAvailable) {
+            user.Status = &quot;new&quot;;
+            result = true;
+        } else {
+            if (dq.waitForNextContact) {
+                dq.nextAvailableTime = user.nextAvailableTime;
+                result = true;
+                break;
+            } else {
+                continue;
+            }
+        }
+    }
+    return result;
+}
+
+
+function processForUserAddress(user) {
+
+    /* Address Processing for Emailid, PhoneNum..       
+     * check if there is a comma, there can be 2 addresses for one user
+     * */
+    var addressString = user.address;
+    if (!addressString) {
+        Log.info(&quot;No Address provided for this contact record, skipping it..&quot;);
+        user.Status = &quot;error&quot;;
+    } else {
+        //try splitting on comma
+        var addrArray = addressString.split(',');
+        user.Address = addrArray[0].trim();
+        if (addrArray[1])
+            user.Address2 = addrArray[1].trim();
+    }
+}
+
+//  --------------------------------------------------------------------------------
+//  ESQ Management Solutions / ESQ Business Services
+//  --------------------------------------------------------------------------------
+
+
+</script>
+        <updatedTime>2016-09-17T05:27:29.973Z</updatedTime>
+    </action>
+    <action id="80" name="Prepare For Resolve PreBreachReminder">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 1.0
+ PrepareRslPreBreachReminder
+ This action sets the stage and decides what needs to be done in this workflow
+ --------------------------------------------------------------------------------
+ */
+
+Log.info(&quot;Prepare for RslPreBreachReminder ...&quot;);
+
+//fake out the WflifeCycle as &quot;Resolve&quot; to load all pre-breach reminders nin Stage Dispatch
+Workflow.WfLifecycle =  'Resolve';
+    
+
+Log.info(&quot;Prepare for RslPreBreachReminder Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+</script>
+        <updatedTime>2016-09-17T05:28:17.317Z</updatedTime>
+    </action>
+    <action id="48" name="Stage Dispatch">
+        <description></description>
+        <isActive>true</isActive>
+        <note>- Loads dispatch maps
+- Prepares a queue of dispatches
+- Sorts by ascending order of send time
+- Emits an event with a 0 delay to kickoff the send dispatch action</note>
+        <script>/*  --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.3
+ StageDispatch
+ This action loads dispatch maps and prepares a queue of dispatchs to be sent
+ Sorted by ascending order of send time
+ Then it emits an event with a 0 delay to kickoff the dispatch loop
+ --------------------------------------------------------------------------------
+ */
+/* global Log, Workflow, Timer, Contact */
+
+Log.info(&quot;Stage Dispatch Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+
+
+
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
+
+
+if (DispatchQueue === 'undefined') {
+    Log.info(&quot;Initializing DispatchQueue...&quot;);
+    DispatchQueue = new Array();
+}
+
+
+
+//for all other lifecycle events there is no need of ATM Schedule
+// we will default to AnyHours in this case
+var AtmSched = &quot;AnyHours&quot;; //default Atm Schedule
+
+//Do the time calcuation in case there was a delay due to nextAvailableATMSchedule during Create time
+var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
+if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' &amp;&amp; Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null) {
+    Log.info(&quot;Adding &quot; + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + &quot; in all timers due to Next Available ATM Schedule&quot;);
+    BaseDispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
+}
+
+
+
+
+
+Log.info(&quot;Args to QueryActionRule: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
+
+var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
+    actionRule: Workflow.ArName,
+    tenantId: Workflow.TenantId,
+    atmSchedule: AtmSched,
+    lifecycle: Workflow.WfLifecycle
+});
+
+if (!queryArResult) {
+    Log.info(&quot;No contacts for dispatch were returned in QueryResult&quot;);
+} else {
+    Log.info(&quot;QueryResult : &quot; + JSON.stringify(queryArResult));
+
+    var dmaps = queryArResult.partyDetails;
+    if (dmaps) {
+
+        Log.info(&quot;Dispatch Maps size = &quot; + dmaps.length);
+        Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
+        Log.info(&quot;BaseDispatchstartTime = &quot; + BaseDispatchStartTimeAsDate);
+        for (var i in dmaps) {
+            var dq = {};
+            /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
+            /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
+            /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
+            /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
+            /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
+
+            //handling of SendTime and delay based on ContactType
+            var DispatchStartTimeAsDate = new Date(BaseDispatchStartTimeAsDate);
+            if (dq.ContactType === &quot;Pre Breach Reminder&quot;) {
+                //special handling of Pre-breach type 
+                //in this case the duration has to be subtracted from the SLA and accordingly adjusted
+                if (Workflow.WfLifecycle === &quot;Ack&quot;) {
+                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArAckSLA) - dmaps[i].duration.baseValueMinutes);
+
+                } else if (Workflow.WfLifecycle === &quot;Resolve&quot;) {
+                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArRslSLA) - dmaps[i].duration.baseValueMinutes);
+                }
+
+            }
+            else {
+                //for all other cases like notifications and escalations, duration needs to be added to basetime
+                DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+            }
+
+
+
+            /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
+            /* unique id for all contacts belonging in this record*/
+            dq.contactMapping = dmaps[i].contactMapping;
+
+            /* if we have to wait for next contact or continue with next*/
+            dq.waitForNextContact = dmaps[i].waitForNextContact;
+
+
+            /* Template Type */
+            dq.TemplateType = dmaps[i].template.templateType;
+            /* Template for adaptor      */
+            if (!dmaps[i].template.jsonDefinition) {
+                dq.Template = '';
+            } else {
+                dq.Template = JSON.parse(dmaps[i].template.jsonDefinition);
+            }
+
+            /* If response can come      */
+            if (dq.Channel === 'Voice' || dq.Channel === 'NCR-EDI' || dq.Channel === 'DECAL')
+                dq.WillRespond = 'yes';
+            else
+                dq.WillRespond = 'no';
+
+            if (dq.TemplateType === 'other') {
+                //template body has JSON for all the properties needed by this dispatch
+                //stored in the template
+                if (!dq.Template.body) {
+                    dq.Template = '';
+                } else {
+                    dq.Template.body = JSON.parse(dq.Template.body);
+                }
+
+                /* Time To Live */
+                if (dq.Template.body.Ttl) {
+                    dq.Ttl = dq.Template.body.Ttl;
+                } else {
+                    dq.Ttl = 3600;
+                }
+
+                /* Max Retries to be done */
+                if (dq.Template.body.MaxRetries) {
+                    dq.MaxRetries = dq.Template.body.MaxRetries;
+                } else {
+                    dq.MaxRetries = 0;
+                }
+            }
+            //in case of breach ignore Notification and Pre-Breach Reminder type of Dispatch rules
+            //only load Breach and Escalation Types
+            if (Workflow.WfStatus === 'breached') {
+                if (dq.ContactType === 'Breach' || dq.ContactType.startsWith(&quot;Escalation&quot;)) {
+                    //add to Q
+                } else if (dq.ContactType === 'Notification' || dq.ContactType === &quot;Pre Breach Reminder&quot;) {
+                    //do not add to Q
+                    continue;
+                }
+            } else if (Workflow.WfStatus === 'acked' || Workflow.WfStatus === 'resolved') {
+                if (dq.ContactType !== 'Notification')
+                    continue;
+            } else if (Workflow.WfStatus === 'new') {
+                if (dq.ContactType !== 'Pre Breach Reminder')
+                    continue;
+            }
+
+            /* copy the contacts array into dq and add a new Status variable*/
+            if (!dq.users) {
+                dq.users = dmaps[i].users.slice();
+                for (var x in dq.users) {
+                    var uu = dq.users[x];
+                    uu.Status = &quot;new&quot;;
+                }
+            }
+
+            if (processUserBlockForCalendar(dq)) {
+                if (dq.nextAvailableTime) {
+
+                    Log.info(&quot;StageDispatchForAck: no current schedules found for the user, will have to sleep..&quot;);
+                    // Kick off the stage delay since no current schedules are there
+                    // Go to Sleep until next open time and come here instead of SendDispatch
+                    var currTime = new Date();
+                    Log.info('currTime: ' + currTime.toISOString());
+                    var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                    Log.info('goTime: ' + goTime.toISOString());
+                    var delayGapinMins = new Date(goTime - currTime).getMinutes();
+
+                    Log.info(&quot;Going to sleep due to user not available for &quot; + delayGapinMins + &quot; mins&quot;);
+
+                    Timer.start({
+                        eventName: 'ei_stage_dispatch',
+                        delayMs: delayGapinMins * 60 * 1000
+                    });
+                }
+                else {
+                    DispatchQueue.push(dq);
+                }
+            }
+        }
+    }
+    //  Sort the Queue by sendtime
+    DispatchQueue.sort(function (a, b) {
+        if (a.SendTime &gt; b.SendTime)
+            return 1;
+        if (a.SendTime &lt; b.SendTime)
+            return -1;
+        return 0;
+    });
+}
+//  Save the Queue away
+Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
+Log.info(&quot;DispatchQueue = {}&quot;, Workflow.DispatchQueueStringify);
+
+//  Kick off dispatch
+Timer.start({
+    eventName: 'ei_send_dispatch',
+    delayMs: 0
+});
+
+
+Log.info(&quot;Stage Dispatch Exiting...&quot;);
+
+
+function processUserBlockForCalendar(dq) {
+    var result = false;
+    //  Sort the user array by seqNo
+    if (dq.users &amp;&amp; dq.users.length &gt; 0) {
+        dq.users.sort(function (a, b) {
+            if (a.sequenceNo &gt; b.sequenceNo)
+                return 1;
+            if (a.sequenceNo &lt; b.sequenceNo)
+                return -1;
+            return 0;
+        });
+    }
+
+    for (var i in dq.users) {
+        var user = dq.users[i];
+
+        processForUserAddress(user);
+
+        if (user.Status === &quot;wait&quot; || user.Status === &quot;done&quot;)
+            continue;
+
+
+        if (user.isAvailable) {
+            user.Status = &quot;new&quot;;
+            result = true;
+        } else {
+            if (dq.waitForNextContact) {
+                dq.nextAvailableTime = user.nextAvailableTime;
+                result = true;
+                break;
+            } else {
+                continue;
+            }
+        }
+    }
+    return result;
+}
+
+
+function processForUserAddress(user) {
+
+    /* Address Processing for Emailid, PhoneNum..       
+     * check if there is a comma, there can be 2 addresses for one user
+     * */
+    var addressString = user.address;
+    if (!addressString) {
+        Log.info(&quot;No Address provided for this contact record, skipping it..&quot;);
+        user.Status = &quot;error&quot;;
+    } else {
+        //try splitting on comma
+        var addrArray = addressString.split(',');
+        user.Address = addrArray[0].trim();
+        if (addrArray[1])
+            user.Address2 = addrArray[1].trim();
+    }
+}
+
+//  --------------------------------------------------------------------------------
+//  ESQ Management Solutions / ESQ Business Services
+//  --------------------------------------------------------------------------------
+
+
+</script>
+        <updatedTime>2016-09-17T05:27:48.863Z</updatedTime>
+    </action>
+    <action id="81" name="Set Lifecycle To Create">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 1.0
+SetLifecyletoCreate
+ This action sets the stage and decides what needs to be done in this workflow
+ --------------------------------------------------------------------------------
+ */
+
+Log.info(&quot;Prepare for SetLifecyletoCreate ...&quot;);
+
+//reset back he WflifeCycle as &quot;Create&quot; to load all pre-breach reminders in Stage Dispatch
+Workflow.WfLifecycle =  'Create';
+
+//  Kick off dispatch
+Timer.start({
+    eventName: 'ei_send_dispatch',
+    delayMs: 0
+});
+    
+
+Log.info(&quot;Prepare for SetLifecyletoCreate Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+</script>
+        <updatedTime>2016-09-17T05:28:39.943Z</updatedTime>
+    </action>
+    <action id="45" name="Prepare For Ack">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   PrepareAck
+   This action sets the stage and decides what needs to be done in this workflow
+   --------------------------------------------------------------------------------
+*/
+Log.info(&quot;Prepare for Ack Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+// Check WorkFlow State. If !'active' then ignore.
+// Set Variable WorkFlow.LifeCycle.State to 'acked'
+if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfStatus == 'reopened') {
+    Workflow.WfLifecycle =  'Ack';
+    Workflow.WfStatus    =  'acked';
+    Timer.cancel('ei_ack_sla_breach');
+    //TODO Copy Ack details into WorkFlow [ack time, ack user]
+    
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
+}
+
+Log.info(&quot;Prepare for Ack Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+
+
+
+</script>
+        <updatedTime>2016-09-11T12:19:50.44Z</updatedTime>
+    </action>
+    <action id="56" name="Prepare For ETA">
+        <description></description>
+        <isActive>false</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.3
+ PrepareETA
+ This action sets the stage and decides what needs to be done in this workflow
+ --------------------------------------------------------------------------------
+ */
+/* global Log, Workflow, Timer */
+
+Log.info(&quot;Prepare for ETA Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
+// Check WorkFlow State. If !'active' then ignore.
+// Set Variable WorkFlow.LifeCycle.State to 'acked'
+if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.WfStatus === 'reopened') {
+    var ArrSLABreachDelay = 0;
+    // CALCULATE THIS FROM ETA
+    Timer.start({
+        eventName: 'ei_arr_sla_breach',
+        delayMs: Workflow.ArrSLABreachDelay * 60 * 1000
+    });
+}
+Log.info(&quot;Prepare for ETA Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+
+
+
+
+</script>
+        <updatedTime>2016-09-11T12:26:41.29Z</updatedTime>
+    </action>
+    <action id="57" name="Prepare For Arrived">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.3
+ PrepareArr
+ This action sets the stage and decides what needs to be done in this workflow
+ --------------------------------------------------------------------------------
+ */
+/* global Log, Workflow, Timer */
+
+Log.info(&quot;Prepare for Arrive Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
+// Check WorkFlow State. If !'active' then ignore.
+// Set Variable WorkFlow.LifeCycle.State to 'Arrive'
+if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked') {
+    Workflow.WfLifecycle = 'Arrive';
+    Workflow.WfStatus = 'working';
+    Timer.cancel('ei_arr_sla_breach');
+    
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
+
+}
+// Copy Arrive details into WorkFlow [arrive time, arrive user]
+
+Log.info(&quot;Prepare for Arrive Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+
+
+
+
+</script>
+        <updatedTime>2016-09-11T12:29:29.613Z</updatedTime>
+    </action>
+    <action id="58" name="Prepare For Hold">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   PrepareHold
+   This action sets the stage and decides what needs to be done in this workflow
+   --------------------------------------------------------------------------------
+*/
+/* global Log, Workflow */
+
+Log.info(&quot;Prepare for Hold Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+// Check WorkFlow State. If !'active' then ignore.
+// Set Variable WorkFlow.LifeCycle.State to 'Hold'
+if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked' || Workflow.WfStatus ===  'working') {
+    Workflow.WfLifecycle =  'Hold';
+    Workflow.WfStatus    =  'onHold';
+}
+// Copy Hold details into WorkFlow [hold time, hold user]
+
+Log.info(&quot;Prepare for Hold Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+
+
+
+
+</script>
+        <updatedTime>2016-09-11T12:34:36.777Z</updatedTime>
+    </action>
+    <action id="61" name="Prepare For Resolve">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   PrepareResolve
+   This action sets the stage and decides what needs to be done in this workflow
+   --------------------------------------------------------------------------------
+*/
+/* global Log, Workflow, Timer */
+
+Log.info(&quot;Prepare for Resolve Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+// Check WorkFlow State. If !'active' then ignore.
+// Set Variable WorkFlow.LifeCycle.State to 'resolved'
+if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked' || Workflow.WfStatus ===  'working') {
+    Workflow.WfLifecycle =  'Resolve';
+    Workflow.WfStatus    =  'resolved';
+    Timer.cancel('ei_rsl_sla_breach');
+    
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
+
+}
+
+Log.info(&quot;Prepare for Resolve Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+
+
+
+
+</script>
+        <updatedTime>2016-09-13T06:41:05.543Z</updatedTime>
+    </action>
+    <action id="63" name="Prepare For Close">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   PrepareClose
+   This action sets the stage and decides what needs to be done in this workflow
+   --------------------------------------------------------------------------------
+*/
+/* global Log, Workflow */
+
+Log.info(&quot;Prepare for Close Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+// Check WorkFlow State. If !'active' then ignore.
+// Set Variable WorkFlow.LifeCycle.State to 'acked'
+if (Workflow.WfStatus !== 'closed') {
+    Workflow.WfLifecycle =  'Close';
+    Workflow.WfStatus    =  'closed';
+} else {
+    Log.info(': current State = ' + Workflow.WfStatus + ' event ignored');
+}
+// Copy Close details into WorkFlow [Close time, Close user]
+
+Log.info(&quot;Prepare for Close Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+
+
+
+
+</script>
+        <updatedTime>2016-09-11T12:38:28.583Z</updatedTime>
+    </action>
+    <action id="1" name="Stop WorkFlow">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 1.0
+   Stop Workflow
+   This script stops the Workflow
+   --------------------------------------------------------------------------------
+*/
+/* global Log,  Workflow */
+
+
+Log.info(&quot;Stopping workflow for incident id = {}&quot;, Workflow.InIncidentId);
+Workflow.stop();
+
+
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------</script>
+        <updatedTime>2016-09-17T08:05:56.8Z</updatedTime>
+    </action>
+    <action id="68" name="Prepare For Ack SLA Breach">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   PrepareAckSLABreach
+   This script prepares actions and dispatch on an AckSLABreach
+   --------------------------------------------------------------------------------
+*/
+/* global Log, Event */
+
+Log.info(&quot;Prepare Ack SLA Breach Entered...&quot;);
+
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+
+// Set Variable WorkFlow.LifeCycle.State to 'acked'
+if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfStatus == 'reopened') {
+    Workflow.WfLifecycle =  'Ack';
+    Workflow.WfStatus    =  'breached';
+    
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
+}
+
+Log.info(&quot;Prepare Ack SLA Breach Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+</script>
+        <updatedTime>2016-09-13T06:41:36.5Z</updatedTime>
+    </action>
+    <action id="77" name="Prepare For Resolution SLA Breach">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   PrepareRslSLABreach
+   This script prepares actions and dispatch on an Resolution SLABreach
+   --------------------------------------------------------------------------------
+*/
+/* global Log, Timer, Event */
+
+Log.info(&quot;Prepare Rsl SLA Breach Entered...&quot;);
+
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+
+if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked' || Workflow.WfStatus ===  'working') {
+    Workflow.WfLifecycle =  'Resolve';
+    Workflow.WfStatus    =  'breached';
+    
+    //clean the DispatchQueue and setup for reload
+    DispatchQueue.length = 0;
+    Workflow.DispatchQueueStringify ='undefined';
+
+}
+
+
+Log.info(&quot;Prepare Rsl SLA Breach Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+</script>
+        <updatedTime>2016-09-11T11:20:05.06Z</updatedTime>
+    </action>
+    <action id="51" name="Send Dispatch">
+        <description></description>
+        <isActive>true</isActive>
+        <note>Go through all the timers and send dispatches based on the dispatch queue and timers</note>
+        <script>/*  --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.3
+ SendDispatch
+ This action is initially triggered by the ei_send_dispatch event
+ Sends all notifications whose send time is now or earlier
+ If there are any more that require a delay it starts a Timer
+ This action can also be triggered by ei_call_voice_error
+ TBD
+ --------------------------------------------------------------------------------
+ */
+/* global Log, Workflow, Timer, Contact, email, voxeo, Event, helpdesk */
+
+Log.info(&quot;Send Dispatch Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = JSON.parse(Workflow.DispatchQueueStringify);
+
+
+Log.info('EventType       SendTime                     DelayMins  Status  Channel ContactType      AtmSchedule             WillRespond     Ttl     MaxRetries     FirstName   LastName    Address        Address2        Template         ');
+for (var i in DispatchQueue) {
+    var dq = DispatchQueue[i];
+    for (var j in dq.users) {
+        var user = dq.users[j];
+        Log.info(dq.EventType + &quot;\t\t&quot; + dq.SendTime + &quot;\t&quot; + dq.DelayMins + &quot;\t&quot; + user.Status + &quot;\t&quot; + dq.Channel + &quot;\t&quot; + dq.ContactType + &quot;\t&quot; + dq.AtmSchedule + &quot;\t&quot; + dq.WillRespond + &quot;\t\t&quot; + dq.Ttl + &quot;\t&quot; + dq.MaxRetries + &quot;\t\t&quot; + user.firstName + &quot; &quot; + user.lastName + &quot; &quot; + user.Address + &quot;\t\t&quot; + user.Address2 + &quot;\t\t&quot; + dq.Template);
+    }
+}
+
+
+var dq, delayMins, currChannel;
+
+//  See if the Incident is in suitable state
+if (Workflow.WfStatus !== 'undefined' &amp;&amp; Workflow.WfStatus !== '') {
+
+    for (var i in DispatchQueue) {
+
+        //  dequeue next dispatch to be sent
+        dq = DispatchQueue[i];
+
+        for (var j in dq.users) {
+            
+            var user = dq.users[j];
+
+            //check if this notification has already been processed
+            if (user.Status === 'done')
+                continue;
+
+            Log.info('Dispatch Data:(' + i + ') delayMins: ' + dq.DelayMins + ' Status: ' + user.Status);
+
+            var currTime = new Date();
+            Log.info('currTime: ' + currTime.toISOString());
+            var goTime = new Date(Date.parse(dq.SendTime));
+            Log.info('goTime: ' + goTime.toISOString());
+
+            if (user.Status === 'new' || user.Status === 'retry') {
+                if (goTime &gt; currTime) {
+                    //set Timer for next notification
+                    Log.info(&quot;Setting the next timer for = {} mins&quot;, dq.DelayMins);
+                    Timer.start({
+                        eventName: 'ei_send_dispatch',
+                        delayMs: dq.DelayMins * 60 * 1000
+                    });
+                    user.Status = 'wait';
+                    break;
+                }
+            } else if (user.Status !== 'wait') {
+                break;
+            }
+            // All new with 0 delay and waits
+
+            //  actually send to the adaptor
+            currChannel = dq.Channel.toLowerCase();
+            switch (currChannel)
+            {
+                case 'email':
+                {
+                    Contact.replaceVariables(dq.Template, {Workflow: Workflow});
+                    email.send({to: user.Address, subject: dq.Template.subject, body: dq.Template.body, htmlEmail: &quot;true&quot;});
+                    Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
+                    helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: &quot;ACTIVITY&quot;, operationame: &quot;Email&quot;, category: &quot;Contact&quot;, subcategory: &quot;EMAIL&quot;, activitytime: new Date().toISOString(), result: &quot;Success&quot;, remarks: &quot;Notification via Email&quot;, resulttext: &quot;&quot;});
+                    user.Status = 'done';
+                    break;
+                }
+                case 'sms' :
+                {
+                    break;
+                }
+                case 'voice' :
+                {
+                    Contact.replaceVariables(dq.Template, {Workflow: Workflow});
+                    voxeo.call({
+                        //destinationNumber: &quot;sip:linphone@192.168.1.90:5060&quot;,
+                        destinationNumber: user.Address,
+                        dialogId: &quot;dispatchNotification/dispatchInfo.vxml&quot;,
+                        retries: &quot;2&quot;,
+                        report: &quot;true&quot;,
+                        responseProperties: {
+                            //&quot;terminal id&quot;:Workflow.InTermId,
+                            terminalId: Workflow.InTermId,
+                            IncidentId: Workflow.InIncidentId
+
+                        },
+                        content: {
+                            objectId: Workflow.InIncidentId,
+                            reason: &quot;Technical Help Required for Policy, &quot; + Workflow.InPolicyName,
+                            incidentId: Workflow.InIncidentId,
+                            note: &quot;&quot;,
+                            terminalId: Workflow.InTermId,
+                            eta: false,
+                            lang: &quot;en-US&quot;
+                        }
+                    });
+
+                    dq.Status = 'calling';
+                    Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.FirstName + ', LastName = ' + user.LastName + ', Address = ' + user.Address);
+                    helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: &quot;ACTIVITY&quot;, operationame: &quot;Voice&quot;, category: &quot;Contact&quot;, subcategory: &quot;TELEPHONE&quot;, activitytime: new Date().toISOString(), result: user.Status, remarks: &quot;Notification via Voice&quot;, resulttext: &quot;&quot;});
+
+                    break;
+                }
+                case 'edi' :
+                {
+                    break;
+                }
+                default :
+                {
+                    Log.Info(&quot;Default Hit in Channel&quot;);
+                }
+            }
+        }
+    }
+
+    //  Save the Queue away
+    Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
+}
+Log.info(&quot;Send Dispatch Exiting...&quot;);
+
+/* --------------------------------------------------------------------------------
+ SendActivity Function
+ This action sets the stage and decides what needs to be done in this workflow
+ --------------------------------------------------------------------------------
+ */
+function SendActivity(IncidentId, OperationType, OperationName,
+        Status, SubStatus,
+        Category, SubCategory, ActivityTime, ExternalTicketId,
+        ExternalTicketStatus, ExternalTicketSubStatus,
+        ExternalCategory, ExternalSubCategory,
+        Result, ResultText, Remarks,
+        TargetParty, TargetPartyId)
+{
+    var activity = {
+        incidentid: IncidentId,
+        operationtype: OperationType,
+        operationame: OperationName,
+        status: Status,
+        substatus: SubStatus,
+        category: Category,
+        subcategory: SubCategory,
+        activitytime: ActivityTime,
+        externalticketid: ExternalTicketId,
+        externalticketstatus: ExternalTicketStatus,
+        externalticketsubstatus: ExternalTicketSubStatus,
+        externalcategory: ExternalCategory,
+        externalsubcategory: ExternalSubCategory,
+        result: Result,
+        resulttext: ResultText,
+        remarks: Remarks,
+        targetparty: TargetParty,
+        targetpartyid: TargetPartyId,
+        additionalInfo: {}
+    };
+    for (var i in Event)
+        activity.additionalInfo[i] = Event[i];
+    helpdesk.send(activity);
+}
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+</script>
+        <updatedTime>2016-09-15T12:30:34.41Z</updatedTime>
+    </action>
+    <action id="78" name="Send Ack Activity to IMS ">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 1.0
+   SendActivity Function
+   This action sends Ack Activity to IMS
+ --------------------------------------------------------------------------------
+*/
+/* global Log, Workflow, helpdesk */
+
+Log.info(&quot;Received Ack from Voice, calling Send Ack Activity to IMS......&quot;); 
+
+Workflow.ackTime = new Date().toISOString();
+
+helpdesk.send({incidentid:Workflow.InIncidentId, operationtype:&quot;ACTIVITY&quot;, operationame: &quot;ADD&quot;, status: &quot;OPEN&quot;, substatus:&quot;ACKNOWLEDGE&quot;, category: &quot;Incident Status&quot;,subcategory:&quot;Update&quot;, activitytime: Workflow.ackTime, result : &quot;Success&quot;, resulttext: &quot;&quot;, remarks : &quot;Recevied Ack via Voice&quot;});
+                
+Log.info(&quot;Ack sent to IMS&quot;);
+
+
+</script>
+        <updatedTime>2016-09-15T06:08:41.31Z</updatedTime>
+    </action>
+    <action id="64" name="Prepare For Reopen">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   PrepareReopen
+   This action sets the stage and decides what needs to be done in this workflow
+   --------------------------------------------------------------------------------
+*/
+/* global Log, Workflow */
+
+Log.info(&quot;Prepare for Reopen Entered...&quot;);
+//  Restore DispatchQueue from Stringfy version in Workflow context
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+// Check WorkFlow State. If !'active' then ignore.
+// Set Variable WorkFlow.LifeCycle.State to 'acked'
+if (Workflow.WfStatus === 'resolved') {
+    Workflow.WfLifecycle =  'reopen';
+    Workflow.WfStatus    =  'reopened';
+}
+// Copy reopem details into WorkFlow [reopen time, reopen user]
+
+Log.info(&quot;Prepare for Reopen Exiting...&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+
+
+
+
+</script>
+        <updatedTime>2016-09-17T05:31:28.983Z</updatedTime>
+    </action>
+    <action id="69" name="Prepare For Start Work or Resume Work">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/* --------------------------------------------------------------------------------
+   ESQ Management Solutions / ESQ Business Services
+   --------------------------------------------------------------------------------
+   Dispatcher Standard Workflow V 2.8.7.3
+   PrepareStartOrResume
+   This script prepares actions and dispatch on an Start or Resume
+   --------------------------------------------------------------------------------
+*/
+
+/* global Log */
+
+//do something here
+
+Log.info(&quot;Started or resumed Work&quot;);
+// --------------------------------------------------------------------------------
+// ESQ Management Solutions / ESQ Business Services
+// --------------------------------------------------------------------------------
+
+
+</script>
+        <updatedTime>2016-09-17T05:34:02.11Z</updatedTime>
+    </action>
+    <action id="87" name="Send Voice Error">
+        <description></description>
+        <isActive>true</isActive>
+        <note></note>
+        <script>/*  --------------------------------------------------------------------------------
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.3
+ Send Error from Voice Adaptor
+ This action checks reries and delays and requeues the dispatch if appropriate
+ For Create it also queues the next contact to be contacted as needed
+ --------------------------------------------------------------------------------
+ */
+/* global Log, Workflow, currdq, Event */
+
+Log.info(&quot;Send Error for Voice Entered...&quot;);
+
+Log.info(&quot;Error received in Voice call&quot;);
+for (var i in Event)
+  Log.info(Event[i]);
+
+//  Restore DispatchQueue from Stringfy version in Workflow context
+
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
+
+var dq;
+delayMs = 0;
+
+for (var i in DispatchQueue) {
+    var dq = DispatchQueue[i];
+    if (currdq.Status === 'calling' &amp; currdq.Channel === 'voice') {
+        break;
+    }
+}
+
+//need to check the error and then decide
+// Check if another user is configured (G Dispatch Block handling)
+
+//  Sort the Queue by sendtime
+    //  Sort the Queue by sendtime
+    DispatchQueue.sort(function (a, b) {
+        if (a.SendTime &gt; b.SendTime)
+            return 1;
+        if (a.SendTime &lt; b.SendTime)
+            return -1;
+        return 0;
+    });    
+
+
+//  Save the Queue away
+Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
+
+Log.info(&quot;DispatchQueue = {}&quot;, Workflow.DispatchQueueStringify);
+
+//  Kick off the sending of notifications
+Timer.start({
+    eventName: 'ei_send_dispatch',
+    delayMs: 0
+});
+
+Log.info(&quot;Send Error for Voice Exiting...&quot;);
+//  --------------------------------------------------------------------------------
+//  ESQ Management Solutions / ESQ Business Services
+//  --------------------------------------------------------------------------------
+</script>
+        <updatedTime>2016-09-15T13:15:42.59Z</updatedTime>
+    </action>
+</ns2:DispatchSystem>

@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.2
+   Dispatcher Standard Workflow V 2.8.7.3
    LogEvent
    Utility for designer to view current Event values
    --------------------------------------------------------------------------------
