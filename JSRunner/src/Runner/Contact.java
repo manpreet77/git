@@ -58,7 +58,7 @@ public class Contact {
     
     
             
-    public Object queryActionRuleWithNextAvaialbleUser(ScriptObjectMirror mirror) throws IOException {
+    public Object queryDispatchMapWithNextAvailableUser(ScriptObjectMirror mirror) throws IOException {
 
         String responseFileName = "";
         

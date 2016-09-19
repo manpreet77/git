@@ -42,7 +42,7 @@ if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Work
 
 Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
 
-var queryArResult = Contact.queryActionRuleWithNextAvaialbleUser({
+var queryArResult = Contact.queryDispatchMapWithNextAvailableUser({
     actionRule: Workflow.ArName,
     tenantId: Workflow.TenantId,
     atmSchedule: AtmSched,
