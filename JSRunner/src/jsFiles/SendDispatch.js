@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.4
+ Dispatcher Standard Workflow V 2.8.7.5
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -57,6 +57,10 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
             //in case there are multiple users in the dq, we check the 
             if(user.Status === 'new' && user.isAvailable === false && user.nextAvailableTime !== 'undefined'){
                 // Go to Sleep until next available time for this user and come here again
+                //deal with incompatible format coming from Contacts API
+                if(user.nextAvailableTime.indexOf("+0000") > -1){
+                    user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
+                }
                 goTime = new Date(Date.parse(user.nextAvailableTime));
                 
                 Log.info('goTime: ' + goTime.toISOString() + 'for user ' + user.firstName);
