@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.7
+ Dispatcher Standard Workflow V 2.8.7.8
  Stage Dispatch for Ack
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -143,7 +143,7 @@ if (!queryArResult) {
             //in case of breach ignore Notification and Pre-Breach Reminder type of Dispatch rules
             //only load Breach and Escalation Types
             if (Workflow.WfStatus === 'breached') {
-                if (dq.ContactType === 'Breach' || dq.ContactType.startsWith("Escalation")) {
+                if (dq.ContactType === 'Breach' || dq.ContactType.indexOf("Escalation") > -1) {
                     //add to Q
                 } else if (dq.ContactType === 'Notification' || dq.ContactType === "Pre Breach Reminder") {
                     //do not add to Q

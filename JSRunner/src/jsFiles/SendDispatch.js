@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.7
+ Dispatcher Standard Workflow V 2.8.7.8
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -97,32 +97,34 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 {
                     Contact.replaceVariables(dq.Template, {Workflow: Workflow});
                     email.send({to: user.Address, subject: dq.Template.subject, body: dq.Template.body, htmlEmail: "true"});
-                    Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
+                    
                     var category, subcategory, remarks;
                     if (dq.ContactType === "Notification") {
                         category = "Contact";
                         subcategory = "EMAIL";
-                        remarks = "Initial Notification via Email.";
+                        remarks = "Notification via Email for " + dq.EventType;
                     } else if (dq.ContactType === "Pre Breach Reminder") {
                         category = "Contact";
                         subcategory = "EMAIL";
-                        remarks = "Pre Breach Reminder Notification via Email.";
+                        remarks = "Pre Breach Reminder Notification via Email for " + dq.EventType;
                     } else if (dq.ContactType === "Breach") {
                         category = "SLA ACK";
                         subcategory = "Breached";
-                        remarks = "SLA Breach Notification via Email.";
+                        remarks = "SLA Breach Notification via Email for " + dq.EventType;
                     } else {
                         category = "Escalate";
                         subcategory = "EMAIL";
                         if (dq.ContactType === "Escalation-L1")
-                            remarks = "L1 Escalation via Email.";
+                            remarks = "L1 Escalation via Email for " + dq.EventType;
                         else if (dq.ContactType === "Escalation-L2")
-                            remarks = "L2 Escalation via Email.";
+                            remarks = "L2 Escalation via Email for " + dq.EventType;
                         else if (dq.ContactType === "Escalation-L3")
-                            remarks = "L3 Escalation via Email.";
+                            remarks = "L3 Escalation via Email for " + dq.EventType;
                         else if (dq.ContactType === "Escalation-L4")
-                            remarks = "L4 Escalation via Email.";
+                            remarks = "L4 Escalation via Email for " + dq.EventType;
                     }
+                    
+                    Log.info('Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
                     
                     helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: "ACTIVITY", operationame: "Email", category: category, subcategory: subcategory, activitytime: new Date().toISOString(), result: "Success", remarks: remarks, resulttext: ""});
                     user.Status = 'done';
@@ -135,14 +137,12 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 case 'voice' :
                 {
                     Contact.replaceVariables(dq.Template, {Workflow: Workflow});
-                    voxeo.call({
-                        //destinationNumber: "sip:linphone@192.168.1.90:5060",
+                    voxeo.call({                        
                         destinationNumber: user.Address,
                         dialogId: "dispatchNotification/dispatchInfo.vxml",
                         retries: "2",
                         report: "true",
-                        responseProperties: {
-                            //"terminal id":Workflow.InTermId,
+                        responseProperties: {                            
                             terminalId: Workflow.InTermId,
                             IncidentId: Workflow.InIncidentId
 
@@ -159,7 +159,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                     });
 
                     dq.Status = 'calling';
-                    Log.info('Dispatch: Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.FirstName + ', LastName = ' + user.LastName + ', Address = ' + user.Address);
+                    Log.info('Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.FirstName + ', LastName = ' + user.LastName + ', Address = ' + user.Address);
                     helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: "ACTIVITY", operationame: "Voice", category: "Contact", subcategory: "TELEPHONE", activitytime: new Date().toISOString(), result: user.Status, remarks: "Notification via Voice", resulttext: ""});
 
                     break;
