@@ -1,0 +1,94 @@
+{
+    "partyDetails": [
+        {
+            "template": {
+                "id": 19,
+                "name": "Notification Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 400,
+                "channelId": 33
+            },
+            "atmSchedule": "AnyHours",
+            "contactChannel": "Email",
+            "users": [
+                {
+                    "nextAvailableTime": "",
+                    "lastName": "HD-1",
+                    "address": "hd-1@esq.com, HD-1_alternate@esq.com",
+                    "sequenceNo": 1,
+                    "firstName": "HD-1",
+                    "isAvailable": true
+                }
+            ],
+            "duration": {
+                "baseValueMinutes": 0
+            },
+            "level": "A. Branch",
+            "contactType": "Escalation-L1",
+            "contactMapping": "22-54-33-62-0",
+            "lifeCycle": "Ack",
+            "waitForNextContact": false
+        },
+        {
+            "template": {
+                "id": 19,
+                "name": "Notification Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 400,
+                "channelId": 33
+            },
+            "atmSchedule": "AnyHours",
+            "contactChannel": "Email",
+            "users": [
+                {
+                    "nextAvailableTime": "",
+                    "lastName": "HD-1",
+                    "address": "hd-1@esq.com, HD-1_alternate@esq.com",
+                    "sequenceNo": 2,
+                    "firstName": "HD-1",
+                    "isAvailable": true
+                }
+            ],
+            "duration": {
+                "baseValueMinutes": 0
+            },
+            "level": "A. Branch",
+            "contactType": "Escalation-L2",
+            "contactMapping": "22-55-33-62-0",
+            "lifeCycle": "Ack",
+            "waitForNextContact": false
+        },
+        {
+            "template": {
+                "id": 19,
+                "name": "Notification Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 400,
+                "channelId": 33
+            },
+            "atmSchedule": "AnyHours",
+            "contactChannel": "Email",
+            "users": [
+                {
+                    "nextAvailableTime": "",
+                    "lastName": "HD-1",
+                    "address": "hd-1@esq.com, HD-1_alternate@esq.com",
+                    "sequenceNo": 3,
+                    "firstName": "HD-1",
+                    "isAvailable": true
+                }
+            ],
+            "duration": {
+                "baseValueMinutes": 0
+            },
+            "level": "A. Branch",
+            "contactType": "Breach",
+            "contactMapping": "22-58-33-62-0",
+            "lifeCycle": "Ack",
+            "waitForNextContact": false
+        }
+    ]
+}

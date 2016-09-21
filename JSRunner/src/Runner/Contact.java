@@ -60,21 +60,7 @@ public class Contact {
             
     public Object queryDispatchMapWithNextAvailableUser(ScriptObjectMirror mirror) throws IOException {
 
-        String responseFileName = "";
-        
-        switch ((String) mirror.get("lifecycle")) {
-            case "Create":
-                //responseFileName = "queryActionNextAvlUserCreateResponse.json";
-                responseFileName = "queryActionNextAvlUserCreateResponseWithNextAvlTIme.json";
-                break;
-            case "Ack":
-                responseFileName = "queryActionNextAvlUserAckResponse.json";
-                break;
-            case "Resolve":
-                responseFileName = "queryActionNextAvlUserResolveResponse.json";
-                break;
-        }
-        
+        String responseFileName = "queryDM" + (String) mirror.get("lifecycle") + "Response.json";
         
         String responseFile = System.getProperty("user.dir") + System.getProperty("file.separator")
                 + "src" + System.getProperty("file.separator")

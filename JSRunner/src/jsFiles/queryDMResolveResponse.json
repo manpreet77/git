@@ -1,55 +1,64 @@
 {
-    "partyName": "name 1473925005177",
     "partyDetails": [
         {
             "template": {
-                "id": 7,
+                "id": 19,
                 "name": "Notification Email Template",
                 "templateType": "email",
                 "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-                "tenantId": 1300,
-                "addressTypeId": 1
+                "tenantId": 400,
+                "channelId": 33
             },
-            "atmSchedule": "BranchHours",
-            "contactChannel": "Voice",
+            "atmSchedule": "AnyHours",
+            "contactChannel": "Email",
+            "users": [
+                {
+                    "nextAvailableTime": "",
+                    "lastName": "HD-1",
+                    "address": "hd-1@esq.com, HD-1_alternate@esq.com",
+                    "sequenceNo": 7,
+                    "firstName": "HD-1",
+                    "isAvailable": true
+                }
+            ],
             "duration": {
-                "name": "sla_name 1473925020120",
-                "graceValueMinutes": 0,
                 "baseValueMinutes": 0
             },
             "level": "A. Branch",
             "contactType": "Notification",
-            "lifeCycle": "Create",
-            "user": {
-                "lastName": "Singh",
-                "address": "sip:linphone@192.168.1.99:5060",
-                "firstName": "Manpreet"
-            }
+            "contactMapping": "26-29-33-62-0",
+            "lifeCycle": "Resolve",
+            "waitForNextContact": false
         },
         {
             "template": {
-                "id": 7,
+                "id": 19,
                 "name": "Notification Email Template",
                 "templateType": "email",
                 "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-                "tenantId": 1300,
-                "addressTypeId": 1
+                "tenantId": 400,
+                "channelId": 33
             },
-            "atmSchedule": "BranchHours",
+            "atmSchedule": "AnyHours",
             "contactChannel": "Email",
+            "users": [
+                {
+                    "nextAvailableTime": "",
+                    "lastName": "HD-1",
+                    "address": "hd-1@esq.com, HD-1_alternate@esq.com",
+                    "sequenceNo": 8,
+                    "firstName": "HD-1",
+                    "isAvailable": true
+                }
+            ],
             "duration": {
-                "name": "sla_name 1473925020120",
-                "graceValueMinutes": 0,
                 "baseValueMinutes": 0
             },
             "level": "A. Branch",
-            "contactType": "Notification",
-            "lifeCycle": "Create",
-            "user": {
-                "lastName": "Brnch-140193",
-                "address": "rahul.kumar@esq.com",
-                "firstName": "Bus Hours - 140193 "
-            }
+            "contactType": "Breach",
+            "contactMapping": "26-58-33-62-0",
+            "lifeCycle": "Resolve",
+            "waitForNextContact": false
         }
     ]
 }

@@ -1,12 +1,12 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.6
+ Dispatcher Standard Workflow V 2.8.7.7
  PrepareArrSLABreach
  This script prepares actions and dispatch on an Arrival SLABreach
  --------------------------------------------------------------------------------
  */
-/* global Log*/
+/* global Log, Workflow*/
 
 Log.info("Prepare Arr SLA Breach Entered...");
 

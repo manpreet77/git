@@ -1,12 +1,12 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.6
+   Dispatcher Standard Workflow V 2.8.7.7
    PrepareAckSLABreach
    This script prepares actions and dispatch on an AckSLABreach
    --------------------------------------------------------------------------------
 */
-/* global Log, Event */
+/* global Log, Workflow */
 
 Log.info("Prepare Ack SLA Breach Entered...");
 
@@ -14,7 +14,7 @@ Log.info("Prepare Ack SLA Breach Entered...");
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
-if (Workflow.WfStatus == 'new' || Workflow.WfStatus == 'resumed' || Workflow.WfStatus == 'reopened') {
+if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.WfStatus === 'reopened') {
     Workflow.WfLifecycle =  'Ack';
     Workflow.WfStatus    =  'breached';
     

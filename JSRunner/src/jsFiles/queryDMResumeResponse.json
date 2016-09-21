@@ -1,5 +1,6 @@
 {
-    "partyDetails": [{
+    "partyDetails": [
+        {
             "template": {
                 "id": 19,
                 "name": "Notification Email Template",
@@ -8,30 +9,26 @@
                 "tenantId": 400,
                 "channelId": 33
             },
-            "atmSchedule": "AfterHours",
+            "atmSchedule": "AnyHours",
             "contactChannel": "Email",
-            "users": [{
+            "users": [
+                {
                     "nextAvailableTime": "",
                     "lastName": "HD-1",
                     "address": "hd-1@esq.com, HD-1_alternate@esq.com",
-                    "sequenceNo": 0,
+                    "sequenceNo": 6,
                     "firstName": "HD-1",
                     "isAvailable": true
-                }, {
-                    "nextAvailableTime": "2016-09-18T16:30:00.000+0000",
-                    "lastName": "Singh",
-                    "address": "harpreet.singh@esq.com, harpreet.singh@esq.com",
-                    "sequenceNo": 1,
-                    "firstName": "Harry",
-                    "isAvailable": false
-                }],
+                }
+            ],
             "duration": {
                 "baseValueMinutes": 0
             },
-            "level": "B. Service Team",
+            "level": "A. Branch",
             "contactType": "Notification",
-            "contactMapping": "21-29-undefined-39-0",
-            "lifeCycle": "Create",
+            "contactMapping": "25-29-33-62-0",
+            "lifeCycle": "Resume",
             "waitForNextContact": false
-        }]
+        }
+    ]
 }
