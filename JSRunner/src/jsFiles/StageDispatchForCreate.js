@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.8
+ Dispatcher Standard Workflow V 2.8.7.9
  StageDispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -39,7 +39,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
     Log.info('currTime: ' + currTime.toISOString());
     var goTime = new Date(Date.parse(Workflow.InNextATMSchedAvailableTime));
     Log.info('goTime: ' + goTime.toISOString());
-    var delayGapinMins = new Date(goTime - currTime).getMinutes();
+    var delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
 
     Workflow.delayGapinMinsDueToNextAvailableAtmSchedule = delayGapinMins;
 
@@ -96,11 +96,11 @@ if (Workflow.InIsInATMBranchHours === "0" &&
                 var dq = {};
                 /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
 
-                var DispatchStartTimeAsDate = new Date();
-                DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+                //var DispatchStartTimeAsDate = new Date();
+                var DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes);
 
 
-                /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
+                /* When to be sent           */ dq.SendTime = DispatchStartTimeAsDate.toISOString();
                 /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
 
                 
@@ -176,7 +176,9 @@ if (Workflow.InIsInATMBranchHours === "0" &&
                         Log.info('currTime: ' + currTime.toISOString());
                         var goTime = new Date(Date.parse(dq.nextAvailableTime));
                         Log.info('goTime: ' + goTime.toISOString());
-                        var delayGapinMins = new Date(goTime - currTime).getMinutes();
+                        
+                        var delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
+
 
                         Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
 
@@ -264,6 +266,15 @@ function processForUserAddress(user) {
         if (addrArray[1])
             user.Address2 = addrArray[1].trim();
     }
+}
+
+/* --------------------------------------------------------------------------------
+ addMinutes Function
+ Add minutes to a JS Date object
+ --------------------------------------------------------------------------------
+ */
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
 }
 
 //  --------------------------------------------------------------------------------

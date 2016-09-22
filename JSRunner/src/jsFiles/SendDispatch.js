@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.8
+ Dispatcher Standard Workflow V 2.8.7.9
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -47,13 +47,14 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
             if (user.Status === 'done')
                 continue;
 
-            Log.info('Dispatch Data:(' + i + ') delayMins: ' + dq.DelayMins + ' Status: ' + user.Status);
-
+            
             var currTime = new Date();
             Log.info('currTime: ' + currTime.toISOString());
             var goTime = new Date(Date.parse(dq.SendTime));
-            var delayGapinMins = dq.DelayMins;
-            
+            var delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
+
+            Log.info('Dispatch Data:(' + i + ') delayMins: ' + delayGapinMins + ' Status: ' + user.Status);
+
             //in case there are multiple users in the dq, we check the 
             if(user.Status === 'new' && user.isAvailable === false && user.nextAvailableTime !== 'undefined'){
                 // Go to Sleep until next available time for this user and come here again
@@ -64,7 +65,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 goTime = new Date(Date.parse(user.nextAvailableTime));
                 
                 Log.info('goTime: ' + goTime.toISOString() + 'for user ' + user.firstName);
-                delayGapinMins = new Date(goTime - currTime).getMinutes() + dq.DelayMins;
+                delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
 
                 Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
             }
@@ -74,10 +75,10 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
             if (user.Status === 'new' || user.Status === 'retry') {
                 if (goTime > currTime) {
                     //set Timer for next notification
-                    Log.info("Setting the next timer for = {} " + delayGapinMins + " mins" );
+                    Log.info("Setting the next timer for " + delayGapinMins + " mins" );
                     Timer.start({
                         eventName: 'ei_send_dispatch',
-                        delayMs: dq.DelayMins * 60 * 1000
+                        delayMs: delayGapinMins * 60 * 1000
                     });
                     user.Status = 'wait';
                     breakAndWait = true;
@@ -184,6 +185,16 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 }
 Log.info("Send Dispatch Exiting...");
+
+/* --------------------------------------------------------------------------------
+ addMinutes Function
+ Add minutes to a JS Date object
+ --------------------------------------------------------------------------------
+ */
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
+}
+
 
 /* --------------------------------------------------------------------------------
  SendActivity Function

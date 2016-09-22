@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.8
+ Dispatcher Standard Workflow V 2.8.7.9
  Stage Dispatch for Ack
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -33,7 +33,7 @@ var AtmSched = "AnyHours"; //default Atm Schedule
 var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
 if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null) {
     Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
-    BaseDispatchStartTimeAsDate = BaseDispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
+    BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
 }
 
 
@@ -74,16 +74,15 @@ if (!queryArResult) {
                 //special handling of Pre-breach type 
                 //in this case the duration has to be subtracted from the SLA and accordingly adjusted
                 if (Workflow.WfLifecycle === "Ack") {
-                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArAckSLA) - dmaps[i].duration.baseValueMinutes);
-
+                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArAckSLA - dmaps[i].duration.baseValueMinutes);
                 } else if (Workflow.WfLifecycle === "Resolve") {
-                    DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes((BaseDispatchStartTimeAsDate.getMinutes() + Workflow.ArRslSLA) - dmaps[i].duration.baseValueMinutes);
+                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArRslSLA - dmaps[i].duration.baseValueMinutes);
                 }
 
             }
             else {
                 //for all other cases like notifications and escalations, duration needs to be added to basetime
-                DispatchStartTimeAsDate = DispatchStartTimeAsDate.setMinutes(BaseDispatchStartTimeAsDate.getMinutes() + dmaps[i].duration.baseValueMinutes);
+                DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes);
             }
             
             
@@ -94,7 +93,7 @@ if (!queryArResult) {
 
 
 
-            /* When to be sent           */ dq.SendTime = new Date(DispatchStartTimeAsDate).toISOString();
+            /* When to be sent           */ dq.SendTime = DispatchStartTimeAsDate.toISOString();
             /* unique id for all contacts belonging in this record*/
             dq.contactMapping = dmaps[i].contactMapping;
 
@@ -178,7 +177,9 @@ if (!queryArResult) {
                     Log.info('currTime: ' + currTime.toISOString());
                     var goTime = new Date(Date.parse(dq.nextAvailableTime));
                     Log.info('goTime: ' + goTime.toISOString());
-                    var delayGapinMins = new Date(goTime - currTime).getMinutes();
+                    
+                    var delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
+
 
                     Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
 
@@ -265,6 +266,16 @@ function processForUserAddress(user) {
             user.Address2 = addrArray[1].trim();
     }
 }
+
+/* --------------------------------------------------------------------------------
+ addMinutes Function
+ Add minutes to a JS Date object
+ --------------------------------------------------------------------------------
+ */
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
+}
+
 
 //  --------------------------------------------------------------------------------
 //  ESQ Management Solutions / ESQ Business Services
