@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.11
+ Dispatcher Standard Workflow V 2.8.7.12
  PrepareWorkForCreate
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
@@ -47,10 +47,14 @@ Workflow.ArServiceRole = Event.policyrole;
 Workflow.ArAtmSelector = 'undefined';            // The Atm Expression
 Workflow.ArVendorId = Event.targetpartyid;    // Vendor or Dept Id default assignee
 Workflow.ArVendorName = Event.targetparty;      // Name of the Organization
-Workflow.ArAckSLA = Event.slaacknowledge;   //Ack SLA
+if(Event.slaacknowledge){
+Workflow.ArAckSLA = parseInt(Event.slaacknowledge, 10); //Ack SLA
+}
 Workflow.ArArrSLA = 'undefined';            //Arrival SLA 
 Workflow.ArWorkSLA = 'undefined';            //Work SLA       
-Workflow.ArRslSLA = Event.slaresolve;       //Resolve SLA   
+if(Event.slaresolve){
+Workflow.ArRslSLA = parseInt(Event.slaresolve, 10);       //Resolve SLA  
+}
 
 // Copy ATM details from Event into  Workflow
 Workflow.AtmMake = Event.atmmake;

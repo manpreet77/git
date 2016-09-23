@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.11
+ Dispatcher Standard Workflow V 2.8.7.12
  StageDispatch
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -66,7 +66,7 @@ if (!queryArResult) {
             /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
             /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
             /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
-            /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
+            /* delay duration            */ dq.DelayMins = parseInt(dmaps[i].duration.baseValueMinutes, 10);
 
             //handling of SendTime and delay based on ContactType
             var DispatchStartTimeAsDate = new Date(BaseDispatchStartTimeAsDate);
@@ -74,34 +74,55 @@ if (!queryArResult) {
                 //special handling of Pre-breach type 
                 //in this case the duration has to be subtracted from the SLA and accordingly adjusted
                 if (Workflow.WfLifecycle === "Ack") {
-                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArAckSLA - dmaps[i].duration.baseValueMinutes);
+                    if (Workflow.ArAckSLA !== "undefined") {
+                        DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArAckSLA - dq.DelayMins);
+                    } else {
+                        Log.info("Ack SLA is not defined, there will be no pre-breach reminder");
+                        continue;
+                    }
                 } else if (Workflow.WfLifecycle === "Resolve") {
-                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArRslSLA - dmaps[i].duration.baseValueMinutes);
+                    if (Workflow.ArRslSLA !== "undefined") {
+                        DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArRslSLA - dq.DelayMins);
+                    }
+                    else {
+                        Log.info("Resolution SLA is not defined, there will be no pre-breach reminder");
+                        continue;
+                    }
                 }
 
             }
             else if (dq.ContactType === 'Breach' || dq.ContactType.indexOf("Escalation") > -1) {
                 //for cases  of breach and escalations, duration needs to be added to basetime along with SLA minutes
-                if(Workflow.WfLifecycle === 'Ack'){
-                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes + Workflow.ArAckSLA);                    
-                }else if(Workflow.WfLifecycle === 'Resolve'){
-                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes + Workflow.ArRslSLA);                    
+                if (Workflow.WfLifecycle === 'Ack') {
+                    if (Workflow.ArAckSLA !== "undefined") {
+                        DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dq.DelayMins + Workflow.ArAckSLA);
+                    } else {
+                        Log.info("Ack SLA is not defined, there will be no breach or escalations");
+                        continue;
+                    }
+                } else if (Workflow.WfLifecycle === 'Resolve') {
+                    if (Workflow.ArRslSLA !== "undefined") {
+                        DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dq.DelayMins + Workflow.ArRslSLA);
+                    } else {
+                        Log.info("Resolution SLA is not defined, there will be no breach or escalations");
+                        continue;
+                    }
                 }
-            }           
+            }
             else {
-                
-                if(Workflow.WfLifecycle === 'Create'){
+
+                if (Workflow.WfLifecycle === 'Create') {
                     //for create notification duration needs to be added to basetime
-                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes);
-                }else{
+                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dq.DelayMins);
+                } else {
                     //for all other lifecycle states use the current time as the baseline time
-                    DispatchStartTimeAsDate = addMinutes(new Date(), dmaps[i].duration.baseValueMinutes);
+                    DispatchStartTimeAsDate = addMinutes(new Date(), dq.DelayMins);
                 }
             }
 
 
 
-            /* When to be sent */ 
+            /* When to be sent */
             dq.SendTime = DispatchStartTimeAsDate.toISOString();
             /* unique id for all contacts belonging in this record*/
             dq.contactMapping = dmaps[i].contactMapping;
@@ -184,8 +205,8 @@ if (!queryArResult) {
                     Log.info('currTime: ' + currTime.toISOString());
                     var goTime = new Date(Date.parse(dq.nextAvailableTime));
                     Log.info('goTime: ' + goTime.toISOString());
-                    
-                    var delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
+
+                    var delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
 
 
 
@@ -256,7 +277,7 @@ function processUserBlockForCalendar(dq) {
                 result = true;
                 break;
             } else {
-                user.Status = "new"; 
+                user.Status = "new";
                 result = true;
             }
         }
@@ -289,7 +310,7 @@ function processForUserAddress(user) {
  --------------------------------------------------------------------------------
  */
 function addMinutes(date, minutes) {
-    return new Date(date.getTime() + minutes*60000);
+    return new Date(date.getTime() + minutes * 60000);
 }
 
 

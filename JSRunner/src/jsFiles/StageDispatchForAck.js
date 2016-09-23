@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.11
+ Dispatcher Standard Workflow V 2.8.7.12
  Stage Dispatch for Ack
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -66,7 +66,7 @@ if (!queryArResult) {
             /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;
             /* Notification, Escalation  */ dq.ContactType = dmaps[i].contactType;
             /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
-            /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
+            /* delay duration            */ dq.DelayMins = parseInt(dmaps[i].duration.baseValueMinutes, 10);
 
             //handling of SendTime and delay based on ContactType
             var DispatchStartTimeAsDate = new Date(BaseDispatchStartTimeAsDate);
@@ -74,15 +74,27 @@ if (!queryArResult) {
                 //special handling of Pre-breach type 
                 //in this case the duration has to be subtracted from the SLA and accordingly adjusted
                 if (Workflow.WfLifecycle === "Ack") {
-                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArAckSLA - dmaps[i].duration.baseValueMinutes);
+                    if (Workflow.ArAckSLA !== "undefined") {
+                        DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArAckSLA - dq.DelayMins);
+                    } else {
+                        Log.info("Ack SLA is not defined, there will be no pre-breach reminder");
+                        continue;
+                    }
                 } else if (Workflow.WfLifecycle === "Resolve") {
-                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArRslSLA - dmaps[i].duration.baseValueMinutes);
+                    if (Workflow.ArRslSLA !== "undefined") {
+                        DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, Workflow.ArRslSLA - dq.DelayMins);
+                    }
+                    else {
+                        Log.info("Resolution SLA is not defined, there will be no pre-breach reminder");
+                        continue;
+                    }
                 }
+
 
             }
             else {
                 //for all other cases like notifications and escalations, duration needs to be added to basetime
-                DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes);
+                DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dq.DelayMins);
             }
             
             

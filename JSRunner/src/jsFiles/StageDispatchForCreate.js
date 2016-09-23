@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.11
+ Dispatcher Standard Workflow V 2.8.7.12
  StageDispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -95,13 +95,9 @@ if (Workflow.InIsInATMBranchHours === "0" &&
             for (var i in dmaps) {
                 var dq = {};
                 /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
-
-                //var DispatchStartTimeAsDate = new Date();
-                var DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes);
-
-
-                /* When to be sent           */ dq.SendTime = DispatchStartTimeAsDate.toISOString();
-                /* delay duration            */ dq.DelayMins = dmaps[i].duration.baseValueMinutes;
+                /* delay duration            */ dq.DelayMins = parseInt(dmaps[i].duration.baseValueMinutes, 10);
+                 var DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dq.DelayMins);
+                 /* When to be sent           */ dq.SendTime = DispatchStartTimeAsDate.toISOString();
 
                 
                 /* Email, SMS...             */ dq.Channel = dmaps[i].contactChannel;

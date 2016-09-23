@@ -1,114 +1,114 @@
 {
 	"partyDetails": [{
-		"template": {
-			"id": 19,
-			"name": "Notification Email Template",
-			"templateType": "email",
-			"jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-			"tenantId": 400,
-			"channelId": 33
-		},
-		"atmSchedule": "AnyHours",
-		"contactChannel": "Email",
-		"users": [{
-			"nextAvailableTime": "",
-			"lastName": "HD-1",
-			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
-			"sequenceNo": 1,
-			"firstName": "HD-1",
-			"isAvailable": true
-		}],
 		"duration": {
-			"baseValueMinutes": 7
+			"baseValueMinutes": 5
 		},
+		"template": {
+			"id": 4,
+			"name": "Bankart EMAIL Template",
+			"templateType": "email",
+			"jsonDefinition": "{\"subject\":\"Bankart EMAIL Template\",\"body\":\"Bankart EMAIL Template\"}",
+			"tenantId": 500,
+			"channelId": 37
+		},
+		"contactChannel": "Email",
+		"atmSchedule": "AnyHours",
 		"level": "A. Branch",
 		"contactType": "Pre Breach Reminder",
-		"contactMapping": "22-152-33-62-7",
+		"waitForNextContact": false,
+		"contactMapping": "22-30-37-47-5",
 		"lifeCycle": "Ack",
-		"waitForNextContact": false
+		"users": [{
+			"firstName": "BankartArrived",
+			"lastName": "User",
+			"isAvailable": true,
+			"address": "BArrived@esq.com",
+			"sequenceNo": 1,
+			"nextAvailableTime": ""
+		}]
 	},
 	{
-		"template": {
-			"id": 19,
-			"name": "Notification Email Template",
-			"templateType": "email",
-			"jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-			"tenantId": 400,
-			"channelId": 33
-		},
-		"atmSchedule": "AnyHours",
-		"contactChannel": "Email",
-		"users": [{
-			"nextAvailableTime": "",
-			"lastName": "HD-1",
-			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
-			"sequenceNo": 2,
-			"firstName": "HD-1",
-			"isAvailable": true
-		}],
-		"duration": {
-			"baseValueMinutes": 5
-		},
-		"level": "A. Branch",
-		"contactType": "Escalation-L1",
-		"contactMapping": "22-54-33-62-5",
-		"lifeCycle": "Ack",
-		"waitForNextContact": false
-	},
-	{
-		"template": {
-			"id": 19,
-			"name": "Notification Email Template",
-			"templateType": "email",
-			"jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-			"tenantId": 400,
-			"channelId": 33
-		},
-		"atmSchedule": "AnyHours",
-		"contactChannel": "Email",
-		"users": [{
-			"nextAvailableTime": "",
-			"lastName": "HD-1",
-			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
-			"sequenceNo": 3,
-			"firstName": "HD-1",
-			"isAvailable": true
-		}],
-		"duration": {
-			"baseValueMinutes": 5
-		},
-		"level": "A. Branch",
-		"contactType": "Escalation-L2",
-		"contactMapping": "22-55-33-62-5",
-		"lifeCycle": "Ack",
-		"waitForNextContact": false
-	},
-	{
-		"template": {
-			"id": 19,
-			"name": "Notification Email Template",
-			"templateType": "email",
-			"jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-			"tenantId": 400,
-			"channelId": 33
-		},
-		"atmSchedule": "AnyHours",
-		"contactChannel": "Email",
-		"users": [{
-			"nextAvailableTime": "",
-			"lastName": "HD-1",
-			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
-			"sequenceNo": 4,
-			"firstName": "HD-1",
-			"isAvailable": true
-		}],
 		"duration": {
 			"baseValueMinutes": 0
 		},
+		"template": {
+			"id": 4,
+			"name": "Bankart EMAIL Template",
+			"templateType": "email",
+			"jsonDefinition": "{\"subject\":\"Bankart EMAIL Template\",\"body\":\"Bankart EMAIL Template\"}",
+			"tenantId": 500,
+			"channelId": 37
+		},
+		"contactChannel": "Email",
+		"atmSchedule": "AnyHours",
 		"level": "A. Branch",
 		"contactType": "Breach",
-		"contactMapping": "22-58-33-62-0",
+		"waitForNextContact": false,
+		"contactMapping": "22-31-37-47-0",
 		"lifeCycle": "Ack",
-		"waitForNextContact": false
+		"users": [{
+			"firstName": "BankartWork",
+			"lastName": "User",
+			"isAvailable": true,
+			"address": "BWork@esq.com",
+			"sequenceNo": 2,
+			"nextAvailableTime": ""
+		}]
+	},
+	{
+		"duration": {
+			"baseValueMinutes": 5
+		},
+		"template": {
+			"id": 4,
+			"name": "Bankart EMAIL Template",
+			"templateType": "email",
+			"jsonDefinition": "{\"subject\":\"Bankart EMAIL Template\",\"body\":\"Bankart EMAIL Template\"}",
+			"tenantId": 500,
+			"channelId": 37
+		},
+		"contactChannel": "Email",
+		"atmSchedule": "AnyHours",
+		"level": "A. Branch",
+		"contactType": "Escalation-L1",
+		"waitForNextContact": false,
+		"contactMapping": "22-32-37-47-5",
+		"lifeCycle": "Ack",
+		"users": [{
+			"firstName": "BankartHold",
+			"lastName": "User",
+			"isAvailable": true,
+			"address": "BHold@esq.com",
+			"sequenceNo": 3,
+			"nextAvailableTime": ""
+		}]
+	},
+	{
+		"duration": {
+			"baseValueMinutes": 10
+		},
+		"template": {
+			"id": 4,
+			"name": "Bankart EMAIL Template",
+			"templateType": "email",
+			"jsonDefinition": "{\"subject\":\"Bankart EMAIL Template\",\"body\":\"Bankart EMAIL Template\"}",
+			"tenantId": 500,
+			"channelId": 37
+		},
+		"contactChannel": "Email",
+		"atmSchedule": "AnyHours",
+		"level": "A. Branch",
+		"contactType": "Escalation-L2",
+		"waitForNextContact": false,
+		"contactMapping": "22-33-37-47-10",
+		"lifeCycle": "Ack",
+		"users": [{
+			"firstName": "BankartResume",
+			"lastName": "User",
+			"isAvailable": true,
+			"address": "BResume@esq.com",
+			"sequenceNo": 4,
+			"nextAvailableTime": ""
+		}]
 	}]
 }

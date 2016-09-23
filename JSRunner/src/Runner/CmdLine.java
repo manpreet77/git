@@ -32,7 +32,7 @@ public class CmdLine {
     public void Loop() {
 
         Log.info(" ");
-        Log.info("Welcome to ESQ Dispatcher Script Tool...V 2.8.7.11");
+        Log.info("Welcome to ESQ Dispatcher Script Tool...V 2.8.7.12");
 
         // Read input with BufferedReader.
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -57,6 +57,7 @@ public class CmdLine {
             Log.info("91 - Log the Event Object");
             Log.info("92 - Log All Timer Events in Queue");
             Log.info("93 - Log DispatchQueue");
+            Log.info("99 - StageDispatch");
             Log.info(" ");
             Log.info("Enter Choice: ");
 
@@ -204,6 +205,10 @@ public class CmdLine {
                 case 93:
                     Log.info("Logging DispatchQueue.............................");
                     r.RunJS("LogDispatchQueue.js");
+                    break;
+                case 99:
+                    Log.info("Run StageDispatch.js..................................");
+                    r.RunJS("StageDispatch.js");
                     break;
                 default:
                     Log.info("Quitting..............................................");
