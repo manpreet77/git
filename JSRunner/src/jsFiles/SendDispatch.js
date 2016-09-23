@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.9
+ Dispatcher Standard Workflow V 2.8.7.10
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -73,17 +73,19 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
             Log.info('goTime: ' + goTime.toISOString());
 
             if (user.Status === 'new' || user.Status === 'retry') {
-                if (goTime > currTime) {
-                    //set Timer for next notification
-                    Log.info("Setting the next timer for " + delayGapinMins + " mins" );
-                    Timer.start({
+                //for all cases where goTime < CurrTime, send immediately
+                if (delayGapinMins < 0) {                    
+                    delayGapinMins = 0;
+                }
+                //set Timer for next notification
+                Log.info("Setting the next timer for " + delayGapinMins + " mins" );
+                Timer.start({
                         eventName: 'ei_send_dispatch',
                         delayMs: delayGapinMins * 60 * 1000
-                    });
-                    user.Status = 'wait';
-                    breakAndWait = true;
-                    break;
-                }
+                    });                    
+                user.Status = 'wait';
+                breakAndWait = true;
+                break;
             } else if (user.Status !== 'wait') {
                 breakAndWait = true;
                 break;
