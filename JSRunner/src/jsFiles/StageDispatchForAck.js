@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.10
+ Dispatcher Standard Workflow V 2.8.7.11
  Stage Dispatch for Ack
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -156,11 +156,9 @@ if (!queryArResult) {
                     continue;
             }
 
-
-            /* copy the sontacts array into dq and add a new Status variable*/
+            /* copy the contacts array into dq and add a new Status variable*/
             if (!dq.users) {
                 dq.users = dmaps[i].users.slice();
-
                 for (var x in dq.users) {
                     var uu = dq.users[x];
                     uu.Status = "new";
@@ -179,6 +177,7 @@ if (!queryArResult) {
                     Log.info('goTime: ' + goTime.toISOString());
                     
                     var delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
+
 
 
                     Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
@@ -275,6 +274,7 @@ function processForUserAddress(user) {
 function addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes*60000);
 }
+
 
 
 //  --------------------------------------------------------------------------------

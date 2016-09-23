@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.10
+ Dispatcher Standard Workflow V 2.8.7.11
  StageDispatch
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -80,14 +80,29 @@ if (!queryArResult) {
                 }
 
             }
+            else if (dq.ContactType === 'Breach' || dq.ContactType.indexOf("Escalation") > -1) {
+                //for cases  of breach and escalations, duration needs to be added to basetime along with SLA minutes
+                if(Workflow.WfLifecycle === 'Ack'){
+                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes + Workflow.ArAckSLA);                    
+                }else if(Workflow.WfLifecycle === 'Resolve'){
+                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes + Workflow.ArRslSLA);                    
+                }
+            }           
             else {
-                //for all other cases like notifications and escalations, duration needs to be added to basetime
-                DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes);
+                
+                if(Workflow.WfLifecycle === 'Create'){
+                    //for create notification duration needs to be added to basetime
+                    DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, dmaps[i].duration.baseValueMinutes);
+                }else{
+                    //for all other lifecycle states use the current time as the baseline time
+                    DispatchStartTimeAsDate = addMinutes(new Date(), dmaps[i].duration.baseValueMinutes);
+                }
             }
 
 
 
-            /* When to be sent           */ dq.SendTime = DispatchStartTimeAsDate.toISOString();
+            /* When to be sent */ 
+            dq.SendTime = DispatchStartTimeAsDate.toISOString();
             /* unique id for all contacts belonging in this record*/
             dq.contactMapping = dmaps[i].contactMapping;
 
