@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.12
+   Dispatcher Standard Workflow V 2.8.7.13
    SetupEnvironment
    This action defines all globals and is included in initial rule of a workflow.
     --------------------------------------------------------------------------------
