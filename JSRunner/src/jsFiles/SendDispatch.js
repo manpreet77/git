@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.13
+ Dispatcher Standard Workflow V 2.8.7.14
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -17,13 +17,13 @@ Log.info("Send Dispatch Entered...");
 var DispatchQueue = JSON.parse(Workflow.DispatchQueueStringify);
 
 
-Log.info('EventType       SendTime                     DelayMins  Status  Channel ContactType      AtmSchedule             WillRespond     Ttl     MaxRetries     FirstName   LastName    Address        Address2        Template         ');
+Log.info('EventType       SendTime                     DelayMins  Status  Channel ContactType      AtmSchedule             WillRespond     Ttl     MaxRetries     FirstName   LastName    Address        Address2');
 for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
     for (var j in dq.users) {
         var user = dq.users[j];
          
-        Log.info(dq.EventType + "\t\t" + (user.isAvailable === true ? dq.SendTime : user.nextAvailableTime) + "\t" + dq.DelayMins + "\t" + user.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + user.firstName + " " + user.lastName + " " + user.Address + "\t\t" + user.Address2 + "\t\t" + dq.Template);
+        Log.info(dq.EventType + "\t\t" + (user.isAvailable === true ? dq.SendTime : user.nextAvailableTime) + "\t" + dq.DelayMins + "\t" + user.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + user.firstName + " " + user.lastName + " " + user.Address + "\t\t" + user.Address2);
     }
 }
 
@@ -44,7 +44,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
             var user = dq.users[j];
 
             //check if this notification has already been processed
-            if (user.Status === 'done')
+            if (user.Status === 'done' || user.Status === 'canceled')
                 continue;
 
             
@@ -111,7 +111,11 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                         subcategory = "EMAIL";
                         remarks = "Pre Breach Reminder Notification via Email for " + dq.EventType;
                     } else if (dq.ContactType === "Breach") {
+                        if(dq.EventType === 'Ack'){
                         category = "SLA ACK";
+                    }else if(dq.EventType === 'Resolve'){
+                        category = "SLA";
+                    }
                         subcategory = "Breached";
                         remarks = "SLA Breach Notification via Email for " + dq.EventType;
                     } else {
@@ -127,7 +131,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                             remarks = "L4 Escalation via Email for " + dq.EventType;
                     }
                     
-                    Log.info('Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
+                    Log.info('Email Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
                     
                     helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: "ACTIVITY", operationame: "Email", category: category, subcategory: subcategory, activitytime: new Date().toISOString(), result: "Success", remarks: remarks, resulttext: ""});
                     user.Status = 'done';
