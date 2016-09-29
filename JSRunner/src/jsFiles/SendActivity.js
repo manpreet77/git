@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.14
+   Dispatcher Standard Workflow V 2.8.7.15
    SendActivity Function
    This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 
 /* global Event, helpdesk */
 
-function SendActivity ( IncidentId,     OperationType,  OperationName,
+function SendActivity ( IncidentId,    
                         Status, SubStatus,
                         Category,       SubCategory,    ActivityTime,   ExternalTicketId,
                         ExternalTicketStatus,           ExternalTicketSubStatus, 
@@ -18,9 +18,7 @@ function SendActivity ( IncidentId,     OperationType,  OperationName,
                         TargetParty,    TargetPartyId,  Addit)
 {
     var activity = {
-        incidentid                  : IncidentId              ,
-        operationtype               : OperationType           ,
-        operationame                : OperationName           ,
+        incidentid                  : IncidentId              ,        
         status                      : Status                  ,
         substatus                   : SubStatus               ,
         category                    : Category                ,

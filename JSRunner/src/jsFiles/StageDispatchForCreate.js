@@ -1,14 +1,14 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.14
+ Dispatcher Standard Workflow V 2.8.7.15
  StageDispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
  Then it emits an event with a 0 delay to kickoff the dispatch loop
  --------------------------------------------------------------------------------
  */
-/* global Log, Workflow, Timer, Contact */
+/* global Log, Workflow, Timer, Contact, helpdesk */
 
 Log.info("Stage Dispatch for Create Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
@@ -24,13 +24,16 @@ if (DispatchQueue === 'undefined') {
 }
 
 
+
+
+
 //check for atmschedules: either current time falls in one of the atmschedules or not
 //in case it does not, sleep till next available time
 if (Workflow.InIsInATMBranchHours === "0" &&
         Workflow.InIsInATMAfterHours === "0" &&
         Workflow.InIsInATMOtherHours === "0" &&
         Workflow.InIsInATMOperationalHours === "0" &&
-        Workflow.InNextATMSchedAvailableTime !== 'undefined') {
+        Workflow.InNextATMSchedAvailableTime !== null) {
 
     Log.info("StageDispatchForCreate: no current schedules found, will have to sleep..");
 //  Kick off the stage delay since no current schedules are there
@@ -50,6 +53,16 @@ if (Workflow.InIsInATMBranchHours === "0" &&
         delayMs: delayGapinMins * 60 * 1000
     });
 
+}else if (Workflow.InIsInATMBranchHours === "0" &&
+        Workflow.InIsInATMAfterHours === "0" &&
+        Workflow.InIsInATMOtherHours === "0" &&
+        Workflow.InIsInATMOperationalHours === "0" &&        
+        Workflow.InNextATMSchedAvailableTime === null) {
+    
+    //there is no ATM schedule defined for this atm
+    Log.info("StageDispatchForCreate: No schedules are configured for this atm, please check configuration!!");  
+    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Remarks", subcategory: "Other", activitytime: new Date().toISOString(), result: "Failure", remarks: "No schedules are configured for this atm, please check configuration!!", resulttext: ""});
+                    
 } else {
     //in normal case set the DSP Start time as Incident Start Time
     Log.info(Workflow.InStartTime);

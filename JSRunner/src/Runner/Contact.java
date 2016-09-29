@@ -94,14 +94,14 @@ public class Contact {
             return variables;
         }
         for (ScriptObjectMirror sourceItem : sources) {
-            for (String sourceName : sourceItem.keySet()) {
+            sourceItem.keySet().stream().forEach((sourceName) -> {
                 HashMap<String, String> sourceMirror = (HashMap) sourceItem.get(sourceName);
                 Map<String, String> sourceFields = new HashMap<>();
                 for (String sourceFieldName : sourceMirror.keySet()) {
                     sourceFields.put(sourceFieldName, (String) sourceMirror.get(sourceFieldName));
                     variables.addSource(sourceName, sourceFields);
                 }
-            }
+            });
         }
         return variables;
     }

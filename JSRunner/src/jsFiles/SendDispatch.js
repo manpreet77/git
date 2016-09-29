@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.14
+ Dispatcher Standard Workflow V 2.8.7.15
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -22,7 +22,7 @@ for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
     for (var j in dq.users) {
         var user = dq.users[j];
-         
+
         Log.info(dq.EventType + "\t\t" + (user.isAvailable === true ? dq.SendTime : user.nextAvailableTime) + "\t" + dq.DelayMins + "\t" + user.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + user.firstName + " " + user.lastName + " " + user.Address + "\t\t" + user.Address2);
     }
 }
@@ -40,49 +40,61 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
 
         var breakAndWait = false;
         for (var j in dq.users) {
-            
+
             var user = dq.users[j];
 
             //check if this notification has already been processed
             if (user.Status === 'done' || user.Status === 'canceled')
                 continue;
 
-            
+
             var currTime = new Date();
             Log.info('currTime: ' + currTime.toISOString());
             var goTime = new Date(Date.parse(dq.SendTime));
-            var delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
+            var delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
 
             Log.info('Dispatch Data:(' + i + ') delayMins: ' + delayGapinMins + ' Status: ' + user.Status);
 
             //in case there are multiple users in the dq, we check the 
-            if(user.Status === 'new' && user.isAvailable === false && user.nextAvailableTime !== 'undefined'){
-                // Go to Sleep until next available time for this user and come here again
-                //deal with incompatible format coming from Contacts API
-                if(user.nextAvailableTime.indexOf("+0000") > -1){
-                    user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
-                }
-                goTime = new Date(Date.parse(user.nextAvailableTime));
-                
-                Log.info('goTime: ' + goTime.toISOString() + 'for user ' + user.firstName);
-                delayGapinMins = (goTime.getTime() - currTime.getTime())/60000;
+            if (user.Status === 'new' && user.isAvailable === false) {
 
-                Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+                if (user.nextAvailableTime !== null) {
+                    // Go to Sleep until next available time for this user and come here again
+                    //deal with incompatible format coming from Contacts API                
+                    if (user.nextAvailableTime.indexOf("+0000") > -1) {
+                        user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
+                    }
+                    goTime = new Date(Date.parse(user.nextAvailableTime));
+
+                    Log.info('goTime: ' + goTime.toISOString() + 'for user ' + user.firstName);
+                    delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
+
+                    Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+                }else{
+                    //no next available time exists for this user, so no dispatch will be done
+                    //only log an activity in IMS
+                    var remarks = "No Next Available schedules are configured for user: "+ user.firstName + " " + user.lastName +" please check configuration!!";
+                    Log.info(remarks);  
+                    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Remarks", subcategory: "Other", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
+                    user.Status = 'done';
+                    continue;
+                }
+                
             }
-            
+
             Log.info('goTime: ' + goTime.toISOString());
 
             if (user.Status === 'new' || user.Status === 'retry') {
                 //for all cases where goTime < CurrTime, send immediately
-                if (delayGapinMins < 0) {                    
+                if (delayGapinMins < 0) {
                     delayGapinMins = 0;
                 }
                 //set Timer for next notification
-                Log.info("Setting the next timer for " + delayGapinMins + " mins" );
+                Log.info("Setting the next timer for " + delayGapinMins + " mins");
                 Timer.start({
-                        eventName: 'ei_send_dispatch',
-                        delayMs: delayGapinMins * 60 * 1000
-                    });                    
+                    eventName: 'ei_send_dispatch',
+                    delayMs: delayGapinMins * 60 * 1000
+                });
                 user.Status = 'wait';
                 breakAndWait = true;
                 break;
@@ -100,40 +112,40 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 {
                     Contact.replaceVariables(dq.Template, {Workflow: Workflow});
                     email.send({to: user.Address, subject: dq.Template.subject, body: dq.Template.body, htmlEmail: "true"});
-                    
+
                     var category, subcategory, remarks;
                     if (dq.ContactType === "Notification") {
                         category = "Contact";
                         subcategory = "EMAIL";
-                        remarks = "Notification via Email for " + dq.EventType;
+                        remarks = "Notification via Email for '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                     } else if (dq.ContactType === "Pre Breach Reminder") {
                         category = "Contact";
                         subcategory = "EMAIL";
-                        remarks = "Pre Breach Reminder Notification via Email for " + dq.EventType;
+                        remarks = "Pre Breach Reminder Notification via Email for: '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                     } else if (dq.ContactType === "Breach") {
-                        if(dq.EventType === 'Ack'){
-                        category = "SLA ACK";
-                    }else if(dq.EventType === 'Resolve'){
-                        category = "SLA";
-                    }
+                        if (dq.EventType === 'Ack') {
+                            category = "SLA ACK";
+                        } else if (dq.EventType === 'Resolve') {
+                            category = "SLA";
+                        }
                         subcategory = "Breached";
-                        remarks = "SLA Breach Notification via Email for " + dq.EventType;
+                        remarks = "SLA Breach Notification via Email for: '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                     } else {
                         category = "Escalate";
                         subcategory = "EMAIL";
                         if (dq.ContactType === "Escalation-L1")
-                            remarks = "L1 Escalation via Email for " + dq.EventType;
+                            remarks = "L1 Escalation via Email for: '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                         else if (dq.ContactType === "Escalation-L2")
-                            remarks = "L2 Escalation via Email for " + dq.EventType;
+                            remarks = "L2 Escalation via Email for: '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                         else if (dq.ContactType === "Escalation-L3")
-                            remarks = "L3 Escalation via Email for " + dq.EventType;
+                            remarks = "L3 Escalation via Email for: '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                         else if (dq.ContactType === "Escalation-L4")
-                            remarks = "L4 Escalation via Email for " + dq.EventType;
+                            remarks = "L4 Escalation via Email for: '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                     }
-                    
+
                     Log.info('Email Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
-                    
-                    helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: "ACTIVITY", operationame: "Email", category: category, subcategory: subcategory, activitytime: new Date().toISOString(), result: "Success", remarks: remarks, resulttext: ""});
+
+                    helpdesk.send({incidentid: Workflow.InIncidentId, category: category, subcategory: subcategory, activitytime: new Date().toISOString(), result: "Success", remarks: remarks, resulttext: ""});
                     user.Status = 'done';
                     break;
                 }
@@ -144,12 +156,12 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 case 'voice' :
                 {
                     Contact.replaceVariables(dq.Template, {Workflow: Workflow});
-                    voxeo.call({                        
+                    voxeo.call({
                         destinationNumber: user.Address,
                         dialogId: "dispatchNotification/dispatchInfo.vxml",
                         retries: "2",
                         report: "true",
-                        responseProperties: {                            
+                        responseProperties: {
                             terminalId: Workflow.InTermId,
                             IncidentId: Workflow.InIncidentId
 
@@ -167,7 +179,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
 
                     dq.Status = 'calling';
                     Log.info('Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.FirstName + ', LastName = ' + user.LastName + ', Address = ' + user.Address);
-                    helpdesk.send({incidentid: Workflow.InIncidentId, operationtype: "ACTIVITY", operationame: "Voice", category: "Contact", subcategory: "TELEPHONE", activitytime: new Date().toISOString(), result: user.Status, remarks: "Notification via Voice", resulttext: ""});
+                    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Contact", subcategory: "TELEPHONE", activitytime: new Date().toISOString(), result: user.Status, remarks: "Notification via Voice", resulttext: ""});
 
                     break;
                 }
@@ -181,9 +193,9 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 }
             }
         }
-        
+
         //only one dispatch at a time
-        if(breakAndWait)
+        if (breakAndWait)
             break;
     }
 
@@ -198,7 +210,11 @@ Log.info("Send Dispatch Exiting...");
  --------------------------------------------------------------------------------
  */
 function addMinutes(date, minutes) {
-    return new Date(date.getTime() + minutes*60000);
+    return new Date(date.getTime() + minutes * 60000);
+}
+
+function userAddrInfo(u) {
+    return "'" + u.firstName + " " + u.lastName + "(" + u.address + ")'";
 }
 
 
@@ -207,7 +223,7 @@ function addMinutes(date, minutes) {
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
  */
-function SendActivity(IncidentId, OperationType, OperationName,
+function SendActivity(IncidentId,
         Status, SubStatus,
         Category, SubCategory, ActivityTime, ExternalTicketId,
         ExternalTicketStatus, ExternalTicketSubStatus,
@@ -217,8 +233,6 @@ function SendActivity(IncidentId, OperationType, OperationName,
 {
     var activity = {
         incidentid: IncidentId,
-        operationtype: OperationType,
-        operationame: OperationName,
         status: Status,
         substatus: SubStatus,
         category: Category,

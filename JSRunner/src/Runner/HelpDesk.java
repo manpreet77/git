@@ -15,7 +15,7 @@ import org.slf4j.Logger;
  */
 public class HelpDesk {
 
-    private Logger Log;
+    private final Logger Log;
 
     public HelpDesk(Logger l) {
         this.Log = l;
@@ -29,26 +29,15 @@ public class HelpDesk {
                    /*TargetParty* /null,        /*TargetPartyId* /null,              /*AdditionalInfo* /null);*/
     public void send(ScriptObjectMirror mirror) throws IOException {
         Log.info("Activity2IMS :: "
-                + " / IncidentId = " + (String) mirror.get("IncidentId)")
-                + " / OperationalType = " + (String) mirror.get("OperationalType")
-                + " / OperationalName = " + (String) mirror.get("OperationalName")
-                + " / Status = " + (String) mirror.get("Status")
-                + " / SubStatus = " + (String) mirror.get("SubStatus")
-                + " / Category =  " + (String) mirror.get("Category")
-                + " / SubCategory = " + (String) mirror.get("SubCategory")
-                + " / ActivityTime = " + (String) mirror.get("ActivityTime")
-                + " / ExternalTicketId = " + (String) mirror.get("ExternalTicketId")
-                + " / ExternalTicketStatus = " + (String) mirror.get("ExternalTicketStatus")
-                + " / ExternalTicketSubStatus =" + (String) mirror.get("ExternalTicketSubStatus")
-                + " / ExternalCategory = " + (String) mirror.get("ExternalCategory")
-                + " / ExternalSubCategory = " + (String) mirror.get("ExternalSubCategory")
-                + " / Result = " + (String) mirror.get("Result")
-                + " / ResultText = " + (String) mirror.get("ResultText")
-                + " / Remarks = " + (String) mirror.get("Remarks")
-                + " / TargetParty = " + (String) mirror.get("TargetParty")
-                + " / TargetPartyId = " + (String) mirror.get("TargetPartyId")
-        );
-        return;
-        //return content;
+                + " / IncidentId = " + (String) mirror.get("incidentid")                
+                + " / Status = " + (String) mirror.get("status")
+                + " / SubStatus = " + (String) mirror.get("subStatus")
+                + " / Category =  " + (String) mirror.get("category")
+                + " / SubCategory = " + (String) mirror.get("subcategory")
+                + " / ActivityTime = " + (String) mirror.get("activitytime")                
+                + " / Result = " + (String) mirror.get("result")
+                + " / ResultText = " + (String) mirror.get("resulttext")
+                + " / Remarks = " + (String) mirror.get("remarks")                
+        );        
     }
 }
