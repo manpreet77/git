@@ -86,7 +86,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
         //TODO case 'OffPeakHours':
     }
 
-    Log.info("Args to QueryActionRule: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
+    Log.info("Args to QueryDispatchMaps: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
     var queryArResult = Contact.queryDispatchMapWithNextAvailableUser({
         actionRule: Workflow.ArName,
         tenantId: Workflow.TenantId,

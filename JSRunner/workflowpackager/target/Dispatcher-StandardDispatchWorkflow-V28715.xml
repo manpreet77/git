@@ -550,7 +550,7 @@ if (Workflow.InIsInATMBranchHours === &quot;0&quot; &amp;&amp;
         //TODO case 'OffPeakHours':
     }
 
-    Log.info(&quot;Args to QueryActionRule: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
+    Log.info(&quot;Args to QueryDispatchMaps: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
     var queryArResult = Contact.queryDispatchMapWithNextAvailableUser({
         actionRule: Workflow.ArName,
         tenantId: Workflow.TenantId,
@@ -834,7 +834,7 @@ if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' &amp;&a
 
 
 
-Log.info(&quot;Args to QueryActionRule: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
+Log.info(&quot;Args to QueryDispatchMaps: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
 
 var queryArResult = Contact.queryDispatchMapWithNextAvailableUser({
     actionRule: Workflow.ArName,
@@ -1168,7 +1168,7 @@ if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' &amp;&a
 
 
 
-Log.info(&quot;Args to QueryActionRule: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
+Log.info(&quot;Args to QueryDispatchMaps: actionrule= &quot; + Workflow.ArName + &quot;, tenantid= &quot; + Workflow.TenantId + &quot;, Schedule= &quot; + AtmSched + &quot;, Lifecycle= &quot; + Workflow.WfLifecycle);
 
 var queryArResult = Contact.queryDispatchMapWithNextAvailableUser({
     actionRule: Workflow.ArName,
