@@ -6,9 +6,8 @@
 package Runner;
 
 import Runner.Timer.TimerEvent;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Map;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.slf4j.Logger;
 
@@ -18,63 +17,111 @@ import org.slf4j.Logger;
  */
 public class Timer {
 
-    private List<Runner.Timer.TimerEvent> tl;
+    private Map<Long, TimerEvent> tl;
     private Logger Log;
 
-    public Timer(List tl, Logger l) {
+    public Timer(Map tl, Logger l) {
         this.tl = tl;
         this.Log = l;
     }
 
     public void create(String eventName, long delayMs) {
         Log.info("Start Timer : " + eventName + " for " + delayMs + " ms");
-        tl.add(new TimerEvent(delayMs, eventName));
-        Collections.sort(tl, new CompareTimerEvent());
+        tl.put(System.currentTimeMillis(), new TimerEvent(delayMs, eventName));
+
+    }
+
+    public long create(String eventName, long delayMs, Map<String, String> properties) {
+        Log.info("Start Timer : " + eventName + " for " + delayMs + " ms" + ((properties != null) ? "  Properties:" + properties.toString() : ""));
+        Long id = System.currentTimeMillis();
+        tl.put(id, new TimerEvent(delayMs, eventName, properties));
+        return id;
     }
 
     public void start(ScriptObjectMirror mirror) {
-        String eventName = "";
-        long delayMs = 0;
-        Double dd;
-        String dm;
+        String eventName;
+        Map<String, String> p;
+        long delayMs;
+
         eventName = (String) mirror.get("eventName");
-        delayMs = (new Double (Double.parseDouble(mirror.get("delayMs").toString()))).longValue();
+        delayMs = (new Double(Double.parseDouble(mirror.get("delayMs").toString()))).longValue();
         if (eventName.isEmpty() || delayMs < 0) {
             throw new IllegalArgumentException("eventName=" + eventName + ", delayMs=" + delayMs);
         }
-        create(eventName, delayMs);
+        p = (Map) mirror.get("properties");
+        if (p == null) {
+            create(eventName, delayMs);
+        } else {
+            create(eventName, delayMs, p);
+        }
     }
 
     public void cancel(String eventName) {
         Log.info("Stop Timer : " + eventName);
-        for (int i = 0; i < tl.size(); i++) {
-            TimerEvent te = tl.get(i);
-            if (te.eventName.equalsIgnoreCase(eventName)) {
-                tl.remove(i);
-                Log.info("Removed TimeEvent: " + tl.get(i));
+
+        for (Map.Entry me : tl.entrySet()) {
+
+            if (((TimerEvent) me.getValue()).eventName.equalsIgnoreCase(eventName)) {
+                tl.remove((Long) me.getKey());
+                Log.info("Removed TimeEvent: " + ((TimerEvent) me.getValue()).eventName);
             }
-            Collections.sort(tl, new CompareTimerEvent());
         }
+    }
+
+    public void cancel(String eventName, long id) {
+        Log.info("Stop Timer : name = " + eventName + " id = " + id);
+        tl.remove(id);
     }
 
     public void cancel(ScriptObjectMirror mirror) {
         String eventName = "";
         eventName = (String) mirror.get("eventName");
         if (eventName.isEmpty()) {
-            throw new IllegalArgumentException("eventName=" + eventName );
+            throw new IllegalArgumentException("eventName=" + eventName);
         }
-        cancel(eventName);
+        Long id = (Long) mirror.get("id");
+        if (id != null) {
+            cancel(eventName, id);
+        } else {
+            cancel(eventName);
+        }
     }
 
-    public String dequeueNextTimerEvent() {
+    /*public String dequeueNextTimerEvent() {
 
-        TimerEvent te = tl.get(0);
-        if (te == null) {
-            return "no_events";
+        TimerEvent te = null;
+        if (tl.size() > 0) {
+            for (Map.Entry me : tl.entrySet()) {
+                te = (TimerEvent) me.getValue();
+                if (te == null) {
+                    return "no_events";
+                }
+                
+                Log.info("NextTimerEvent : " + te.eventName + " delayMs : " + te.delayMs + ((te.properties != null) ? "  Properties:" + te.properties.toString() : ""));
+                tl.remove((Long)me.getKey());
+                break;
+            }
         }
-        Log.info("NextTimerEvent : " + te.eventName + " delayMs : " + te.delayMs);
-        tl.remove(0);
         return te.eventName;
+    }*/
+    
+    
+    public TimerEvent dequeueNextTimerEvent() {
+
+        TimerEvent te = null;
+        if (tl.size() > 0) {
+            for (Map.Entry me : tl.entrySet()) {
+                te = (TimerEvent) me.getValue();
+                if (te == null) {
+                    return null;
+                }
+                
+                Log.info("NextTimerEvent : " + te.eventName + " delayMs : " + te.delayMs + ((te.properties != null) ? "  Properties:" + te.properties.toString() : ""));
+                tl.remove((Long)me.getKey());
+                break;
+            }
+        }
+        return te;
     }
 
     public void logAllTimerEvents() {
@@ -104,14 +151,22 @@ public class Timer {
 
         public String eventName;
         public long delayMs;
+        public Map<String, String> properties;
 
         public TimerEvent(long d, String n) {
             this.eventName = n;
             this.delayMs = d;
         }
 
+        public TimerEvent(long d, String n, Map<String, String> p) {
+            this.eventName = n;
+            this.delayMs = d;
+            this.properties = p;
+        }
+
+        @Override
         public String toString() {
-            return "Event: " + this.eventName + "    Delay Ms: " + this.delayMs + "\n";
+            return "Event: " + this.eventName + "    Delay Ms: " + this.delayMs + ((this.properties != null) ? "  Properties:" + properties.toString() : "") + "\n";
         }
     }
 

@@ -14,6 +14,16 @@
 
 Log.info("Send Dispatch Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
+
+//Get details of the Event that resulted in this call
+if(Event !== 'undefined' && Event !== null){
+       
+    Log.info("Source Timer Event: " + Event.delayMs);
+    var p = JSON.parse(Event.properties);
+}
+
+
+
 var DispatchQueue = JSON.parse(Workflow.DispatchQueueStringify);
 
 
@@ -75,7 +85,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                     //only log an activity in IMS
                     var remarks = "No Next Available schedules are configured for user: "+ user.firstName + " " + user.lastName +" please check configuration!!";
                     Log.info(remarks);  
-                    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Remarks", subcategory: "Other", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
+                    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
                     user.Status = 'done';
                     continue;
                 }
@@ -124,7 +134,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                         remarks = "Pre Breach Reminder Notification via Email for: '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                     } else if (dq.ContactType === "Breach") {
                         if (dq.EventType === 'Ack') {
-                            category = "SLA ACK";
+                            category = "Ack SLA";
                         } else if (dq.EventType === 'Resolve') {
                             category = "SLA";
                         }

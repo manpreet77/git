@@ -5,9 +5,11 @@
  */
 package Runner;
 
+import Runner.Timer.TimerEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,8 @@ class DspRun {
 
         HashMap w = new HashMap();
         HashMap e = new HashMap();
-        List<Runner.Timer.TimerEvent> tl = new ArrayList<Runner.Timer.TimerEvent>();
+        //List<Runner.Timer.TimerEvent> tl = new ArrayList<Runner.Timer.TimerEvent>();
+        Map<Long, TimerEvent> tl = new HashMap<Long, TimerEvent>();
         Logger l = LoggerFactory.getLogger(DspRun.class);
         Timer t = new Timer(tl, l);
         AdaptorEmail ae = new AdaptorEmail(l);

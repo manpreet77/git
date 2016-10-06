@@ -5,12 +5,15 @@
  */
 package Runner;
 
+import Runner.Timer.TimerEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -48,9 +51,27 @@ class JSRunner {
 
     public void RunJS(String theFile) {
         jsFile = theFile;
+
         switch (jsType) {
             case "nashorn":
-                runNashorn();
+                runNashorn(null);
+                break;
+            case "rhino":
+                runRhino();
+                break;
+            default:
+                Log.info("Invalid jsType");
+                System.exit(-200);
+                break;
+        }
+    }
+    
+    public void RunJS(String theFile, TimerEvent te) {
+        jsFile = theFile;
+
+        switch (jsType) {
+            case "nashorn":
+                runNashorn(te);
                 break;
             case "rhino":
                 runRhino();
@@ -62,34 +83,51 @@ class JSRunner {
         }
     }
 
-    public void runNashorn() {
+    public void runNashorn(TimerEvent te) {
 
         try {
             ScriptEngineManager factory = new ScriptEngineManager();
             ScriptEngine engine = factory.getEngineByName("nashorn");
             engine.put("Timer", Timer);
             engine.put("Workflow", Workflow);
+
+            if (te != null) {
+                Event.clear();
+                Event.put("eventName", te.eventName);
+                Event.put("delayMs", te.delayMs);
+
+                if (te.properties != null) {
+                    String prop = "{";
+                    
+                   for (Map.Entry me : te.properties.entrySet()) {
+                       prop +=  "\"" + (String) me.getKey() + "\" : \"" + (String) me.getValue() + "\", ";
+                    }
+                    prop = prop.substring(0, prop.lastIndexOf(',')) + "}";
+                    Event.put("properties", prop);
+                }
+            }
+
             engine.put("Event", Event);
             engine.put("Log", Log);
             engine.put("email", ae);
             engine.put("Contact", ct);
-            engine.put("helpdesk",h);
-            
+            engine.put("helpdesk", h);
+
             String scriptFilePath = System.getProperty("user.dir") + System.getProperty("file.separator")
-                    + "src" + System.getProperty("file.separator")                    
+                    + "src" + System.getProperty("file.separator")
                     + "jsFiles" + System.getProperty("file.separator")
                     + jsFile;
             File scriptFile = new File(scriptFilePath);
             Log.info(scriptFile.getAbsolutePath());
-            
-            if(System.getProperty("os.name").toLowerCase().contains("win")){
-                engine.eval (new FileReader(scriptFile));
-            } else {            
+
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                engine.eval(new FileReader(scriptFile));
+            } else {
                 engine.eval("load(\"" + scriptFile + "\");");
             }
-            
-            } catch (FileNotFoundException | ScriptException e) {
-            Log.error(e.getMessage());        
+
+        } catch (FileNotFoundException | ScriptException e) {
+            Log.error(e.getMessage());
         }
     }
 

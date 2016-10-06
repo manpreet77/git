@@ -5,10 +5,11 @@
  */
 package Runner;
 
+import Runner.Timer.TimerEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 
 /**
@@ -18,11 +19,11 @@ import org.slf4j.Logger;
 public class CmdLine {
 
     JSRunner r;
-    List ev;
+    Map ev;
     Timer t;
     Logger Log;
 
-    public CmdLine(JSRunner r, List tl, Timer t, Logger l) {
+    public CmdLine(JSRunner r, Map tl, Timer t, Logger l) {
         this.ev = tl;
         this.r = r;
         this.t = t;
@@ -39,7 +40,7 @@ public class CmdLine {
 
         while (true) {
             Log.info("Main Menu.......");
-            Log.info("1  - Create");
+            Log.info("1  - Create");            
             Log.info("2  - Ack");
             Log.info("3  - Ack Breach");
             Log.info("4  - ETA");
@@ -52,6 +53,7 @@ public class CmdLine {
             Log.info("11 - Close");
             Log.info("12 - SendVoiceDone");
             Log.info("13 - SendVoiceError");
+            Log.info("14  - ProcessIntialDispatch");
             Log.info("0  - Process One Timer Event");
             Log.info("90 - Log the Workflow Object");
             Log.info("91 - Log the Event Object");
@@ -86,17 +88,12 @@ public class CmdLine {
                     r.RunJS("SetupEnvironment.js");
                     Log.info("Run PrepareCreate.js..................................");
                     r.RunJS("PrepareCreate.js");
+                    Log.info("Run ProcessWaitForCreate.js..................................");
+                    r.RunJS("ProcessWaitForCreate.js");
+                    break;
+                case 14:                    
                     Log.info("Run StageDispatchForCreate.js..................................");
-                    r.RunJS("StageDispatchForCreate.js");
-                    r.RunJS("PrepareAckPreBreachReminder.js");
-                    Log.info("Run PrepareAckPreBreachReminder.js..................................");
-                    r.RunJS("StageDispatchForAck.js");                    
-                    Log.info("Run StageDispatchForAck.js..................................");
-                    r.RunJS("PrepareRslPreBreachReminder.js");
-                    Log.info("Run PrepareRslPreBreachReminder.js..................................");
-                    r.RunJS("StageDispatch.js");
-                    Log.info("Run SetLifecycleToCreate.js..................................");
-                    r.RunJS("SetLifecycleToCreate.js");                                        
+                    r.RunJS("StageDispatchForCreate.js");                                        
                     break;
                 case 2:
                     Log.info("Run EventAck.js................   ....................");
@@ -218,34 +215,41 @@ public class CmdLine {
     }
 
     public void ProcessTimer() {
-
-        String evName = t.dequeueNextTimerEvent();
-        switch (evName) {
+        
+        TimerEvent te = t.dequeueNextTimerEvent();
+        switch (te.eventName) {
             default:
-                Log.info("Timer Event UnKnown: " + evName);
+                Log.info("Timer Event Unknown: " + te.eventName);
                 break;
             case "no_events":
                 Log.info("No Events in the Timer Event List");
+            case "ei_stage_dispatch_on_create":
+                Log.info("Run StageDispatchForCreate.js...................................");
+                r.RunJS("StageDispatchForCreate.js",te);
+                break;
             case "ei_send_dispatch":
                 Log.info("Run SendDispatch.js...................................");
-                r.RunJS("SendDispatch.js");
+                r.RunJS("SendDispatch.js", te);
                 break;
             case "ei_send_voice_error":
                 Log.info("Run SendVoiceError.js.................................");
-                r.RunJS("SendVoiceError.js");
+                r.RunJS("SendVoiceError.js", te);
                 break;
             case "ei_send_voice_done":
                 Log.info("Run SendVoiceDone.js..................................");
-                r.RunJS("SendVoiceDone.js");
+                r.RunJS("SendVoiceDone.js", te);
                 break;
             case "ei_ack_sla_breach":
                 Log.info("Run PrepareAckSLABreach.js...................................");
-                r.RunJS("PrepareAckSLABreach.js");
+                r.RunJS("PrepareAckSLABreach.js", te);
                 break;
             case "ei_rsl_sla_breach":
                 Log.info("Run PrepareRslSLABreach.js...................................");
-                r.RunJS("PrepareRslSLABreach.js");
+                r.RunJS("PrepareRslSLABreach.js", te);
                 break;
         }
     }
+    
+    
+    
 }

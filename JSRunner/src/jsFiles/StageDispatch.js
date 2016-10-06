@@ -34,6 +34,9 @@ var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
 if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null) {
     Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
     BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
+} else if (Workflow.delayGapinMinsDueToNextAvailableUserSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableUserSchedule !== null) {
+    Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableUserSchedule + " in all timers due to Next Available User Schedule");
+    BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.delayGapinMinsDueToNextAvailableUserSchedule);
 }
 
 
