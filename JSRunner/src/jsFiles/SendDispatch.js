@@ -18,7 +18,7 @@ Log.info("Send Dispatch Entered...");
 //Get details of the Event that resulted in this call
 if (Event !== 'undefined' && Event !== null) {
     var EventProperties = JSON.parse(Event.properties);
-    Log.info("Source Timer Event: " + Event.delayMs + (EventProperties !== null ? ", id = " + EventProperties.EventId: ""));
+    Log.info("Source Timer Event: " + Event.delayMs + (EventProperties !== null ? ", id = " + EventProperties.eventid: ""));
 }
 
 
@@ -49,10 +49,10 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
 
         var user = dq.users[j];
 
-        if (user.EventId === EventProperties.EventId)
+        if (user.EventId === EventProperties.eventid)
         {
             //check if this notification has already been processed
-            if (user.Status === 'done' || user.Status === 'canceled')
+            if (user.Status === 'done' || user.Status === 'canceled' || user.Status === 'next')
                 continue;
 
             //  actually send to the adaptor

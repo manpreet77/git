@@ -274,6 +274,13 @@ if (dmaps) {
 
             if (user.isAvailable) {
                 user.Status = "new";
+                user.EventId = Date.now().toString();
+
+                user.TimerId = Timer.start({
+                    eventName: 'ei_send_dispatch',
+                    delayMs: delayGapinMins * 60 * 1000,
+                    properties: {"eventid" : user.EventId}
+                });
                 break;
             } else if (user.nextAvailableTime !== null) {
                 user.Status = "new";
@@ -291,6 +298,12 @@ if (dmaps) {
 
                 delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
                 Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+                user.EventId = Date.now().toString();
+                user.TimerId = Timer.start({
+                    eventName: 'ei_send_dispatch',
+                    delayMs: delayGapinMins * 60 * 1000,
+                    properties: {"eventid" : user.EventId}
+                });
                 break;
             } else {
                 //no next available time exists for this user, so no dispatch will be done
@@ -300,13 +313,9 @@ if (dmaps) {
                 helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
                 user.Status = 'done';
                 user.TimerId = null;
+                user.EventId = null;
                 continue;
             }
-
-            user.TimerId = Timer.start({
-                eventName: 'ei_send_dispatch',
-                delayMs: delayGapinMins * 60 * 1000
-            });
         }
         DispatchQueue.push(dq);
     }

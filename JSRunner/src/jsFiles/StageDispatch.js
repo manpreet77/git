@@ -246,12 +246,12 @@ if (!queryArResult) {
                     continue;
                 }
 
-                user.EventId = Date.now();
+                user.EventId = Date.now().toString();
 
                 user.TimerId = Timer.start({
                     eventName: 'ei_send_dispatch',
                     delayMs: delayGapinMins * 60 * 1000,
-                    properties: {"eventid" : user.EventId.toString()}
+                    properties: {"eventid" : user.EventId}
                 });
             }
             DispatchQueue.push(dq);

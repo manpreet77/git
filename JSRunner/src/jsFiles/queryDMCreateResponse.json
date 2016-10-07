@@ -21,7 +21,7 @@
 		"users": [{
 			"firstName": "HD-1",
 			"lastName": "HD-1",
-			"isAvailable": false,
+			"isAvailable": true,
 			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
 			"sequenceNo": 0,
 			"nextAvailableTime": "2016-10-06T19:00:00.000+0000"
@@ -56,7 +56,7 @@
 		"users": [{
 			"firstName": "HD-1",
 			"lastName": "HD-1",
-			"isAvailable": false,
+			"isAvailable": true,
 			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
 			"sequenceNo": 0,
 			"nextAvailableTime": "2016-10-06T19:15:00.000+0000"
