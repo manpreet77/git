@@ -7,7 +7,7 @@
  Sorted by ascending order of send time
  --------------------------------------------------------------------------------
  */
-/* global Log, Workflow, Timer, Contact, Event */
+/* global Log, Workflow, Timer, Contact, Event, helpdesk */
 
 Log.info("Stage Dispatch for Create Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
@@ -26,11 +26,27 @@ var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
 if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null) {
     Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
     BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
-} else if (Workflow.delayGapinMinsDueToNextAvailableUserSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableUserSchedule !== null) {
-    Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableUserSchedule + " in all timers due to Next Available User Schedule");
-    BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.delayGapinMinsDueToNextAvailableUserSchedule);
+} 
+
+//Start the SLA Breach timers
+// Start Timer for Ack SLA (ei_ack_sla_breach)
+if (Workflow.ArAckSLA !== 'undefined' && Workflow.ArAckSLA > 0) {
+    Log.info('Start Ack SLA Breach Timer');
+    Timer.start({
+        eventName: 'ei_ack_sla_breach',
+        delayMs: Workflow.ArAckSLA * 60 * 1000
+    });
 }
 
+
+// Start Timer for Resolve SLA (ei_rsl_sla_breach)
+if (Workflow.ArRslSLA !== 'undefined' && Workflow.ArRslSLA > 0) {
+    Log.info('Start Resolution SLA Breach Timer');
+    Timer.start({
+        eventName: 'ei_rsl_sla_breach',
+        delayMs: Workflow.ArRslSLA * 60 * 1000
+    });
+}
 
 var dmaps = null;
 
@@ -174,7 +190,7 @@ if (dmaps) {
         else if (dq.ContactType === "Notification") {
             //for notifications duration needs to be added to basetime
             DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +dq.DelayMins);
-        } 
+        }
 
 
         /* When to be sent           */
@@ -231,18 +247,43 @@ if (dmaps) {
             dq.users = dmaps[i].users.slice();
             for (var x in dq.users) {
                 var uu = dq.users[x];
-                uu.Status = "new";
+                uu.Status = "next";
             }
         }
-        
-        
-        var delayGapinMins = 0;
-        if (processUserBlockForCalendar(dq)) {
-            if (dq.nextAvailableTime) {
 
-                Log.info("StageDispatchForAck: no current schedules found for the user, will have to sleep..");
+        //  Sort the user array by seqNo
+        if (dq.users && dq.users.length > 0) {
+            dq.users.sort(function (a, b) {
+                if (a.sequenceNo > b.sequenceNo)
+                    return 1;
+                if (a.sequenceNo < b.sequenceNo)
+                    return -1;
+                return 0;
+            });
+        }
+
+        var delayGapinMins = 0;
+        for (var i in dq.users) {
+            var user = dq.users[i];
+
+            processForUserAddress(user);
+
+            if (user.Status === "wait" || user.Status === "done")
+                continue;
+
+
+            if (user.isAvailable) {
+                user.Status = "new";
+                break;
+            } else if (user.nextAvailableTime !== null) {
+                user.Status = "new";
+                Log.info("StageDispatchForCreate: no current schedules found for the user, will have to sleep..");
                 // Kick off the stage delay since no current schedules are there
                 // Go to Sleep until next open time and come here instead of SendDispatch
+                //deal with incompatible format coming from Contacts API                
+                if (user.nextAvailableTime.indexOf("+0000") > -1) {
+                    user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
+                }
                 var currTime = new Date();
                 Log.info('currTime: ' + currTime.toISOString());
                 var goTime = new Date(Date.parse(dq.nextAvailableTime));
@@ -250,19 +291,27 @@ if (dmaps) {
 
                 delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
                 Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
-
+                break;
+            } else {
+                //no next available time exists for this user, so no dispatch will be done
+                //only log an activity in IMS
+                var remarks = "No Next Available schedules are configured for user: " + user.firstName + " " + user.lastName + " please check configuration!!";
+                Log.info(remarks);
+                helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
+                user.Status = 'done';
+                user.TimerId = null;
+                continue;
             }
-            
-            dq.TimerId = Timer.start({
-                eventName: 'ei_stage_dispatch',
+
+            user.TimerId = Timer.start({
+                eventName: 'ei_send_dispatch',
                 delayMs: delayGapinMins * 60 * 1000
             });
-            
-            DispatchQueue.push(dq);
         }
+        DispatchQueue.push(dq);
     }
 
-//  Sort the Queue by sendtime
+    //  Sort the Queue by sendtime
     DispatchQueue.sort(function (a, b) {
         if (a.SendTime > b.SendTime)
             return 1;
@@ -270,49 +319,52 @@ if (dmaps) {
             return -1;
         return 0;
     });
+
 }
+
+
 //  Save the Queue away
 Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
-Log.info("Stage Dispatch for Ack Exiting...");
+Log.info("Stage Dispatch for Create Exiting...");
 
 
 function processUserBlockForCalendar(dq) {
     var result = false;
-    //  Sort the user array by seqNo
-    if (dq.users && dq.users.length > 0) {
-        dq.users.sort(function (a, b) {
-            if (a.sequenceNo > b.sequenceNo)
-                return 1;
-            if (a.sequenceNo < b.sequenceNo)
-                return -1;
-            return 0;
-        });
-    }
-
-    for (var i in dq.users) {
-        var user = dq.users[i];
-
-        processForUserAddress(user);
-
-        if (user.Status === "wait" || user.Status === "done")
-            continue;
-
-
-        if (user.isAvailable) {
-            user.Status = "new";
-            result = true;
-        } else {
-            if (dq.waitForNextContact) {
-                dq.nextAvailableTime = user.nextAvailableTime;
-                result = true;
-                break;
-            } else {
-                user.Status = "new";
-                result = true;
-            }
-        }
-    }
+    /*//  Sort the user array by seqNo
+     if (dq.users && dq.users.length > 0) {
+     dq.users.sort(function (a, b) {
+     if (a.sequenceNo > b.sequenceNo)
+     return 1;
+     if (a.sequenceNo < b.sequenceNo)
+     return -1;
+     return 0;
+     });
+     }
+     
+     for (var i in dq.users) {
+     var user = dq.users[i];
+     
+     processForUserAddress(user);
+     
+     if (user.Status === "wait" || user.Status === "done")
+     continue;
+     
+     
+     if (user.isAvailable) {
+     user.Status = "new";
+     result = true;
+     } else {
+     if (dq.waitForNextContact) {
+     dq.nextAvailableTime = user.nextAvailableTime;
+     result = true;
+     break;
+     } else {
+     user.Status = "new";
+     result = true;
+     }
+     }
+     }*/
     return result;
 }
 

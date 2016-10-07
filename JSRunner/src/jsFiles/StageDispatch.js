@@ -8,7 +8,7 @@
  Then it emits an event with a 0 delay to kickoff the dispatch loop
  --------------------------------------------------------------------------------
  */
-/* global Log, Workflow, Timer, Contact */
+/* global Log, Workflow, Timer, Contact, helpdesk */
 
 Log.info("Stage Dispatch Entered for lifecycle = " + Workflow.WfLifecycle);
 //  Restore DispatchQueue from Stringfy version in Workflow context
@@ -197,33 +197,64 @@ if (!queryArResult) {
                     uu.Status = "new";
                 }
             }
+            
+            //  Sort the user array by seqNo
+            if (dq.users && dq.users.length > 0) {
+                dq.users.sort(function (a, b) {
+                    if (a.sequenceNo > b.sequenceNo)
+                        return 1;
+                    if (a.sequenceNo < b.sequenceNo)
+                        return -1;
+                    return 0;
+                });
+            }
+            
+            var delayGapinMins = 0;
+            for (var i in dq.users) {
+                var user = dq.users[i];
 
-            if (processUserBlockForCalendar(dq)) {
-                if (dq.nextAvailableTime) {
+                processForUserAddress(user);
 
-                    Log.info("StageDispatchForAck: no current schedules found for the user, will have to sleep..");
+                if (user.Status === "wait" || user.Status === "done" || user.Status === "canceled")
+                    continue;
+
+
+                if (user.nextAvailableTime !== null) {                       
+                    //deal with incompatible format coming from Contacts API                
+                    if (user.nextAvailableTime.indexOf("+0000") > -1) {
+                        user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
+                    }
+                    
+                    Log.info("StageDispatch: no current schedules found for the user, will have to sleep..");
                     // Kick off the stage delay since no current schedules are there
                     // Go to Sleep until next open time and come here instead of SendDispatch
                     var currTime = new Date();
                     Log.info('currTime: ' + currTime.toISOString());
-                    var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                    var goTime = new Date(Date.parse(user.nextAvailableTime));
                     Log.info('goTime: ' + goTime.toISOString());
 
-                    var delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
-
-
-
+                    delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
                     Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+                }else{
+                    //no next available time exists for this user, so no dispatch will be done
+                    //only log an activity in IMS
+                    var remarks = "No Next Available schedules are configured for user: "+ user.firstName + " " + user.lastName +" please check configuration!!";
+                    Log.info(remarks);  
+                    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
+                    user.Status = 'done';
+                    user.TimerId = null;
+                    continue;
+                }
 
-                    Timer.start({
-                        eventName: 'ei_stage_dispatch',
-                        delayMs: delayGapinMins * 60 * 1000
-                    });
-                }
-                else {
-                    DispatchQueue.push(dq);
-                }
+                user.EventId = Date.now();
+
+                user.TimerId = Timer.start({
+                    eventName: 'ei_send_dispatch',
+                    delayMs: delayGapinMins * 60 * 1000,
+                    properties: {"eventid" : user.EventId.toString()}
+                });
             }
+            DispatchQueue.push(dq);
         }
     }
     //  Sort the Queue by sendtime
@@ -238,20 +269,12 @@ if (!queryArResult) {
 //  Save the Queue away
 Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
-
-//  Kick off dispatch
-Timer.start({
-    eventName: 'ei_send_dispatch',
-    delayMs: 0
-});
-
-
 Log.info("Stage Dispatch Exiting...");
 
 
 function processUserBlockForCalendar(dq) {
     var result = false;
-    //  Sort the user array by seqNo
+    /*//  Sort the user array by seqNo
     if (dq.users && dq.users.length > 0) {
         dq.users.sort(function (a, b) {
             if (a.sequenceNo > b.sequenceNo)
@@ -262,29 +285,29 @@ function processUserBlockForCalendar(dq) {
         });
     }
 
-    for (var i in dq.users) {
-        var user = dq.users[i];
-
-        processForUserAddress(user);
-
-        if (user.Status === "wait" || user.Status === "done" || user.Status === "canceled")
-            continue;
-
-
-        if (user.isAvailable) {
-            user.Status = "new";
-            result = true;
-        } else {
-            if (dq.waitForNextContact) {
-                dq.nextAvailableTime = user.nextAvailableTime;
-                result = true;
-                break;
-            } else {
-                user.Status = "new";
-                result = true;
-            }
-        }
-    }
+    /*for (var i in dq.users) {
+     var user = dq.users[i];
+     
+     processForUserAddress(user);
+     
+     if (user.Status === "wait" || user.Status === "done" || user.Status === "canceled")
+     continue;
+     
+     
+     if (user.isAvailable) {
+     user.Status = "new";
+     result = true;
+     } else {
+     if (dq.waitForNextContact) {
+     dq.nextAvailableTime = user.nextAvailableTime;
+     result = true;
+     break;
+     } else {
+     user.Status = "new";
+     result = true;
+     }
+     }
+     }*/
     return result;
 }
 

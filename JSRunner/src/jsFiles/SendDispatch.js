@@ -16,10 +16,9 @@ Log.info("Send Dispatch Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 //Get details of the Event that resulted in this call
-if(Event !== 'undefined' && Event !== null){
-       
-    Log.info("Source Timer Event: " + Event.delayMs);
-    var p = JSON.parse(Event.properties);
+if (Event !== 'undefined' && Event !== null) {
+    var EventProperties = JSON.parse(Event.properties);
+    Log.info("Source Timer Event: " + Event.delayMs + (EventProperties !== null ? ", id = " + EventProperties.EventId: ""));
 }
 
 
@@ -43,76 +42,18 @@ var dq, delayMins, currChannel;
 //  See if the Incident is in suitable state
 if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
 
-    for (var i in DispatchQueue) {
+    //find dispatch record to be sent based on eventid received
+    dq = findUserRecordFromDQ(EventProperties.EventId);
 
-        //  dequeue next dispatch to be sent
-        dq = DispatchQueue[i];
+    for (var j in dq.users) {
 
-        var breakAndWait = false;
-        for (var j in dq.users) {
+        var user = dq.users[j];
 
-            var user = dq.users[j];
-
+        if (user.EventId === EventProperties.EventId)
+        {
             //check if this notification has already been processed
             if (user.Status === 'done' || user.Status === 'canceled')
                 continue;
-
-
-            var currTime = new Date();
-            Log.info('currTime: ' + currTime.toISOString());
-            var goTime = new Date(Date.parse(dq.SendTime));
-            var delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
-
-            Log.info('Dispatch Data:(' + i + ') delayMins: ' + delayGapinMins + ' Status: ' + user.Status);
-
-            //in case there are multiple users in the dq, we check the 
-            if (user.Status === 'new' && user.isAvailable === false) {
-
-                if (user.nextAvailableTime !== null) {
-                    // Go to Sleep until next available time for this user and come here again
-                    //deal with incompatible format coming from Contacts API                
-                    if (user.nextAvailableTime.indexOf("+0000") > -1) {
-                        user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
-                    }
-                    goTime = new Date(Date.parse(user.nextAvailableTime));
-
-                    Log.info('goTime: ' + goTime.toISOString() + 'for user ' + user.firstName);
-                    delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
-
-                    Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
-                }else{
-                    //no next available time exists for this user, so no dispatch will be done
-                    //only log an activity in IMS
-                    var remarks = "No Next Available schedules are configured for user: "+ user.firstName + " " + user.lastName +" please check configuration!!";
-                    Log.info(remarks);  
-                    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
-                    user.Status = 'done';
-                    continue;
-                }
-                
-            }
-
-            Log.info('goTime: ' + goTime.toISOString());
-
-            if (user.Status === 'new' || user.Status === 'retry') {
-                //for all cases where goTime < CurrTime, send immediately
-                if (delayGapinMins < 0) {
-                    delayGapinMins = 0;
-                }
-                //set Timer for next notification
-                Log.info("Setting the next timer for " + delayGapinMins + " mins");
-                Timer.start({
-                    eventName: 'ei_send_dispatch',
-                    delayMs: delayGapinMins * 60 * 1000
-                });
-                user.Status = 'wait';
-                breakAndWait = true;
-                break;
-            } else if (user.Status !== 'wait') {
-                breakAndWait = true;
-                break;
-            }
-            // All new with 0 delay and waits
 
             //  actually send to the adaptor
             currChannel = dq.Channel.toLowerCase();
@@ -187,12 +128,11 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                         }
                     });
 
-                    dq.Status = 'calling';
+                    user.Status = 'calling';
                     Log.info('Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.FirstName + ', LastName = ' + user.LastName + ', Address = ' + user.Address);
                     helpdesk.send({incidentid: Workflow.InIncidentId, category: "Contact", subcategory: "TELEPHONE", activitytime: new Date().toISOString(), result: user.Status, remarks: "Notification via Voice", resulttext: ""});
-
                     break;
-                }
+                }                
                 case 'edi' :
                 {
                     break;
@@ -203,10 +143,6 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 }
             }
         }
-
-        //only one dispatch at a time
-        if (breakAndWait)
-            break;
     }
 
     //  Save the Queue away
@@ -227,6 +163,26 @@ function userAddrInfo(u) {
     return "'" + u.firstName + " " + u.lastName + "(" + u.address + ")'";
 }
 
+function findUserRecordFromDQ(id) {
+    var breakOut = false;
+    var rec = null;
+    for (var i in DispatchQueue) {
+        rec = DispatchQueue[i];
+
+        for (var j in rec.users) {
+
+            var user = rec.users[j];
+
+            if (user.EventId === id) {
+                breakOut = true;
+                break;
+            }
+        }
+        if (breakOut)
+            break;
+    }
+    return rec;
+}
 
 /* --------------------------------------------------------------------------------
  SendActivity Function

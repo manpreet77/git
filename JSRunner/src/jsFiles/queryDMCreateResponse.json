@@ -24,7 +24,7 @@
 			"isAvailable": false,
 			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
 			"sequenceNo": 0,
-			"nextAvailableTime": "2016-10-05T18:15:00.000+0000"
+			"nextAvailableTime": "2016-10-06T19:00:00.000+0000"
 		},
                 {
 			"firstName": "HD-2",
@@ -32,7 +32,7 @@
 			"isAvailable": false,
 			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
 			"sequenceNo": 1,
-			"nextAvailableTime": "2016-10-05T18:15:00.000+0000"
+			"nextAvailableTime": "2016-10-06T19:00:00.000+0000"
 		}]},
                 {
 		"duration": {
@@ -59,7 +59,7 @@
 			"isAvailable": false,
 			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
 			"sequenceNo": 0,
-			"nextAvailableTime": "2016-10-05T18:15:00.000+0000"
+			"nextAvailableTime": "2016-10-06T19:15:00.000+0000"
 		},
                 {
 			"firstName": "HD-2",
@@ -67,7 +67,7 @@
 			"isAvailable": false,
 			"address": "hd-1@esq.com, HD-1_alternate@esq.com",
 			"sequenceNo": 1,
-			"nextAvailableTime": "2016-10-05T18:15:00.000+0000"
+			"nextAvailableTime": "2016-10-06T19:10:00.000+0000"
 		}]
 	}]
 }

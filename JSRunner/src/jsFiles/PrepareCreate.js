@@ -49,15 +49,6 @@ Workflow.ArVendorId = Event.targetpartyid;    // Vendor or Dept Id default assig
 Workflow.ArVendorName = Event.targetparty;      // Name of the Organization
 if (Event.slaacknowledgeenabled === "1") {
         Workflow.ArAckSLA = Event.slaacknowledge;       //Ack SLA
-
-    // Start Timer for Ack SLA (ei_ack_sla_breach)
-    if (Workflow.ArAckSLA > 0) {
-        Log.info('Start Timer');
-        Timer.start({
-            eventName: 'ei_ack_sla_breach',
-            delayMs: Workflow.ArAckSLA * 60 * 1000
-        });
-    }
 }
 if (Event.slaarrivalenabled === "1") {
     Workflow.ArArrSLA = Event.slaarrivalminutes;  //Arrival SLA 
@@ -65,13 +56,6 @@ if (Event.slaarrivalenabled === "1") {
 
 if (Event.slaresolveenabled === "1") {
     Workflow.ArRslSLA = Event.slaresolve;       //Resolve SLA  
-    // Start Timer for Resolve SLA (ei_rsl_sla_breach)
-    if (Workflow.ArRslSLA > 0) {
-        Timer.start({
-            eventName: 'ei_rsl_sla_breach',
-            delayMs: Workflow.ArRslSLA * 60 * 1000
-        });
-    }
 }
 Workflow.ArWorkSLA = 'undefined';            //Work SLA - not implemented       
 
