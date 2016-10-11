@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.27
+ Dispatcher Standard Workflow V 2.8.7.28
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier

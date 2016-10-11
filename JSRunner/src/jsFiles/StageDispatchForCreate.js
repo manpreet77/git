@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.27
+ Dispatcher Standard Workflow V 2.8.7.28
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -165,14 +165,14 @@ if (!queryArResult) {
             if (dq.ContactType === "Pre Breach Reminder") {
                 //special handling of Pre-breach type 
                 //in this case the duration has to be subtracted from the SLA and accordingly adjusted
-                if (Workflow.WfLifecycle === "Ack") {
+                if (dq.EventType === "Ack") {
                     if (Workflow.ArAckSLA !== "undefined") {
                         DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.ArAckSLA - +dq.DelayMins);
                     } else {
                         Log.info("Ack SLA is not defined, there will be no pre-breach reminder");
                         continue;
                     }
-                } else if (Workflow.WfLifecycle === "Resolve") {
+                } else if (dq.EventType === "Resolve") {
                     if (Workflow.ArRslSLA !== "undefined") {
                         DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.ArRslSLA - +dq.DelayMins);
                     }
@@ -267,50 +267,51 @@ if (!queryArResult) {
                     continue;
 
 
-                if (user.isAvailable) {
-                    user.Status = "new";
-                    user.EventId = Date.now().toString();
+                if (!user.isAvailable) {
+                    if (user.nextAvailableTime) {
+                        user.Status = "new";
+                        Log.info("StageDispatchForCreate: no current schedules found for the user, will have to sleep..");
+                        // Kick off the stage delay since no current schedules are there
+                        // Go to Sleep until next open time and come here instead of SendDispatch
+                        //deal with incompatible format coming from Contacts API                
+                        if (user.nextAvailableTime.indexOf("+0000") > -1) {
+                            user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
+                        }
+                        var currTime = new Date();
+                        Log.info('currTime: ' + currTime.toISOString());
+                        var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                        Log.info('goTime: ' + goTime.toISOString());
 
-                    user.TimerId = Timer.start({
-                        eventName: 'ei_send_dispatch',
-                        delayMs: delayGapinMins * 60 * 1000,
-                        properties: {"EventId": user.EventId}
-                    });
-                    break;
-                } else if (user.nextAvailableTime !== null) {
-                    user.Status = "new";
-                    Log.info("StageDispatchForCreate: no current schedules found for the user, will have to sleep..");
-                    // Kick off the stage delay since no current schedules are there
-                    // Go to Sleep until next open time and come here instead of SendDispatch
-                    //deal with incompatible format coming from Contacts API                
-                    if (user.nextAvailableTime.indexOf("+0000") > -1) {
-                        user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
+                        delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
+                        Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+
+                    } else {
+                        //no next available time exists for this user, so no dispatch will be done
+                        //only log an activity in IMS
+                        var remarks = "No Next Available schedules are configured for user: " + user.firstName + " " + user.lastName + " please check configuration!!";
+                        Log.info(remarks);
+                        helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
+                        user.Status = 'done';
+                        user.TimerId = null;
+                        user.EventId = null;
+                        continue;
                     }
-                    var currTime = new Date();
-                    Log.info('currTime: ' + currTime.toISOString());
-                    var goTime = new Date(Date.parse(dq.nextAvailableTime));
-                    Log.info('goTime: ' + goTime.toISOString());
-
-                    delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
-                    Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
-                    user.EventId = Date.now().toString();
-                    user.TimerId = Timer.start({
-                        eventName: 'ei_send_dispatch',
-                        delayMs: delayGapinMins * 60 * 1000,
-                        properties: {"EventId": user.EventId}
-                    });
-                    break;
-                } else {
-                    //no next available time exists for this user, so no dispatch will be done
-                    //only log an activity in IMS
-                    var remarks = "No Next Available schedules are configured for user: " + user.firstName + " " + user.lastName + " please check configuration!!";
-                    Log.info(remarks);
-                    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
-                    user.Status = 'done';
-                    user.TimerId = null;
-                    user.EventId = null;
-                    continue;
                 }
+
+
+                user.Status = "new";
+                user.EventId = Date.now().toString();
+
+                user.TimerId = Timer.start({
+                    eventName: 'ei_send_dispatch',
+                    delayMs: delayGapinMins * 60 * 1000,
+                    properties: {"EventId": user.EventId}
+                });
+
+                //if this was a notification, we only need to do one dispatch for a user per channel type unless there is an error 
+                if (dq.ContactType === "Notification")
+                    break;
+
             }
             DispatchQueue.push(dq);
         }

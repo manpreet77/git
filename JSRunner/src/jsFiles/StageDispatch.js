@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.27
+ Dispatcher Standard Workflow V 2.8.7.28
  StageDispatch
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -197,7 +197,7 @@ if (!queryArResult) {
                     uu.Status = "new";
                 }
             }
-            
+
             //  Sort the user array by seqNo
             if (dq.users && dq.users.length > 0) {
                 dq.users.sort(function (a, b) {
@@ -208,7 +208,7 @@ if (!queryArResult) {
                     return 0;
                 });
             }
-            
+
             var delayGapinMins = 0;
             for (var i in dq.users) {
                 var user = dq.users[i];
@@ -218,40 +218,41 @@ if (!queryArResult) {
                 if (user.Status === "wait" || user.Status === "done" || user.Status === "canceled")
                     continue;
 
+                if (!user.isAvailable) {
+                    if (user.nextAvailableTime) {
+                        //deal with incompatible format coming from Contacts API                
+                        if (user.nextAvailableTime.indexOf("+0000") > -1) {
+                            user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
+                        }
 
-                if (user.nextAvailableTime !== null) {                       
-                    //deal with incompatible format coming from Contacts API                
-                    if (user.nextAvailableTime.indexOf("+0000") > -1) {
-                        user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
+                        Log.info("StageDispatch: no current schedules found for the user, will have to sleep..");
+                        // Kick off the stage delay since no current schedules are there
+                        // Go to Sleep until next open time and come here instead of SendDispatch
+                        var currTime = new Date();
+                        Log.info('currTime: ' + currTime.toISOString());
+                        var goTime = new Date(Date.parse(user.nextAvailableTime));
+                        Log.info('goTime: ' + goTime.toISOString());
+
+                        delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
+                        Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+                    } else {
+                        //no next available time exists for this user, so no dispatch will be done
+                        //only log an activity in IMS
+                        var remarks = "No Next Available schedules are configured for user: " + user.firstName + " " + user.lastName + " please check configuration!!";
+                        Log.info(remarks);
+                        helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
+                        user.Status = 'done';
+                        user.TimerId = null;
+                        continue;
                     }
-                    
-                    Log.info("StageDispatch: no current schedules found for the user, will have to sleep..");
-                    // Kick off the stage delay since no current schedules are there
-                    // Go to Sleep until next open time and come here instead of SendDispatch
-                    var currTime = new Date();
-                    Log.info('currTime: ' + currTime.toISOString());
-                    var goTime = new Date(Date.parse(user.nextAvailableTime));
-                    Log.info('goTime: ' + goTime.toISOString());
-
-                    delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
-                    Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
-                }else{
-                    //no next available time exists for this user, so no dispatch will be done
-                    //only log an activity in IMS
-                    var remarks = "No Next Available schedules are configured for user: "+ user.firstName + " " + user.lastName +" please check configuration!!";
-                    Log.info(remarks);  
-                    helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
-                    user.Status = 'done';
-                    user.TimerId = null;
-                    continue;
                 }
 
                 user.EventId = Date.now().toString();
-
+                user.Status = "new";
                 user.TimerId = Timer.start({
                     eventName: 'ei_send_dispatch',
                     delayMs: delayGapinMins * 60 * 1000,
-                    properties: {"EventId" : user.EventId}
+                    properties: {"EventId": user.EventId}
                 });
             }
             DispatchQueue.push(dq);

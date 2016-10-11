@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.27
+ Dispatcher Standard Workflow V 2.8.7.28
  PrepareArrSLABreach
  This script prepares actions and dispatch on an Arrival SLABreach
  --------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked') {
 Log.info("Prepare Arr SLA Breach Exiting...");
 
 
-function resetDispatchQueue(eventType, contactType){
+function resetDispatchQueue(eventType, contactType) {
     for (var i in DispatchQueue) {
         var dq = DispatchQueue[i];
 
@@ -42,17 +42,10 @@ function resetDispatchQueue(eventType, contactType){
             var user = dq.users[j];
 
             //cancel all queue items that are not needed now
-            if (dq.EventType === eventType && dq.ContactType === contactType) {
-                if (user.Status === 'new'){
-                    Log.info("Canceling the " + eventType + " SLA " + contactType + " Timer..");
-                    user.Status = 'canceled';
-                }else               
-                if (user.Status === 'wait'){
-                    user.Status = 'canceled';
-                    Log.info("Canceling the " + eventType + " SLA " + contactType + " in play Timer..");
-                    Timer.cancel('ei_send_dispatch');
-                } 
-                    
+            if (dq.EventType === eventType && dq.ContactType === contactType && user.Status === 'new') {
+                Log.info("Canceling the " + eventType + " SLA " + contactType + " Timer id = " + user.TimerId);
+                user.Status = 'canceled';
+                Timer.cancel('ei_send_dispatch', user.TimerId);
             }
         }
     }
