@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.16
+ Dispatcher Standard Workflow V 2.8.7.27
  PrepareETA
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.W
     // CALCULATE THIS FROM ETA
     Timer.start({
         eventName: 'ei_arr_sla_breach',
-        delayMs: Workflow.ArrSLABreachDelay * 60 * 1000
+        delayMs: Workflow.ArArrSLA * 60 * 1000
     });
 }
 Log.info("Prepare for ETA Exiting...");

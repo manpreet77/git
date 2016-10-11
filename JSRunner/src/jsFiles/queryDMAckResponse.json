@@ -1,56 +1,56 @@
 {
     "partyDetails": [{
             "duration": {
-                "baseValueMinutes": 2
+                "baseValueMinutes": 0
             },
             "template": {
-                "id": 10005,
-                "name": "ShiBAnk1",
+                "id": 7,
+                "name": "Notification Email Template",
                 "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"%Incident Id%\",\"body\":\"%Incident Id%\"}",
-                "tenantId": 900,
-                "channelId": 37
-            },
-            "contactChannel": "Email",
-            "atmSchedule": "AnyHours",
-            "level": "A. Branch",
-            "contactType": "Pre Breach Reminder",
-            "waitForNextContact": false,
-            "contactMapping": "22-30-37-47-2",
-            "lifeCycle": "Ack",
-            "users": [{
-                    "firstName": "",
-                    "lastName": "",
-                    "isAvailable": false,
-                    "address": "shirish2@esq.com",
-                    "sequenceNo": 1,
-                    "nextAvailableTime": null
-                }]
-        }, {
-            "duration": {
-                "baseValueMinutes": 5
-            },
-            "template": {
-                "id": 10005,
-                "name": "ShiBAnk1",
-                "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"%Incident Id%\",\"body\":\"%Incident Id%\"}",
-                "tenantId": 900,
-                "channelId": 37
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 1300,
+                "channelId": 38
             },
             "contactChannel": "Email",
             "atmSchedule": "AnyHours",
             "level": "A. Branch",
             "contactType": "Breach",
             "waitForNextContact": false,
-            "contactMapping": "22-31-37-47-5",
+            "contactMapping": "26-86-38-68-0",
             "lifeCycle": "Ack",
             "users": [{
-                    "firstName": "",
-                    "lastName": "",
+                    "firstName": "Harpreet",
+                    "lastName": "Singh",
                     "isAvailable": true,
-                    "address": "shirish1@esq.com",
-                    "sequenceNo": 2,
+                    "address": "harpreet.singh@esq.com",
+                    "sequenceNo": 4,
+                    "nextAvailableTime": ""
+                }]
+        }, {
+            "duration": {
+                "baseValueMinutes": 4
+            },
+            "template": {
+                "id": 8,
+                "name": "Level-1 Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Escalation level L1 - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId%  - %Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"Due to non - resolution of the  Incident Id: \\\\\\\\n%Workflow.IncidentId% - %Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% for the ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId%, It has been escalated to Level L1. <br>Please resolve the incident in order to avoid further escalation</br> \\\\\\\\n      \\\\\\\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\\\\\\\n\"}",
+                "tenantId": 1300,
+                "channelId": 38
+            },
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "level": "G. Second Line Time",
+            "contactType": "Escalation-L1",
+            "waitForNextContact": false,
+            "contactMapping": "26-87-38-68-4",
+            "lifeCycle": "Ack",
+            "users": [{
+                    "firstName": "Rajiv",
+                    "lastName": "Beri",
+                    "isAvailable": true,
+                    "address": "rajiv.beri@esq.com, rajiv.beri@esq.com",
+                    "sequenceNo": 5,
                     "nextAvailableTime": ""
                 }]
         }]

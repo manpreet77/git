@@ -33,7 +33,7 @@ public class CmdLine {
     public void Loop() {
 
         Log.info(" ");
-        Log.info("Welcome to ESQ Dispatcher Script Tool...V 2.8.7.16");
+        Log.info("Welcome to ESQ Dispatcher Script Tool...V 2.8.7.27");
 
         // Read input with BufferedReader.
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -223,7 +223,7 @@ public class CmdLine {
                 break;
             case "no_events":
                 Log.info("No Events in the Timer Event List");
-            case "ei_stage_dispatch_on_create":
+            case "ei_stage_dispatch_create":
                 Log.info("Run StageDispatchForCreate.js...................................");
                 r.RunJS("StageDispatchForCreate.js",te);
                 break;

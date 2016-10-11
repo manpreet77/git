@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.16
+ Dispatcher Standard Workflow V 2.8.7.27
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -16,9 +16,8 @@ Log.info("Send Dispatch Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 //Get details of the Event that resulted in this call
-if (Event !== 'undefined' && Event !== null) {
-    var EventProperties = JSON.parse(Event.properties);
-    Log.info("Source Timer Event: " + Event.delayMs + (EventProperties !== null ? ", id = " + EventProperties.eventid: ""));
+if (Event !== 'undefined' && Event !== null && Event.EventId !== null) {
+    Log.info("Source Timer Event: " +  Event.EventId);
 }
 
 
@@ -43,13 +42,13 @@ var dq, delayMins, currChannel;
 if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
 
     //find dispatch record to be sent based on eventid received
-    dq = findUserRecordFromDQ(EventProperties.EventId);
+    dq = findUserRecordFromDQ(Event.EventId);
 
     for (var j in dq.users) {
 
         var user = dq.users[j];
 
-        if (user.EventId === EventProperties.eventid)
+        if (user.EventId === Event.EventId)
         {
             //check if this notification has already been processed
             if (user.Status === 'done' || user.Status === 'canceled' || user.Status === 'next')

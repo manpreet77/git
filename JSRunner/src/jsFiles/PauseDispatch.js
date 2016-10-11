@@ -2,16 +2,14 @@
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
    Dispatcher Standard Workflow V 2.8.7.27
-   PrepareStartOrResume
-   This script prepares actions and dispatch on an Start or Resume
+   Pause Dispatch
    --------------------------------------------------------------------------------
 */
 
 /* global Log */
 
-//do something here
 
-Log.info("Started or resumed Work");
+Log.info("Pause Dispatches for current workflow");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services
 // --------------------------------------------------------------------------------

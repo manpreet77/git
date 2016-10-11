@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.16
+ Dispatcher Standard Workflow V 2.8.7.27
  PrepareWorkForCreate
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ Workflow.InNextATMSchedAvailableTime = Event.schedulesnext_nextavailableschedule
 Workflow.ArId = Event.actionruleid;
 Workflow.ArName = Event.actionrulename;   // Action Rule Name
 Workflow.ArServiceRole = Event.policyrole;
-Workflow.ArAtmSelector = 'undefined';            // The Atm Expression
+Workflow.ArAtmSelector = 'undefined';         // The Atm Expression
 Workflow.ArVendorId = Event.targetpartyid;    // Vendor or Dept Id default assignee
 Workflow.ArVendorName = Event.targetparty;      // Name of the Organization
 if (Event.slaacknowledgeenabled === "1") {
@@ -74,14 +74,6 @@ Workflow.WfLifecycle = 'Create';
 Workflow.WfId = 'undefined';
 Workflow.WfStartTime = new Date().toISOString();
 Log.info("Workflow.WfStartTime:" + Workflow.WfStartTime);
-
-
-
-
-
-
-
-
 
 
 Log.info("Prepare Work for Create Exiting...");

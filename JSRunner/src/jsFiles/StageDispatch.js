@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.16
+ Dispatcher Standard Workflow V 2.8.7.27
  StageDispatch
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -251,7 +251,7 @@ if (!queryArResult) {
                 user.TimerId = Timer.start({
                     eventName: 'ei_send_dispatch',
                     delayMs: delayGapinMins * 60 * 1000,
-                    properties: {"eventid" : user.EventId}
+                    properties: {"EventId" : user.EventId}
                 });
             }
             DispatchQueue.push(dq);
@@ -270,46 +270,6 @@ if (!queryArResult) {
 Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
 Log.info("Stage Dispatch Exiting...");
-
-
-function processUserBlockForCalendar(dq) {
-    var result = false;
-    /*//  Sort the user array by seqNo
-    if (dq.users && dq.users.length > 0) {
-        dq.users.sort(function (a, b) {
-            if (a.sequenceNo > b.sequenceNo)
-                return 1;
-            if (a.sequenceNo < b.sequenceNo)
-                return -1;
-            return 0;
-        });
-    }
-
-    /*for (var i in dq.users) {
-     var user = dq.users[i];
-     
-     processForUserAddress(user);
-     
-     if (user.Status === "wait" || user.Status === "done" || user.Status === "canceled")
-     continue;
-     
-     
-     if (user.isAvailable) {
-     user.Status = "new";
-     result = true;
-     } else {
-     if (dq.waitForNextContact) {
-     dq.nextAvailableTime = user.nextAvailableTime;
-     result = true;
-     break;
-     } else {
-     user.Status = "new";
-     result = true;
-     }
-     }
-     }*/
-    return result;
-}
 
 
 function processForUserAddress(user) {

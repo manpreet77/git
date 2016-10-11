@@ -96,14 +96,10 @@ class JSRunner {
                 Event.put("eventName", te.eventName);
                 Event.put("delayMs", te.delayMs);
 
-                if (te.properties != null) {
-                    String prop = "{";
-                    
+                if (te.properties != null) {                    
                    for (Map.Entry me : te.properties.entrySet()) {
-                       prop +=  "\"" + (String) me.getKey() + "\" : \"" + (String) me.getValue() + "\", ";
+                        Event.put((String) me.getKey(), (String) me.getValue());                        
                     }
-                    prop = prop.substring(0, prop.lastIndexOf(',')) + "}";
-                    Event.put("properties", prop);
                 }
             }
 

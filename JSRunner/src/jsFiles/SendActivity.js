@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.16
+   Dispatcher Standard Workflow V 2.8.7.27
    SendActivity Function
    This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
