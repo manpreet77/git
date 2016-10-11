@@ -1,11 +1,10 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.28
+ Dispatcher Standard Workflow V 2.8.7.29
  StageDispatch
- This action loads dispatch maps and prepares a queue of dispatchs to be sent
+ This action loads dispatch maps and creates timers of dispatchs to be sent
  Sorted by ascending order of send time
- Then it emits an event with a 0 delay to kickoff the dispatch loop
  --------------------------------------------------------------------------------
  */
 /* global Log, Workflow, Timer, Contact, helpdesk */
@@ -209,7 +208,7 @@ if (!queryArResult) {
                 });
             }
 
-            var delayGapinMins = 0;
+            var delayGapinMins = (DispatchStartTimeAsDate.getTime() - Date.now()) / 60000;
             for (var i in dq.users) {
                 var user = dq.users[i];
 
@@ -233,7 +232,7 @@ if (!queryArResult) {
                         var goTime = new Date(Date.parse(user.nextAvailableTime));
                         Log.info('goTime: ' + goTime.toISOString());
 
-                        delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
+                        delayGapinMins += (goTime.getTime() - currTime.getTime()) / 60000;
                         Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
                     } else {
                         //no next available time exists for this user, so no dispatch will be done
@@ -252,7 +251,8 @@ if (!queryArResult) {
                 user.TimerId = Timer.start({
                     eventName: 'ei_send_dispatch',
                     delayMs: delayGapinMins * 60 * 1000,
-                    properties: {"EventId": user.EventId}
+                    properties: {'EventId': user.EventId, 'fromDispatchQueue': 'true'},
+                    allowTimerWithSameName: 'true'
                 });
             }
             DispatchQueue.push(dq);

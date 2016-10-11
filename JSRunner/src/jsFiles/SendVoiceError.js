@@ -1,13 +1,13 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.28
+ Dispatcher Standard Workflow V 2.8.7.29
  Send Error from Voice Adaptor
  This action checks reries and delays and requeues the dispatch if appropriate
  For Create it also queues the next contact to be contacted as needed
  --------------------------------------------------------------------------------
  */
-/* global Log, Workflow, currdq, Event */
+/* global Log, Workflow, currdq, Event, Timer */
 
 Log.info("Send Error for Voice Entered...");
 
@@ -48,10 +48,12 @@ Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 
 Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
 
-//  Kick off the sending of notifications
-Timer.start({
+var EventId = Date.now().toString();
+var TimerId = Timer.start({
     eventName: 'ei_send_dispatch',
-    delayMs: 0
+    delayMs: 0,
+    properties: {"EventId": EventId, "fromDispatchQueue": "false"},
+    allowTimerWithSameName: 'true'
 });
 
 Log.info("Send Error for Voice Exiting...");

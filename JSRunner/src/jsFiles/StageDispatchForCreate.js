@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.28
+ Dispatcher Standard Workflow V 2.8.7.29
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -257,7 +257,9 @@ if (!queryArResult) {
                 });
             }
 
-            var delayGapinMins = 0;
+            
+            var delayGapinMins = (DispatchStartTimeAsDate.getTime() - Date.now()) / 60000;
+
             for (var i in dq.users) {
                 var user = dq.users[i];
 
@@ -282,7 +284,8 @@ if (!queryArResult) {
                         var goTime = new Date(Date.parse(dq.nextAvailableTime));
                         Log.info('goTime: ' + goTime.toISOString());
 
-                        delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
+                        delayGapinMins += (goTime.getTime() - currTime.getTime()) / 60000;
+
                         Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
 
                     } else {
@@ -301,16 +304,21 @@ if (!queryArResult) {
 
                 user.Status = "new";
                 user.EventId = Date.now().toString();
-
                 user.TimerId = Timer.start({
                     eventName: 'ei_send_dispatch',
                     delayMs: delayGapinMins * 60 * 1000,
-                    properties: {"EventId": user.EventId}
+                    properties: {'EventId': user.EventId, 'fromDispatchQueue': 'true'},
+                    allowTimerWithSameName: 'true'
                 });
 
                 //if this was a notification, we only need to do one dispatch for a user per channel type unless there is an error 
-                if (dq.ContactType === "Notification")
+                if (dq.ContactType === "Notification") {
+                    //in case there was a delay added for initial dispatch, we will need to add this to all subsequent dispatches
+                    if (delayGapinMins > 0) {
+                        Workflow.delayGapinMinsDueToNextAvailableUserSchedule = delayGapinMins;
+                    }
                     break;
+                }
 
             }
             DispatchQueue.push(dq);

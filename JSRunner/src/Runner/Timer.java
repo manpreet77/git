@@ -38,6 +38,13 @@ public class Timer {
         tl.put(id, new TimerEvent(delayMs, eventName, properties));
         return id;
     }
+    
+    public long create(String eventName, long delayMs, Map<String, String> properties, boolean allowTimerWithSameName) {
+        Log.info("Start Timer : " + eventName + " for " + delayMs + " ms" + ((properties != null) ? "  Properties:" + properties.toString() : ""));
+        long id = System.currentTimeMillis();
+        tl.put(id, new TimerEvent(delayMs, eventName, properties));
+        return id;
+    }
 
     public long start(ScriptObjectMirror mirror) {
         String eventName;
@@ -53,7 +60,7 @@ public class Timer {
         if (p == null) {
             return create(eventName, delayMs);
         } else {
-            return create(eventName, delayMs, p);
+            return create(eventName, delayMs, p, true);
         }
     }
 
