@@ -4,60 +4,33 @@
                 "baseValueMinutes": 0
             },
             "template": {
-                "id": 7,
+                "id": 1,
                 "name": "Notification Email Template",
                 "templateType": "email",
                 "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-                "tenantId": 1300,
-                "channelId": 38
+                "tenantId": 100,
+                "channelId": 37
             },
             "contactChannel": "Email",
             "atmSchedule": "BranchHours",
             "level": "A. Branch",
             "contactType": "Notification",
             "waitForNextContact": false,
-            "contactMapping": "25-34-38-43-0",
+            "contactMapping": "21-29-37-41-0",
             "lifeCycle": "Create",
             "users": [{
-                    "firstName": "Manpreet",
-                    "lastName": "Singh",
-                    "isAvailable": true,
-                    "address": "manpreet.singh@esq.com, manpreet@esq.com",
+                    "firstName": "virenderGujjar",
+                    "lastName": "tanwar",
+                    "isAvailable": false,
+                    "address": "virender.tanwar@esq.com, virender.tanwar@gmail.com",
                     "sequenceNo": 0,
-                    "nextAvailableTime": ""
+                    "nextAvailableTime": "2016-10-14T13:00:00.000+0000"
                 }, {
-                    "firstName": "Bus Hours - 140193 ",
-                    "lastName": "Brnch-140193",
+                    "firstName": "",
+                    "lastName": "",
                     "isAvailable": true,
-                    "address": "rahul.kumar@esq.com",
+                    "address": "rahuladmin@esq.com",
                     "sequenceNo": 1,
-                    "nextAvailableTime": ""
-                }]
-        }, {
-            "duration": {
-                "baseValueMinutes": 4
-            },
-            "template": {
-                "id": 7,
-                "name": "Notification Email Template",
-                "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-                "tenantId": 1300,
-                "channelId": 38
-            },
-            "contactChannel": "Email",
-            "atmSchedule": "BranchHours",
-            "level": "A. Branch",
-            "contactType": "Pre Breach Reminder",
-            "waitForNextContact": false,
-            "contactMapping": "25-85-38-43-4",
-            "lifeCycle": "Create",
-            "users": [{
-                    "firstName": "David",
-                    "lastName": "Mebane",
-                    "isAvailable": true,
-                    "address": "pradeep.kumar@esq.com",
-                    "sequenceNo": 3,
                     "nextAvailableTime": ""
                 }]
         }]

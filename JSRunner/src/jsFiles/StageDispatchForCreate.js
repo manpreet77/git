@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.32
+ Dispatcher Standard Workflow V 2.8.7.33
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -288,7 +288,7 @@ if (!queryArResult) {
                         }
                         var currTime = new Date();
                         Log.info(Workflow.WfLogPrefix + 'currTime: ' + currTime.toISOString());
-                        var goTime = new Date(Date.parse(dq.nextAvailableTime));
+                        var goTime = new Date(Date.parse(user.nextAvailableTime));
                         Log.info(Workflow.WfLogPrefix + 'goTime: ' + goTime.toISOString());
 
                         delayGapinMins += (goTime.getTime() - currTime.getTime()) / 60000;
