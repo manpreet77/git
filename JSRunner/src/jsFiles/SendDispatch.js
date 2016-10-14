@@ -1,14 +1,11 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.29
+ Dispatcher Standard Workflow V 2.8.7.30
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
- If there are any more that require a delay it starts a Timer
- This action can also be triggered by ei_call_voice_error
- TBD
- --------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------
  */
 /* global Log, Workflow, Timer, Contact, email, voxeo, Event, helpdesk */
 
@@ -106,6 +103,33 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                 case 'voice' :
                 {
                     Contact.replaceVariables(dq.Template, {Workflow: Workflow});
+                    
+                    var CallOption = "";
+                    if (dq.EventType === "Create") {
+                        CallOption = "CreateIncident";                        
+                        Note = "This is initial Notification";
+                    } else if(dq.ContactType === "Pre Breach Reminder"){
+                        CallOption = "PreBreachReminder";                        
+                        Note = "This is reminder that SLA breach for " + dq.EventType + " will happen soon"; //TODO                       
+                    } else if(dq.ContactType === "Breach"){
+                        CallOption = "Breach";                                                
+                        Note = dq.EventType + " SLA has been breached";                                            
+                    } else if(dq.ContactType.indexOf("Escalation") > -1){
+                        CallOption = "Escalation";   
+                        if (dq.ContactType === "Escalation-L1"){
+                            Note = "This is Level 1 Escalation for " + dq.EventType ;
+                        }
+                        else if (dq.ContactType === "Escalation-L2"){
+                            Note = "This is Level 2 Escalation for " + dq.EventType ;
+                        }
+                        else if (dq.ContactType === "Escalation-L3"){
+                            Note = "This is Level 3 Escalation for " + dq.EventType ;
+                        }
+                        else if (dq.ContactType === "Escalation-L4"){
+                            Note = "This is Level 4 Escalation for " + dq.EventType ;
+                        }
+                    }
+                    
                     voxeo.call({
                         destinationNumber: user.Address,
                         dialogId: "dispatchNotification/dispatchInfo.vxml",
@@ -114,22 +138,28 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                         responseProperties: {
                             terminalId: Workflow.InTermId,
                             IncidentId: Workflow.InIncidentId
-
                         },
                         content: {
                             objectId: Workflow.InIncidentId,
-                            reason: "Technical Help Required for Policy, " + Workflow.InPolicyName,
+                            reason:  Workflow.InPolicyName,
                             incidentId: Workflow.InIncidentId,
-                            note: "",
+                            note: Note,
+                            callOption: CallOption,
                             terminalId: Workflow.InTermId,
-                            eta: false,
-                            lang: "en-US"
+                            contactReference: "Manpreet",  //TODO
+                            calledUser: user.firstName + ' ' + user.lastName,
+                            eta:true,
+                            lang:"en-US"                            
                         }
                     });
 
                     user.Status = 'calling';
-                    Log.info('Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.FirstName + ', LastName = ' + user.LastName + ', Address = ' + user.Address);
+                    if(user.userName){
+                        Workflow.PrimaryAssignedUser = user.userName;
+                    }
+                    Log.info('Voice Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
                     helpdesk.send({incidentid: Workflow.InIncidentId, category: "Contact", subcategory: "TELEPHONE", activitytime: new Date().toISOString(), result: user.Status, remarks: "Notification via Voice", resulttext: ""});
+                    
                     break;
                 }                
                 case 'edi' :

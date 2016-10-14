@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.29
+ Dispatcher Standard Workflow V 2.8.7.30
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -137,6 +137,8 @@ if (!queryArResult) {
             }
         }
 
+        dmaps = createDmaps;
+        
         if (ackDmaps) {
             dmaps = createDmaps.concat(ackDmaps);
         }
