@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.30
+ Dispatcher Standard Workflow V 2.8.7.32
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -9,33 +9,33 @@
  */
 /* global Log, Workflow, Timer, Contact, Event, helpdesk */
 
-Log.info("Stage Dispatch for Create Entered...");
+Log.info(Workflow.WfLogPrefix + Workflow.WfLogPrefix + "Stage Dispatch for Create Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 
 if (DispatchQueue === 'undefined') {
-    Log.info("Initializing DispatchQueue...");
+    Log.info(Workflow.WfLogPrefix + Workflow.WfLogPrefix + "Initializing DispatchQueue...");
     DispatchQueue = new Array();
 }
 
 //Get details of the Event that resulted in this call
 if (Event !== 'undefined' && Event !== null && Event.EventId !== null) {
-    Log.info("Source Timer Event: " + Event.EventId);
+    Log.info(Workflow.WfLogPrefix + "Source Timer Event: " + Event.EventId);
 }
 
 //Do the time calcuation in case there was a delay due to nextAvailableATMSchedule during Create time
 var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
 if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null) {
-    Log.info("Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
+    Log.info(Workflow.WfLogPrefix + "Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
     BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
 }
 
 //Start the SLA Breach timers
 // Start Timer for Ack SLA (ei_ack_sla_breach)
 if (Workflow.ArAckSLA !== 'undefined' && Workflow.ArAckSLA > 0) {
-    Log.info('Start Ack SLA Breach Timer');
+    Log.info(Workflow.WfLogPrefix + 'Start Ack SLA Breach Timer');
     Timer.start({
         eventName: 'ei_ack_sla_breach',
         delayMs: Workflow.ArAckSLA * 60 * 1000
@@ -45,7 +45,7 @@ if (Workflow.ArAckSLA !== 'undefined' && Workflow.ArAckSLA > 0) {
 
 // Start Timer for Resolve SLA (ei_rsl_sla_breach)
 if (Workflow.ArRslSLA !== 'undefined' && Workflow.ArRslSLA > 0) {
-    Log.info('Start Resolution SLA Breach Timer');
+    Log.info(Workflow.WfLogPrefix + 'Start Resolution SLA Breach Timer');
     Timer.start({
         eventName: 'ei_rsl_sla_breach',
         delayMs: Workflow.ArRslSLA * 60 * 1000
@@ -58,25 +58,26 @@ var dmaps = null;
 var AtmSched = Event.AtmSched;
 
 
-Log.info("Loading Notifications for Create...");
-Log.info("Args to QueryDispatchMaps: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
+Log.info(Workflow.WfLogPrefix + "Loading Notifications for Create...");
+Log.info(Workflow.WfLogPrefix + "Args to QueryDispatchMaps: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
 
 var queryArResult = Contact.queryDispatchMapWithNextAvailableUser({
     actionRule: Workflow.ArName,
     tenantId: Workflow.TenantId,
     atmSchedule: AtmSched,
-    lifecycle: Workflow.WfLifecycle
+    lifecycle: Workflow.WfLifecycle,
+    additionalFilter: {branch: Workflow.AtmBranch}
 });
 
 if (!queryArResult) {
     var remarks = "No contacts for dispatch are configured for Incident Create lifeCyle, no dispatch will take place,  please check configuration!!";
-    Log.info(remarks);
+    Log.info(Workflow.WfLogPrefix + remarks);
     helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
 } else {
-    Log.info("QueryResult Create: " + JSON.stringify(queryArResult));
+    Log.info(Workflow.WfLogPrefix + "QueryResult Create: " + JSON.stringify(queryArResult));
     var createDmaps = queryArResult.partyDetails;
     if (createDmaps) {
-        Log.info("Dispatch Maps  size = " + createDmaps.length);
+        Log.info(Workflow.WfLogPrefix + "Dispatch Maps  size = " + createDmaps.length);
         for (var i = createDmaps.length - 1; i >= 0; i--) {
             if (createDmaps[i].contactType !== "Notification") {
                 createDmaps.splice(i, 1);
@@ -89,24 +90,25 @@ if (!queryArResult) {
     // we will default to AnyHours in this case
     AtmSched = "AnyHours";
 
-    Log.info("Loading pre breach reminders for Ack...");
+    Log.info(Workflow.WfLogPrefix + "Loading pre breach reminders for Ack...");
     Workflow.WfLifecycle = "Ack";
-    Log.info("Args to QueryDispatchMaps: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
+    Log.info(Workflow.WfLogPrefix + "Args to QueryDispatchMaps: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
 
     var queryArResult = Contact.queryDispatchMapWithNextAvailableUser({
         actionRule: Workflow.ArName,
         tenantId: Workflow.TenantId,
         atmSchedule: AtmSched,
-        lifecycle: Workflow.WfLifecycle
+        lifecycle: Workflow.WfLifecycle,
+        additionalFilter: {branch: Workflow.AtmBranch}
     });
 
     if (!queryArResult) {
-        Log.info("No contacts for dispatch were returned in QueryResult for Ack ");
+        Log.info(Workflow.WfLogPrefix + "No contacts for dispatch were returned in QueryResult for Ack ");
     } else {
-        Log.info("QueryResult Ack: " + JSON.stringify(queryArResult));
+        Log.info(Workflow.WfLogPrefix + "QueryResult Ack: " + JSON.stringify(queryArResult));
         var ackDmaps = queryArResult.partyDetails;
         if (ackDmaps) {
-            Log.info("Dispatch Maps  size = " + ackDmaps.length);
+            Log.info(Workflow.WfLogPrefix + "Dispatch Maps  size = " + ackDmaps.length);
             for (var i = ackDmaps.length - 1; i >= 0; i--) {
                 if (ackDmaps[i].contactType !== "Pre Breach Reminder") {
                     ackDmaps.splice(i, 1);
@@ -114,22 +116,23 @@ if (!queryArResult) {
             }
         }
 
-        Log.info("Loading pre breach reminders for Resolve...");
+        Log.info(Workflow.WfLogPrefix + "Loading pre breach reminders for Resolve...");
         Workflow.WfLifecycle = "Resolve";
-        Log.info("Args to QueryDispatchMaps: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
+        Log.info(Workflow.WfLogPrefix + "Args to QueryDispatchMaps: actionrule= " + Workflow.ArName + ", tenantid= " + Workflow.TenantId + ", Schedule= " + AtmSched + ", Lifecycle= " + Workflow.WfLifecycle);
 
         queryArResult = Contact.queryDispatchMapWithNextAvailableUser({
             actionRule: Workflow.ArName,
             tenantId: Workflow.TenantId,
             atmSchedule: AtmSched,
-            lifecycle: Workflow.WfLifecycle
+            lifecycle: Workflow.WfLifecycle,
+            additionalFilter: {branch: Workflow.AtmBranch}
         });
 
-        Log.info("QueryResult Resolve: " + JSON.stringify(queryArResult));
+        Log.info(Workflow.WfLogPrefix + "QueryResult Resolve: " + JSON.stringify(queryArResult));
 
         var resDmaps = queryArResult.partyDetails;
         if (resDmaps) {
-            Log.info("Dispatch Maps  size = " + resDmaps.length);
+            Log.info(Workflow.WfLogPrefix + "Dispatch Maps  size = " + resDmaps.length);
             for (var i = resDmaps.length - 1; i >= 0; i--) {
                 if (resDmaps[i].contactType !== "Pre Breach Reminder") {
                     resDmaps.splice(i, 1);
@@ -138,7 +141,7 @@ if (!queryArResult) {
         }
 
         dmaps = createDmaps;
-        
+
         if (ackDmaps) {
             dmaps = createDmaps.concat(ackDmaps);
         }
@@ -151,9 +154,9 @@ if (!queryArResult) {
 
     if (dmaps) {
 
-        Log.info("Dispatch Maps  size = " + dmaps.length);
-        Log.info('Dispatch Maps Data :  {}', JSON.stringify(dmaps));
-        Log.info("BaseDispatchstartTime = " + BaseDispatchStartTimeAsDate);
+        Log.info(Workflow.WfLogPrefix + "Dispatch Maps  size = " + dmaps.length);
+        Log.info(Workflow.WfLogPrefix + 'Dispatch Maps Data :  {}', JSON.stringify(dmaps));
+        Log.info(Workflow.WfLogPrefix + "BaseDispatchstartTime = " + BaseDispatchStartTimeAsDate);
         for (var i in dmaps) {
             var dq = {};
             /* Create, Ack...            */ dq.EventType = dmaps[i].lifeCycle;
@@ -171,7 +174,7 @@ if (!queryArResult) {
                     if (Workflow.ArAckSLA !== "undefined") {
                         DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.ArAckSLA - +dq.DelayMins);
                     } else {
-                        Log.info("Ack SLA is not defined, there will be no pre-breach reminder");
+                        Log.info(Workflow.WfLogPrefix + "Ack SLA is not defined, there will be no pre-breach reminder");
                         continue;
                     }
                 } else if (dq.EventType === "Resolve") {
@@ -179,7 +182,7 @@ if (!queryArResult) {
                         DispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.ArRslSLA - +dq.DelayMins);
                     }
                     else {
-                        Log.info("Resolution SLA is not defined, there will be no pre-breach reminder");
+                        Log.info(Workflow.WfLogPrefix + "Resolution SLA is not defined, there will be no pre-breach reminder");
                         continue;
                     }
                 }
@@ -259,8 +262,10 @@ if (!queryArResult) {
                 });
             }
 
-            
+
             var delayGapinMins = (DispatchStartTimeAsDate.getTime() - Date.now()) / 60000;
+            if (delayGapinMins < 0)
+                delayGapinMins = 0;
 
             for (var i in dq.users) {
                 var user = dq.users[i];
@@ -274,7 +279,7 @@ if (!queryArResult) {
                 if (!user.isAvailable) {
                     if (user.nextAvailableTime) {
                         user.Status = "new";
-                        Log.info("StageDispatchForCreate: no current schedules found for the user, will have to sleep..");
+                        Log.info(Workflow.WfLogPrefix + "StageDispatchForCreate: no current schedules found for the user, will have to sleep..");
                         // Kick off the stage delay since no current schedules are there
                         // Go to Sleep until next open time and come here instead of SendDispatch
                         //deal with incompatible format coming from Contacts API                
@@ -282,19 +287,19 @@ if (!queryArResult) {
                             user.nextAvailableTime = user.nextAvailableTime.replace("+0000", "Z");
                         }
                         var currTime = new Date();
-                        Log.info('currTime: ' + currTime.toISOString());
+                        Log.info(Workflow.WfLogPrefix + 'currTime: ' + currTime.toISOString());
                         var goTime = new Date(Date.parse(dq.nextAvailableTime));
-                        Log.info('goTime: ' + goTime.toISOString());
+                        Log.info(Workflow.WfLogPrefix + 'goTime: ' + goTime.toISOString());
 
                         delayGapinMins += (goTime.getTime() - currTime.getTime()) / 60000;
 
-                        Log.info("Going to sleep due to user not available for " + delayGapinMins + " mins");
+                        Log.info(Workflow.WfLogPrefix + "Going to sleep due to user not available for " + delayGapinMins + " mins");
 
                     } else {
                         //no next available time exists for this user, so no dispatch will be done
                         //only log an activity in IMS
                         var remarks = "No Next Available schedules are configured for user: " + user.firstName + " " + user.lastName + " please check configuration!!";
-                        Log.info(remarks);
+                        Log.info(Workflow.WfLogPrefix + remarks);
                         helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "User Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: remarks, resulttext: ""});
                         user.Status = 'done';
                         user.TimerId = null;
@@ -340,8 +345,8 @@ if (!queryArResult) {
 
 //  Save the Queue away
 Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
-Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
-Log.info("Stage Dispatch for Create Exiting...");
+Log.info(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
+Log.info(Workflow.WfLogPrefix + "Stage Dispatch for Create Exiting...");
 
 
 function processForUserAddress(user) {
@@ -351,7 +356,7 @@ function processForUserAddress(user) {
      * */
     var addressString = user.address;
     if (!addressString) {
-        Log.info("No Address provided for this contact record, skipping it..");
+        Log.info(Workflow.WfLogPrefix + "No Address provided for this contact record, skipping it..");
         user.Status = "error";
     } else {
         //try splitting on comma

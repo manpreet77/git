@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.30
+ Dispatcher Standard Workflow V 2.8.7.32
  PrepareWorkForCreate
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
@@ -61,7 +61,8 @@ Workflow.ArWorkSLA = 'undefined';            //Work SLA - not implemented
 
 
 // Copy ATM details from Event into  Workflow
-Workflow.AtmMake = Event.atmmake;
+Workflow.AtmMake = Event.atm_make;
+Workflow.AtmBranch =  Event.atm_branch;
 
 // Copy Fault details from Event into Workflow
 
@@ -73,6 +74,8 @@ Workflow.WfStatus = 'new';
 Workflow.WfLifecycle = 'Create';
 Workflow.WfId = 'undefined';
 Workflow.WfStartTime = new Date().toISOString();
+Workflow.WfLogPrefix = '[' + Workflow.InIncidentId + ']';
+
 Log.info("Workflow.WfStartTime:" + Workflow.WfStartTime);
 
 

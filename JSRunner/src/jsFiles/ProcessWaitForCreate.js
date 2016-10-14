@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.30
+ Dispatcher Standard Workflow V 2.8.7.32
  Process Wait for Create
  Find out if there is an initial wait at Incident Creation
  This can be due to ATM schedule or User schedule   
@@ -9,7 +9,7 @@
  */
 /* global Log, Workflow, Timer, Contact, helpdesk */
 
-Log.info("Process Wait for Create Entered...");
+Log.info(Workflow.WfLogPrefix + "Process Wait for Create Entered...");
 
 if (Workflow.InIsInATMBranchHours === "0" &&
         Workflow.InIsInATMAfterHours === "0" &&
@@ -18,7 +18,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
         Workflow.InNextATMSchedAvailableTime === null) {
 
     //there is no ATM schedule defined for this atm
-    Log.info("ProcessWaitForCreate: No schedules are configured for this atm, please check configuration!!");
+    Log.info(Workflow.WfLogPrefix + "ProcessWaitForCreate: No schedules are configured for this atm, please check configuration!!");
     helpdesk.send({incidentid: Workflow.InIncidentId, category: "Error", subcategory: "Terminal Not In Schedule", activitytime: new Date().toISOString(), result: "Failure", remarks: "No schedules are configured for this atm, please check configuration!!", resulttext: ""});
     Workflow.ATMScheduleConfigError = true;
 } else {
@@ -33,19 +33,19 @@ if (Workflow.InIsInATMBranchHours === "0" &&
             Workflow.InIsInATMOperationalHours === "0" &&
             Workflow.InNextATMSchedAvailableTime !== null) {
 
-        Log.info("ProcessWaitForCreate: no current schedules found, will have to sleep..");
+        Log.info(Workflow.WfLogPrefix + "ProcessWaitForCreate: no current schedules found, will have to sleep..");
         //  Kick off the stage delay since no current schedules are there
         // Go to Sleep until next open time and come here instead of SendDispatch
         var currTime = new Date();
-        Log.info('currTime: ' + currTime.toISOString());
+        Log.info(Workflow.WfLogPrefix + 'currTime: ' + currTime.toISOString());
         var goTime = new Date(Date.parse(Workflow.InNextATMSchedAvailableTime));
-        Log.info('goTime: ' + goTime.toISOString());
+        Log.info(Workflow.WfLogPrefix + 'goTime: ' + goTime.toISOString());
         delayGapinMins = (goTime.getTime() - currTime.getTime()) / 60000;
 
         Workflow.delayGapinMinsDueToNextAvailableAtmSchedule = delayGapinMins;
         AtmSched = Workflow.InNextATMSchedAvailable;
 
-        Log.info("Going to sleep for " + delayGapinMins + " mins");
+        Log.info(Workflow.WfLogPrefix + "Going to sleep for " + delayGapinMins + " mins");
     } else {
         //Incident Time falls in one of the atm schedule
         if (Workflow.InIsInATMBranchHours === "1") {
@@ -72,7 +72,7 @@ if (Workflow.InIsInATMBranchHours === "0" &&
     });
 }
 
-Log.info("Process Wait For Create Exiting...");
+Log.info(Workflow.WfLogPrefix + "Process Wait For Create Exiting...");
 
 /* --------------------------------------------------------------------------------
  addMinutes Function

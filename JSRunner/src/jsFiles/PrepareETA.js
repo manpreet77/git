@@ -1,14 +1,14 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.30
+ Dispatcher Standard Workflow V 2.8.7.32
  PrepareETA
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
  */
 /* global Log, Workflow, Timer */
 
-Log.info("Prepare for ETA Entered...");
+Log.info(Workflow.WfLogPrefix + "Prepare for ETA Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
@@ -21,7 +21,7 @@ if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.W
         delayMs: Workflow.ArArrSLA * 60 * 1000
     });
 }
-Log.info("Prepare for ETA Exiting...");
+Log.info(Workflow.WfLogPrefix + "Prepare for ETA Exiting...");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services
 // --------------------------------------------------------------------------------

@@ -1,14 +1,14 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.30
+ Dispatcher Standard Workflow V 2.8.7.32
  PrepareAck
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
  */
 /* global Log, Workflow, Timer */
 
-Log.info("Prepare for Ack Entered...");
+Log.info(Workflow.WfLogPrefix + "Prepare for Ack Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
@@ -16,7 +16,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.WfStatus === 'reopened' || Workflow.WfStatus === 'breached') {
     Workflow.WfLifecycle = 'Ack';
     Workflow.WfStatus = 'acked';
-    Log.info("Canceling the ACK SLA Breach Timer..");
+    Log.info(Workflow.WfLogPrefix + "Canceling the ACK SLA Breach Timer..");
     Timer.cancel('ei_ack_sla_breach');
 
     //loop through the dispatch queue and remove unneccesary timers 
@@ -29,11 +29,11 @@ if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.W
 
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
-    Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
+    Log.info(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
 }
 
 
-Log.info("Prepare for Ack Exiting...");
+Log.info(Workflow.WfLogPrefix + "Prepare for Ack Exiting...");
 
 
 function resetDispatchQueue(eventType, contactType) {
@@ -46,7 +46,7 @@ function resetDispatchQueue(eventType, contactType) {
 
             //cancel all queue items that are not needed now
             if (dq.EventType === eventType && dq.ContactType === contactType && user.Status === 'new') {
-                Log.info("Canceling the " + eventType + " SLA " + contactType + " Timer id = " + user.TimerId);
+                Log.info(Workflow.WfLogPrefix + "Canceling the " + eventType + " SLA " + contactType + " Timer id = " + user.TimerId);
                 user.Status = 'canceled';
                 Timer.cancel('ei_send_dispatch', user.TimerId);
             }

@@ -1,14 +1,14 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.30
+ Dispatcher Standard Workflow V 2.8.7.32
  PrepareArr
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
  */
 /* global Log, Workflow, Timer */
 
-Log.info("Prepare for Arrive Entered...");
+Log.info(Workflow.WfLogPrefix + "Prepare for Arrive Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
@@ -28,12 +28,12 @@ if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked' || Workflow.
     
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
-    Log.info("DispatchQueue = {}", Workflow.DispatchQueueStringify);
+    Log.info(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
 
 }
 
 
-Log.info("Prepare for Arrive Exiting...");
+Log.info(Workflow.WfLogPrefix + "Prepare for Arrive Exiting...");
 
 function resetDispatchQueue(eventType, contactType) {
     for (var i in DispatchQueue) {
@@ -45,7 +45,7 @@ function resetDispatchQueue(eventType, contactType) {
 
             //cancel all queue items that are not needed now
             if (dq.EventType === eventType && dq.ContactType === contactType && user.Status === 'new') {
-                Log.info("Canceling the " + eventType + " SLA " + contactType + " Timer id = " + user.TimerId);
+                Log.info(Workflow.WfLogPrefix + "Canceling the " + eventType + " SLA " + contactType + " Timer id = " + user.TimerId);
                 user.Status = 'canceled';
                 Timer.cancel('ei_send_dispatch', user.TimerId);
             }

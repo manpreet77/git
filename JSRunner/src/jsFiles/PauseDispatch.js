@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.30
+   Dispatcher Standard Workflow V 2.8.7.32
    Pause Dispatch
    --------------------------------------------------------------------------------
 */
@@ -9,7 +9,7 @@
 /* global Log */
 
 
-Log.info("Pause Dispatches for current workflow");
+Log.info(Workflow.WfLogPrefix + "Pause Dispatches for current workflow");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services
 // --------------------------------------------------------------------------------

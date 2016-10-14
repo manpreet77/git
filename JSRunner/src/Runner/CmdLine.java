@@ -33,7 +33,7 @@ public class CmdLine {
     public void Loop() {
 
         Log.info(" ");
-        Log.info("Welcome to ESQ Dispatcher Script Tool...V 2.8.7.27");
+        Log.info("Welcome to ESQ Dispatcher Script Tool...V 2.8.7.32");
 
         // Read input with BufferedReader.
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -116,7 +116,7 @@ public class CmdLine {
                     r.RunJS("EventETA.js");
                     Log.info("Run PrepareETA.js...............................");
                     r.RunJS("PrepareETA.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 5:
@@ -124,7 +124,7 @@ public class CmdLine {
                     r.RunJS("EventArrive.js");
                     Log.info("Run PrepareArrive.js..................................");
                     r.RunJS("PrepareArrive.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 6:
@@ -132,15 +132,15 @@ public class CmdLine {
                     r.RunJS("EventHold.js");
                     Log.info("Run PrepareHold.js..................................");
                     r.RunJS("PrepareHold.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 7:
                     Log.info("Run EventResume.,.... ..............................");
                     r.RunJS("EventResume.js");
-                    Log.info("Run PrepareResume.,.... ..............................");
-                    r.RunJS("PrepareResume.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    Log.info("Run PrepareStartOrResume.,.... ..............................");
+                    r.RunJS("PrepareStartOrResume.js");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 8:
@@ -148,7 +148,7 @@ public class CmdLine {
                     r.RunJS("EventResolve.js");
                     Log.info("Run PrepareResolve.js.................................");
                     r.RunJS("PrepareResolve.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 9:
@@ -156,7 +156,7 @@ public class CmdLine {
                     r.RunJS("EventRslSLABreach.js");
                     Log.info("Run PrepareRslSLABreach.js. .............................");
                     r.RunJS("PrepareRslSLABreach.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 10:
@@ -164,7 +164,7 @@ public class CmdLine {
                     r.RunJS("EventReopen.js");
                     Log.info("Run PrepareReopen.js..................................");
                     r.RunJS("PrepareReopen.js");
-                    Log.info("Run StateDispatch.js..................................");
+                    Log.info("Run StageDispatch.js..................................");
                     r.RunJS("StageDispatch.js");
                     break;
                 case 11:

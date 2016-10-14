@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.30
+ Dispatcher Standard Workflow V 2.8.7.32
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -9,12 +9,12 @@
  */
 /* global Log, Workflow, Timer, Contact, email, voxeo, Event, helpdesk */
 
-Log.info("Send Dispatch Entered...");
+Log.info(Workflow.WfLogPrefix + "Send Dispatch Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 //Get details of the Event that resulted in this call
 if (Event !== 'undefined' && Event !== null && Event.EventId !== null) {
-    Log.info("Source Timer Event: " +  Event.EventId);
+    Log.info(Workflow.WfLogPrefix + "Source Timer Event: " +  Event.EventId);
 }
 
 
@@ -22,13 +22,13 @@ if (Event !== 'undefined' && Event !== null && Event.EventId !== null) {
 var DispatchQueue = JSON.parse(Workflow.DispatchQueueStringify);
 
 
-Log.info('EventType       SendTime                     DelayMins  Status  Channel ContactType      AtmSchedule             WillRespond     Ttl     MaxRetries     FirstName   LastName    Address        Address2');
+Log.info(Workflow.WfLogPrefix + 'EventType       SendTime                     DelayMins  Status  Channel ContactType      AtmSchedule             WillRespond     Ttl     MaxRetries     FirstName   LastName    Address        Address2');
 for (var i in DispatchQueue) {
     var dq = DispatchQueue[i];
     for (var j in dq.users) {
         var user = dq.users[j];
 
-        Log.info(dq.EventType + "\t\t" + (user.isAvailable === true ? dq.SendTime : user.nextAvailableTime) + "\t" + dq.DelayMins + "\t" + user.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + user.firstName + " " + user.lastName + " " + user.Address + "\t\t" + user.Address2);
+        Log.info(Workflow.WfLogPrefix + dq.EventType + "\t\t" + (user.isAvailable === true ? dq.SendTime : user.nextAvailableTime) + "\t" + dq.DelayMins + "\t" + user.Status + "\t" + dq.Channel + "\t" + dq.ContactType + "\t" + dq.AtmSchedule + "\t" + dq.WillRespond + "\t\t" + dq.Ttl + "\t" + dq.MaxRetries + "\t\t" + user.firstName + " " + user.lastName + " " + user.Address + "\t\t" + user.Address2);
     }
 }
 
@@ -90,7 +90,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                             remarks = "L4 Escalation via Email for: '" + dq.EventType + "' sent to: " + userAddrInfo(user);
                     }
 
-                    Log.info('Email Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
+                    Log.info(Workflow.WfLogPrefix + 'Email Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
 
                     helpdesk.send({incidentid: Workflow.InIncidentId, category: category, subcategory: subcategory, activitytime: new Date().toISOString(), result: "Success", remarks: remarks, resulttext: ""});
                     user.Status = 'done';
@@ -157,7 +157,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
                     if(user.userName){
                         Workflow.PrimaryAssignedUser = user.userName;
                     }
-                    Log.info('Voice Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
+                    Log.info(Workflow.WfLogPrefix + 'Voice Dispatch: LifeCycle = ' + dq.EventType + ', Channel = ' + dq.Channel + ', Type = ' + dq.ContactType + ', AtmSchedule = ' + dq.AtmSchedule + ', FirstName = ' + user.firstName + ', LastName = ' + user.lastName + ', Address = ' + user.Address);
                     helpdesk.send({incidentid: Workflow.InIncidentId, category: "Contact", subcategory: "TELEPHONE", activitytime: new Date().toISOString(), result: user.Status, remarks: "Notification via Voice", resulttext: ""});
                     
                     break;
@@ -177,7 +177,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 }
-Log.info("Send Dispatch Exiting...");
+Log.info(Workflow.WfLogPrefix + "Send Dispatch Exiting...");
 
 /* --------------------------------------------------------------------------------
  addMinutes Function

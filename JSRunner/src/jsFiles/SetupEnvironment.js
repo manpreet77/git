@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.30
+   Dispatcher Standard Workflow V 2.8.7.32
    SetupEnvironment
    This action defines all globals and is included in initial rule of a workflow.
     --------------------------------------------------------------------------------
@@ -22,6 +22,7 @@ Workflow.WfStartTime                        ='undefined';   // When this Workflo
 Workflow.delayGapinMinsDueToNextAvailableAtmSchedule = 'undefined'; //used for finding out delay in case next atm schedule kicks in 
 Workflow.delayGapinMinsDueToNextAvailableUserSchedule = 'undefined'; //used for finding out delay in case next atm schedule kicks in 
 Workflow.PrimaryAssignedUser                = 'undefined';
+Workflow.WfLogPrefix                        = '';
 // Incident Details
 Workflow.InIncidentId                       ='undefined';
 Workflow.InPolicyName                       ='undefined';
@@ -63,7 +64,7 @@ Workflow.AtmOffHrs                          ='undefined';
 Workflow.AtmPeakHrs                         ='undefined';
 Workflow.AtmOffPeakHrs                      ='undefined';
 Workflow.AtmModel                           ='undefined';
-Workflow.AtmMfgr                            ='undefined';
+Workflow.AtmMake                            ='undefined';
 Workflow.AtmType                            ='undefined';
 Workflow.AtmState                           ='undefined';
 Workflow.AtmSubState                        ='undefined';

@@ -1,14 +1,14 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.30
+   Dispatcher Standard Workflow V 2.8.7.32
    PrepareLink
    This action sets the stage and decides what needs to be done in this workflow
    --------------------------------------------------------------------------------
 */
 /* global Log, Workflow */
 
-Log.info("Prepare for Link Entered...");
+Log.info(Workflow.WfLogPrefix + "Prepare for Link Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
@@ -19,7 +19,7 @@ if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked' || Workflow.
 }
 // Copy Arrive details into WorkFlow [link time, link user]
 
-Log.info("Prepare for Link Exiting...");
+Log.info(Workflow.WfLogPrefix + "Prepare for Link Exiting...");
 // --------------------------------------------------------------------------------
 // ESQ Management Solutions / ESQ Business Services
 // --------------------------------------------------------------------------------
