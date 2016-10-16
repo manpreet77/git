@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.33
+ Dispatcher Standard Workflow V 2.8.7.34
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -202,7 +202,7 @@ function findUserRecordFromDQ(id) {
 
             var user = rec.users[j];
 
-            if (user.EventId === id) {
+            if (user.EventId === id && user.Status === 'new') {
                 breakOut = true;
                 break;
             }

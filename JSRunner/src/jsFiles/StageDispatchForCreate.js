@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.33
+ Dispatcher Standard Workflow V 2.8.7.34
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -9,14 +9,14 @@
  */
 /* global Log, Workflow, Timer, Contact, Event, helpdesk */
 
-Log.info(Workflow.WfLogPrefix + Workflow.WfLogPrefix + "Stage Dispatch for Create Entered...");
+Log.info(Workflow.WfLogPrefix + "Stage Dispatch for Create Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
 
 
 var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 
 if (DispatchQueue === 'undefined') {
-    Log.info(Workflow.WfLogPrefix + Workflow.WfLogPrefix + "Initializing DispatchQueue...");
+    Log.info(Workflow.WfLogPrefix + "Initializing DispatchQueue...");
     DispatchQueue = new Array();
 }
 
