@@ -1,105 +1,269 @@
 {
     "partyDetails": [{
             "duration": {
-                "baseValueMinutes": 1
+                "baseValueMinutes": 0
             },
             "template": {
-                "id": 61,
-                "name": "Host Email",
+                "id": 1,
+                "name": "Notification Email Template",
                 "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"Host Email\",\"body\":\"Host Email\"}",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
                 "tenantId": 100,
-                "channelId": 33
+                "channelId": 37
+            },
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "level": "A. Branch",
+            "contactType": "Notification",
+            "waitForNextContact": false,
+            "contactMapping": "22-29-37-47-0",
+            "lifeCycle": "Ack",
+            "users": [{
+                    "firstName": "Shirish",
+                    "lastName": "Kumar",
+                    "isAvailable": false,
+                    "address": "shirish@esq.com",
+                    "sequenceNo": 2,
+                    "nextAvailableTime": "2016-10-21T18:30:00.000+0000",
+                    "userName": "Shirish",
+                    "userId": 58
+                }, {
+                    "firstName": "virenderGujjar",
+                    "lastName": "tanwar",
+                    "isAvailable": true,
+                    "address": "virender.tanwar@esq.com",
+                    "sequenceNo": 3,
+                    "nextAvailableTime": "",
+                    "userName": "virender",
+                    "userId": 31
+                }]
+        }, {
+            "duration": {
+                "baseValueMinutes": 3
+            },
+            "template": {
+                "id": 1,
+                "name": "Notification Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 100,
+                "channelId": 37
             },
             "contactChannel": "Email",
             "atmSchedule": "AnyHours",
             "level": "A. Branch",
             "contactType": "Pre Breach Reminder",
             "waitForNextContact": false,
-            "contactMapping": "22-152-33-62-1",
+            "contactMapping": "22-30-37-47-3",
             "lifeCycle": "Ack",
             "users": [{
-                    "firstName": "",
-                    "lastName": "",
+                    "firstName": "Shirish",
+                    "lastName": "Kumar",
+                    "isAvailable": false,
+                    "address": "shirish@esq.com",
+                    "sequenceNo": 4,
+                    "nextAvailableTime": "2016-10-21T18:30:00.000+0000",
+                    "userName": "Shirish",
+                    "userId": 58
+                }, {
+                    "firstName": "virenderGujjar",
+                    "lastName": "tanwar",
                     "isAvailable": true,
-                    "address": "dispatcheradmin@esq.com, dispatcheradmin@esq.com",
+                    "address": "virender.tanwar@esq.com",
                     "sequenceNo": 5,
-                    "nextAvailableTime": ""
-                }, {
-                    "firstName": "bob1",
-                    "lastName": "user1",
-                    "isAvailable": true,
-                    "address": "bob1@esq.com, bob1Alternate@esq.com",
-                    "sequenceNo": 6,
-                    "nextAvailableTime": ""
+                    "nextAvailableTime": "",
+                    "userName": "virender",
+                    "userId": 31
                 }]
         }, {
             "duration": {
-                "baseValueMinutes": 2
+                "baseValueMinutes": 4
             },
             "template": {
-                "id": 64,
-                "name": "BOB Email",
+                "id": 1,
+                "name": "Notification Email Template",
                 "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"BOB Email\",\"body\":\"BOB Email\"}",
-                "tenantId": 200,
-                "channelId": 33
-            },
-            "contactChannel": "Email",
-            "atmSchedule": "AnyHours",
-            "level": "B. Service Team",
-            "contactType": "Escalation-L1",
-            "waitForNextContact": false,
-            "contactMapping": "22-54-33-62-2",
-            "lifeCycle": "Ack",
-            "users": [{
-                    "firstName": "",
-                    "lastName": "",
-                    "isAvailable": true,
-                    "address": "dispatcheradmin@esq.com, dispatcheradmin@esq.com",
-                    "sequenceNo": 7,
-                    "nextAvailableTime": ""
-                }, {
-                    "firstName": "bob1",
-                    "lastName": "user1",
-                    "isAvailable": true,
-                    "address": "bob1@esq.com, bob1Alternate@esq.com",
-                    "sequenceNo": 8,
-                    "nextAvailableTime": ""
-                }]
-        }, {
-            "duration": {
-                "baseValueMinutes": 0
-            },
-            "template": {
-                "id": 61,
-                "name": "Host Email",
-                "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"Host Email\",\"body\":\"Host Email\"}",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
                 "tenantId": 100,
-                "channelId": 33
+                "channelId": 37
             },
             "contactChannel": "Email",
             "atmSchedule": "AnyHours",
             "level": "A. Branch",
             "contactType": "Breach",
             "waitForNextContact": false,
-            "contactMapping": "22-58-33-62-0",
+            "contactMapping": "22-31-37-47-4",
             "lifeCycle": "Ack",
             "users": [{
-                    "firstName": "",
-                    "lastName": "",
-                    "isAvailable": true,
-                    "address": "dispatcheradmin@esq.com, dispatcheradmin@esq.com",
-                    "sequenceNo": 9,
-                    "nextAvailableTime": ""
+                    "firstName": "Shirish",
+                    "lastName": "Kumar",
+                    "isAvailable": false,
+                    "address": "shirish@esq.com",
+                    "sequenceNo": 6,
+                    "nextAvailableTime": "2016-10-21T18:30:00.000+0000",
+                    "userName": "Shirish",
+                    "userId": 58
                 }, {
-                    "firstName": "bob1",
-                    "lastName": "user1",
+                    "firstName": "virenderGujjar",
+                    "lastName": "tanwar",
                     "isAvailable": true,
-                    "address": "bob1@esq.com, bob1Alternate@esq.com",
+                    "address": "virender.tanwar@esq.com",
+                    "sequenceNo": 7,
+                    "nextAvailableTime": "",
+                    "userName": "virender",
+                    "userId": 31
+                }]
+        }, {
+            "duration": {
+                "baseValueMinutes": 1
+            },
+            "template": {
+                "id": 1,
+                "name": "Notification Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 100,
+                "channelId": 37
+            },
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "level": "A. Branch",
+            "contactType": "Escalation-L1",
+            "waitForNextContact": false,
+            "contactMapping": "22-32-37-47-1",
+            "lifeCycle": "Ack",
+            "users": [{
+                    "firstName": "Shirish",
+                    "lastName": "Kumar",
+                    "isAvailable": false,
+                    "address": "shirish@esq.com",
+                    "sequenceNo": 8,
+                    "nextAvailableTime": "2016-10-21T18:30:00.000+0000",
+                    "userName": "Shirish",
+                    "userId": 58
+                }, {
+                    "firstName": "virenderGujjar",
+                    "lastName": "tanwar",
+                    "isAvailable": true,
+                    "address": "virender.tanwar@esq.com",
+                    "sequenceNo": 9,
+                    "nextAvailableTime": "",
+                    "userName": "virender",
+                    "userId": 31
+                }]
+        }, {
+            "duration": {
+                "baseValueMinutes": 2
+            },
+            "template": {
+                "id": 1,
+                "name": "Notification Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 100,
+                "channelId": 37
+            },
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "level": "A. Branch",
+            "contactType": "Escalation-L2",
+            "waitForNextContact": false,
+            "contactMapping": "22-33-37-47-2",
+            "lifeCycle": "Ack",
+            "users": [{
+                    "firstName": "Shirish",
+                    "lastName": "Kumar",
+                    "isAvailable": false,
+                    "address": "shirish@esq.com",
                     "sequenceNo": 10,
-                    "nextAvailableTime": ""
+                    "nextAvailableTime": "2016-10-21T18:30:00.000+0000",
+                    "userName": "Shirish",
+                    "userId": 58
+                }, {
+                    "firstName": "virenderGujjar",
+                    "lastName": "tanwar",
+                    "isAvailable": true,
+                    "address": "virender.tanwar@esq.com",
+                    "sequenceNo": 11,
+                    "nextAvailableTime": "",
+                    "userName": "virender",
+                    "userId": 31
+                }]
+        }, {
+            "duration": {
+                "baseValueMinutes": 3
+            },
+            "template": {
+                "id": 1,
+                "name": "Notification Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 100,
+                "channelId": 37
+            },
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "level": "A. Branch",
+            "contactType": "Escalation-L3",
+            "waitForNextContact": false,
+            "contactMapping": "22-34-37-47-3",
+            "lifeCycle": "Ack",
+            "users": [{
+                    "firstName": "Shirish",
+                    "lastName": "Kumar",
+                    "isAvailable": false,
+                    "address": "shirish@esq.com",
+                    "sequenceNo": 12,
+                    "nextAvailableTime": "2016-10-21T18:30:00.000+0000",
+                    "userName": "Shirish",
+                    "userId": 58
+                }, {
+                    "firstName": "virenderGujjar",
+                    "lastName": "tanwar",
+                    "isAvailable": true,
+                    "address": "virender.tanwar@esq.com",
+                    "sequenceNo": 13,
+                    "nextAvailableTime": "",
+                    "userName": "virender",
+                    "userId": 31
+                }]
+        }, {
+            "duration": {
+                "baseValueMinutes": 4
+            },
+            "template": {
+                "id": 1,
+                "name": "Notification Email Template",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "tenantId": 100,
+                "channelId": 37
+            },
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "level": "A. Branch",
+            "contactType": "Escalation-L4",
+            "waitForNextContact": false,
+            "contactMapping": "22-35-37-47-4",
+            "lifeCycle": "Ack",
+            "users": [{
+                    "firstName": "Shirish",
+                    "lastName": "Kumar",
+                    "isAvailable": false,
+                    "address": "shirish@esq.com",
+                    "sequenceNo": 14,
+                    "nextAvailableTime": "2016-10-21T18:30:00.000+0000",
+                    "userName": "Shirish",
+                    "userId": 58
+                }, {
+                    "firstName": "virenderGujjar",
+                    "lastName": "tanwar",
+                    "isAvailable": true,
+                    "address": "virender.tanwar@esq.com",
+                    "sequenceNo": 15,
+                    "nextAvailableTime": "",
+                    "userName": "virender",
+                    "userId": 31
                 }]
         }]
 }
