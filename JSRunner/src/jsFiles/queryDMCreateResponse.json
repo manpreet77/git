@@ -4,33 +4,33 @@
                 "baseValueMinutes": 0
             },
             "template": {
-                "id": 1,
-                "name": "Notification Email Template",
+                "id": 61,
+                "name": "Host Email",
                 "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
+                "jsonDefinition": "{\"subject\":\"Host Email\",\"body\":\"Host Email\"}",
                 "tenantId": 100,
-                "channelId": 37
+                "channelId": 33
             },
             "contactChannel": "Email",
             "atmSchedule": "BranchHours",
             "level": "A. Branch",
             "contactType": "Notification",
             "waitForNextContact": false,
-            "contactMapping": "21-29-37-41-0",
+            "contactMapping": "21-29-33-38-0",
             "lifeCycle": "Create",
             "users": [{
-                    "firstName": "virenderGujjar",
-                    "lastName": "tanwar",
-                    "isAvailable": false,
-                    "address": "virender.tanwar@esq.com, virender.tanwar@gmail.com",
-                    "sequenceNo": 0,
-                    "nextAvailableTime": "2016-10-14T13:00:00.000+0000"
-                }, {
                     "firstName": "",
                     "lastName": "",
+                    "isAvailable": false,
+                    "address": "anjali@esq.com, anjali@esq.com",
+                    "sequenceNo": 2,
+                    "nextAvailableTime": "2016-10-17T12:30:00.000+0000"
+                }, {
+                    "firstName": "bob1",
+                    "lastName": "user1",
                     "isAvailable": true,
-                    "address": "rahuladmin@esq.com",
-                    "sequenceNo": 1,
+                    "address": "bob1@esq.com, bob1Alternate@esq.com",
+                    "sequenceNo": 3,
                     "nextAvailableTime": ""
                 }]
         }]

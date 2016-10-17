@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.34
+   Dispatcher Standard Workflow V 2.8.7.35
    PrepareClose
    This action sets the stage and decides what needs to be done in this workflow
    --------------------------------------------------------------------------------
@@ -16,9 +16,8 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus !== 'closed') {
     Workflow.WfLifecycle =  'Close';
     Workflow.WfStatus    =  'closed';
-} else {
-    Log.info(Workflow.WfLogPrefix + ': current State = ' + Workflow.WfStatus + ' event ignored');
-}
+    Log.info(Workflow.WfLogPrefix + "Changed Workflow Lifecycle = " + Workflow.WfLifecycle + ", Status = " + Workflow.WfStatus);
+} 
 // Copy Close details into WorkFlow [Close time, Close user]
 
 Log.info(Workflow.WfLogPrefix + "Prepare for Close Exiting...");

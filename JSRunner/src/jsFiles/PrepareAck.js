@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.34
+ Dispatcher Standard Workflow V 2.8.7.35
  PrepareAck
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
@@ -16,6 +16,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.WfStatus === 'reopened' || Workflow.WfStatus === 'breached') {
     Workflow.WfLifecycle = 'Ack';
     Workflow.WfStatus = 'acked';
+    Log.info(Workflow.WfLogPrefix + "Changed Workflow Lifecycle = " + Workflow.WfLifecycle + ", Status = " + Workflow.WfStatus);
     Log.info(Workflow.WfLogPrefix + "Canceling the ACK SLA Breach Timer..");
     Timer.cancel('ei_ack_sla_breach');
 
@@ -29,7 +30,7 @@ if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'resumed' || Workflow.W
 
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
-    Log.info(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
+    Log.debug(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
 }
 
 

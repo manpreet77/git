@@ -1,56 +1,104 @@
 {
     "partyDetails": [{
             "duration": {
+                "baseValueMinutes": 1
+            },
+            "template": {
+                "id": 61,
+                "name": "Host Email",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"Host Email\",\"body\":\"Host Email\"}",
+                "tenantId": 100,
+                "channelId": 33
+            },
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "level": "A. Branch",
+            "contactType": "Pre Breach Reminder",
+            "waitForNextContact": false,
+            "contactMapping": "22-152-33-62-1",
+            "lifeCycle": "Ack",
+            "users": [{
+                    "firstName": "",
+                    "lastName": "",
+                    "isAvailable": true,
+                    "address": "dispatcheradmin@esq.com, dispatcheradmin@esq.com",
+                    "sequenceNo": 5,
+                    "nextAvailableTime": ""
+                }, {
+                    "firstName": "bob1",
+                    "lastName": "user1",
+                    "isAvailable": true,
+                    "address": "bob1@esq.com, bob1Alternate@esq.com",
+                    "sequenceNo": 6,
+                    "nextAvailableTime": ""
+                }]
+        }, {
+            "duration": {
+                "baseValueMinutes": 2
+            },
+            "template": {
+                "id": 64,
+                "name": "BOB Email",
+                "templateType": "email",
+                "jsonDefinition": "{\"subject\":\"BOB Email\",\"body\":\"BOB Email\"}",
+                "tenantId": 200,
+                "channelId": 33
+            },
+            "contactChannel": "Email",
+            "atmSchedule": "AnyHours",
+            "level": "B. Service Team",
+            "contactType": "Escalation-L1",
+            "waitForNextContact": false,
+            "contactMapping": "22-54-33-62-2",
+            "lifeCycle": "Ack",
+            "users": [{
+                    "firstName": "",
+                    "lastName": "",
+                    "isAvailable": true,
+                    "address": "dispatcheradmin@esq.com, dispatcheradmin@esq.com",
+                    "sequenceNo": 7,
+                    "nextAvailableTime": ""
+                }, {
+                    "firstName": "bob1",
+                    "lastName": "user1",
+                    "isAvailable": true,
+                    "address": "bob1@esq.com, bob1Alternate@esq.com",
+                    "sequenceNo": 8,
+                    "nextAvailableTime": ""
+                }]
+        }, {
+            "duration": {
                 "baseValueMinutes": 0
             },
             "template": {
-                "id": 7,
-                "name": "Notification Email Template",
+                "id": 61,
+                "name": "Host Email",
                 "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"Incident Alert Notification - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% - \\t\\t%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"The problem \\\\\\\\n%Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% occurred on ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId% with Incident Id = %Workflow.IncidentId%.\\\\\\\\n<br>\\\\\\\\nPlease resolve the incident with in defined SLA %Workflow.TimeBefore1Escalation% Hours in order to avoid escalation.\\\\\\\\n</br>\\\\\\\\n<br><br><b>\\\\\\\\nThis is an auto-generated email. Please do not reply or write back to this Email ID. \\\\\\\\n</b></br></br>\\\\\\\\n\\\\\\\\n\"}",
-                "tenantId": 1300,
-                "channelId": 38
+                "jsonDefinition": "{\"subject\":\"Host Email\",\"body\":\"Host Email\"}",
+                "tenantId": 100,
+                "channelId": 33
             },
             "contactChannel": "Email",
             "atmSchedule": "AnyHours",
             "level": "A. Branch",
             "contactType": "Breach",
             "waitForNextContact": false,
-            "contactMapping": "26-86-38-68-0",
+            "contactMapping": "22-58-33-62-0",
             "lifeCycle": "Ack",
             "users": [{
-                    "firstName": "Harpreet",
-                    "lastName": "Singh",
+                    "firstName": "",
+                    "lastName": "",
                     "isAvailable": true,
-                    "address": "harpreet.singh@esq.com",
-                    "sequenceNo": 4,
+                    "address": "dispatcheradmin@esq.com, dispatcheradmin@esq.com",
+                    "sequenceNo": 9,
                     "nextAvailableTime": ""
-                }]
-        }, {
-            "duration": {
-                "baseValueMinutes": 4
-            },
-            "template": {
-                "id": 8,
-                "name": "Level-1 Email Template",
-                "templateType": "email",
-                "jsonDefinition": "{\"subject\":\"Escalation level L1 - Incident Id: %Workflow.IncidentId% - ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId%  - %Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category%\",\"body\":\"Due to non - resolution of the  Incident Id: \\\\\\\\n%Workflow.IncidentId% - %Workflow.Category%.%Workflow.Sub_Category%.%Workflow.Sub_Sub_Category% for the ATM ID:SITE ID = %Workflow.TermId%:%Workflow.SiteId%, It has been escalated to Level L1. <br>Please resolve the incident in order to avoid further escalation</br> \\\\\\\\n      \\\\\\\\n<br><b>This is an auto-generated email. Please do not reply or write back to this Email ID.</b></br>\\\\\\\\n\"}",
-                "tenantId": 1300,
-                "channelId": 38
-            },
-            "contactChannel": "Email",
-            "atmSchedule": "AnyHours",
-            "level": "G. Second Line Time",
-            "contactType": "Escalation-L1",
-            "waitForNextContact": false,
-            "contactMapping": "26-87-38-68-4",
-            "lifeCycle": "Ack",
-            "users": [{
-                    "firstName": "Rajiv",
-                    "lastName": "Beri",
+                }, {
+                    "firstName": "bob1",
+                    "lastName": "user1",
                     "isAvailable": true,
-                    "address": "rajiv.beri@esq.com, rajiv.beri@esq.com",
-                    "sequenceNo": 5,
+                    "address": "bob1@esq.com, bob1Alternate@esq.com",
+                    "sequenceNo": 10,
                     "nextAvailableTime": ""
                 }]
         }]

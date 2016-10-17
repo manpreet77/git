@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.34
+ Dispatcher Standard Workflow V 2.8.7.35
  Send Error from Voice Adaptor
  This action checks reries and delays and requeues the dispatch if appropriate
  For Create it also queues the next contact to be contacted as needed
@@ -38,7 +38,7 @@ DispatchQueue.sort(function (a, b) {
 //  Save the Queue away
 Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
 
-Log.info(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
+Log.debug(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
 
 
 var EventId = Date.now().toString();

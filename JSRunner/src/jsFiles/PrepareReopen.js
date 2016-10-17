@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.34
+   Dispatcher Standard Workflow V 2.8.7.35
    PrepareReopen
    This action sets the stage and decides what needs to be done in this workflow
    --------------------------------------------------------------------------------
@@ -16,6 +16,8 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus === 'resolved') {
     Workflow.WfLifecycle =  'reopen';
     Workflow.WfStatus    =  'reopened';
+    
+    Log.info(Workflow.WfLogPrefix + "Changed Workflow Lifecycle = " + Workflow.WfLifecycle + ", Status = " + Workflow.WfStatus);
 }
 // Copy reopem details into WorkFlow [reopen time, reopen user]
 

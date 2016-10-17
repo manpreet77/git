@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.34
+ Dispatcher Standard Workflow V 2.8.7.35
  PrepareArr
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
@@ -16,6 +16,8 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked' || Workflow.WfStatus ===  'breached') {
     Workflow.WfLifecycle = 'Arrive';
     Workflow.WfStatus = 'working';
+    Log.info(Workflow.WfLogPrefix + "Changed Workflow Lifecycle = " + Workflow.WfLifecycle + ", Status = " + Workflow.WfStatus);
+    Log.info(Workflow.WfLogPrefix + "Canceling the Arrival SLA Breach Timer..");
     Timer.cancel('ei_arr_sla_breach');
     
     //loop through the dispatch queue and remove unneccesary timers 
@@ -28,7 +30,7 @@ if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked' || Workflow.
     
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
-    Log.info(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
+    Log.debug(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
 
 }
 

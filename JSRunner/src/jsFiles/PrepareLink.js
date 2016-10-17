@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
    ESQ Management Solutions / ESQ Business Services
    --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.34
+   Dispatcher Standard Workflow V 2.8.7.35
    PrepareLink
    This action sets the stage and decides what needs to be done in this workflow
    --------------------------------------------------------------------------------
@@ -15,7 +15,9 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
 if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked' || Workflow.WfStatus === 'working' || Workflow.WfStatus === 'breached') {
     Workflow.WfLifecycle =  'Link';
-    Workflow.WfStatus    =  'linked';  //????
+    Workflow.WfStatus    =  'linked';
+    
+    Log.info(Workflow.WfLogPrefix + "Changed Workflow Lifecycle = " + Workflow.WfLifecycle + ", Status = " + Workflow.WfStatus);
 }
 // Copy Arrive details into WorkFlow [link time, link user]
 

@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.34
+ Dispatcher Standard Workflow V 2.8.7.35
  PrepareStartOrResume
  This script prepares actions and dispatch on an Start or Resume
  --------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 // Set Variable WorkFlow.LifeCycle.State to 'acked'
 if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'onHold' || Workflow.WfStatus === 'acked' || Workflow.WfStatus === 'breached') {
     
-    if (Workflow.WfStatus === 'new') {
+    if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'onHold') {
         Log.info(Workflow.WfLogPrefix + "Canceling the ACK SLA Breach Timer..");
         Timer.cancel('ei_ack_sla_breach');
         //loop through the dispatch queue and remove unneccesary timers 
@@ -26,14 +26,19 @@ if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'onHold' || Workflow.Wf
         resetDispatchQueue('Ack', 'Escalation-L2');
         resetDispatchQueue('Ack', 'Escalation-L3');
         resetDispatchQueue('Ack', 'Escalation-L4');
-    }
+        
+        Workflow.WfLifecycle = 'Work';
+    } 
     
-    Workflow.WfLifecycle = 'Work';
+    if(Workflow.WfStatus === 'onHold'){
+        Workflow.WfLifecycle = 'Resume';
+    }    
+    
     Workflow.WfStatus = 'working';
 
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
-    Log.info(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
+    Log.debug(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);
 }
 
 Log.info(Workflow.WfLogPrefix + "Prepare for Start/Resume Work Exiting...");

@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.34
+ Dispatcher Standard Workflow V 2.8.7.35
  PrepareArrSLABreach
  This script prepares actions and dispatch on an Arrival SLABreach
  --------------------------------------------------------------------------------
@@ -17,6 +17,7 @@ var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.pars
 if (Workflow.WfStatus === 'active' || Workflow.WfStatus === 'acked') {
     Workflow.WfLifecycle = 'Arrive';
     Workflow.WfStatus = 'breached';
+    Log.info(Workflow.WfLogPrefix + "Changed Workflow Lifecycle = " + Workflow.WfLifecycle + ", Status = " + Workflow.WfStatus);
     
     
     //loop through the dispatch queue and remove unneccesary timers 

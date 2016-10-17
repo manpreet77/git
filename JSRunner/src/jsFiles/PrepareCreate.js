@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.34
+ Dispatcher Standard Workflow V 2.8.7.35
  PrepareWorkForCreate
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------
@@ -75,6 +75,7 @@ Workflow.WfLifecycle = 'Create';
 Workflow.WfId = 'undefined';
 Workflow.WfStartTime = new Date().toISOString();
 Workflow.WfLogPrefix = '[' + Workflow.InIncidentId + ']';
+Workflow.delayGapinMinsDueToNextAvailableUserSchedule = 0;
 
 Log.info("Workflow.WfStartTime:" + Workflow.WfStartTime);
 

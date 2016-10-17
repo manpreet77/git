@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.34
+ Dispatcher Standard Workflow V 2.8.7.35
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -30,26 +30,6 @@ var BaseDispatchStartTimeAsDate = new Date(Workflow.InStartTime);
 if (Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== 'undefined' && Workflow.delayGapinMinsDueToNextAvailableAtmSchedule !== null) {
     Log.info(Workflow.WfLogPrefix + "Adding " + Workflow.delayGapinMinsDueToNextAvailableAtmSchedule + " in all timers due to Next Available ATM Schedule");
     BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.delayGapinMinsDueToNextAvailableAtmSchedule);
-}
-
-//Start the SLA Breach timers
-// Start Timer for Ack SLA (ei_ack_sla_breach)
-if (Workflow.ArAckSLA !== 'undefined' && Workflow.ArAckSLA > 0) {
-    Log.info(Workflow.WfLogPrefix + 'Start Ack SLA Breach Timer');
-    Timer.start({
-        eventName: 'ei_ack_sla_breach',
-        delayMs: Workflow.ArAckSLA * 60 * 1000
-    });
-}
-
-
-// Start Timer for Resolve SLA (ei_rsl_sla_breach)
-if (Workflow.ArRslSLA !== 'undefined' && Workflow.ArRslSLA > 0) {
-    Log.info(Workflow.WfLogPrefix + 'Start Resolution SLA Breach Timer');
-    Timer.start({
-        eventName: 'ei_rsl_sla_breach',
-        delayMs: Workflow.ArRslSLA * 60 * 1000
-    });
 }
 
 var dmaps = null;
@@ -165,8 +145,15 @@ if (!queryArResult) {
             /* OperationalHours...       */ dq.AtmSchedule = dmaps[i].atmSchedule;
             /* delay duration            */ dq.DelayMins = parseInt(dmaps[i].duration.baseValueMinutes, 10);
 
+
+            if (Workflow.delayGapinMinsDueToNextAvailableUserSchedule > 0) {
+                Log.info(Workflow.WfLogPrefix + "Adding " + Workflow.delayGapinMinsDueToNextAvailableUserSchedule + " in all timers due to Next Available User Schedule");
+                BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.delayGapinMinsDueToNextAvailableUserSchedule);
+            }
+
             //handling of SendTime and delay based on ContactType
             var DispatchStartTimeAsDate = new Date(BaseDispatchStartTimeAsDate);
+
             if (dq.ContactType === "Pre Breach Reminder") {
                 //special handling of Pre-breach type 
                 //in this case the duration has to be subtracted from the SLA and accordingly adjusted
@@ -272,9 +259,6 @@ if (!queryArResult) {
 
                 processForUserAddress(user);
 
-                if (user.Status === "wait" || user.Status === "done")
-                    continue;
-
 
                 if (!user.isAvailable) {
                     if (user.nextAvailableTime) {
@@ -323,6 +307,26 @@ if (!queryArResult) {
                     //in case there was a delay added for initial dispatch, we will need to add this to all subsequent dispatches
                     if (delayGapinMins > 0) {
                         Workflow.delayGapinMinsDueToNextAvailableUserSchedule = delayGapinMins;
+                    }
+
+                    //Start the SLA Breach timers with ot without user schedule delay as 
+                    //Start Timer for Ack SLA (ei_ack_sla_breach)
+                    if (Workflow.ArAckSLA !== 'undefined' && Workflow.ArAckSLA > 0) {
+                        Log.info(Workflow.WfLogPrefix + 'Start Ack SLA Breach Timer for : ' + (+Workflow.ArAckSLA + delayGapinMins) + ' mins');
+                        Timer.start({
+                            eventName: 'ei_ack_sla_breach',
+                            delayMs: (+Workflow.ArAckSLA + delayGapinMins) * 60 * 1000
+                        });
+                    }
+
+
+                    // Start Timer for Resolve SLA (ei_rsl_sla_breach)
+                    if (Workflow.ArRslSLA !== 'undefined' && Workflow.ArRslSLA > 0) {
+                        Log.info(Workflow.WfLogPrefix + 'Start Resolution SLA Breach Timer for : ' + (+Workflow.ArRslSLA + delayGapinMins) + ' mins');
+                        Timer.start({
+                            eventName: 'ei_rsl_sla_breach',
+                            delayMs: (+Workflow.ArRslSLA + delayGapinMins) * 60 * 1000
+                        });
                     }
                     break;
                 }
