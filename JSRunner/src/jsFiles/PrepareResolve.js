@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.37
+ Dispatcher Standard Workflow V 2.8.7.38
  PrepareResolve
  This action sets the stage and decides what needs to be done in this workflow
  --------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.37
+ Dispatcher Standard Workflow V 2.8.7.38
  SendDispatch
  This action is initially triggered by the ei_send_dispatch event
  Sends all notifications whose send time is now or earlier
@@ -45,7 +45,7 @@ if (Workflow.WfStatus !== 'undefined' && Workflow.WfStatus !== '') {
 
         var user = dq.users[j];
 
-        if (user.EventId === Event.EventId)
+        if (user.EventId === Event.EventId && user.userName === Event.User)
         {
             //check if this notification has already been processed
             if (user.Status === 'done' || user.Status === 'canceled' || user.Status === 'next')

@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.37
+ Dispatcher Standard Workflow V 2.8.7.38
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -299,8 +299,8 @@ if (!queryArResult) {
                 user.EventId = Date.now().toString();
                 user.TimerId = Timer.start({
                     eventName: 'ei_send_dispatch',
-                    delayMs: delayGapinMins * 60 * 1000,
-                    properties: {'EventId': user.EventId, 'name': dq.ContactType + '-' + dq.EventType + ' for ' + user.userName},
+                    delayMs: delayGapinMins * 60 * 1000,                    
+                    properties: {'EventId': user.EventId, 'ContactType': dq.ContactType , 'EventType': dq.EventType , 'User': user.userName},
                     allowTimerWithSameName: 'true'
                 });
 

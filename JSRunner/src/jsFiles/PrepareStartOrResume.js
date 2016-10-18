@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.37
+ Dispatcher Standard Workflow V 2.8.7.38
  PrepareStartOrResume
  This script prepares actions and dispatch on an Start or Resume
  --------------------------------------------------------------------------------
