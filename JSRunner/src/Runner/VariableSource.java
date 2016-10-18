@@ -7,7 +7,7 @@ package Runner;
 
 /**
  *
- * @author Shridhar
+ * @author Shridhar, Manpreet
  */
 public interface VariableSource {
 

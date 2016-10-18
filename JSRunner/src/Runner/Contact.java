@@ -20,7 +20,7 @@ import jdk.nashorn.internal.runtime.JSONFunctions;
 
 /**
  *
- * @author Shridhar
+ * @author Shridhar, Manpreet
  */
 public class Contact {
 

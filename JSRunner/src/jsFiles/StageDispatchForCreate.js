@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.36
+ Dispatcher Standard Workflow V 2.8.7.37
  Stage Dispatch for Create
  This action loads dispatch maps and prepares a queue of dispatchs to be sent
  Sorted by ascending order of send time
@@ -146,7 +146,7 @@ if (!queryArResult) {
             /* delay duration            */ dq.DelayMins = parseInt(dmaps[i].duration.baseValueMinutes, 10);
 
 
-            if (Workflow.delayGapinMinsDueToNextAvailableUserSchedule > 0) {
+            if (+Workflow.delayGapinMinsDueToNextAvailableUserSchedule > 0) {
                 Log.info(Workflow.WfLogPrefix + "Adding " + Workflow.delayGapinMinsDueToNextAvailableUserSchedule + " in all timers due to Next Available User Schedule");
                 BaseDispatchStartTimeAsDate = addMinutes(BaseDispatchStartTimeAsDate, +Workflow.delayGapinMinsDueToNextAvailableUserSchedule);
             }
@@ -300,7 +300,7 @@ if (!queryArResult) {
                 user.TimerId = Timer.start({
                     eventName: 'ei_send_dispatch',
                     delayMs: delayGapinMins * 60 * 1000,
-                    properties: {'EventId': user.EventId, 'fromDispatchQueue': 'true'},
+                    properties: {'EventId': user.EventId, 'name': dq.ContactType + '-' + dq.EventType + ' for ' + user.userName},
                     allowTimerWithSameName: 'true'
                 });
 

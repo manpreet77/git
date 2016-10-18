@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------
  ESQ Management Solutions / ESQ Business Services
  --------------------------------------------------------------------------------
- Dispatcher Standard Workflow V 2.8.7.36
+ Dispatcher Standard Workflow V 2.8.7.37
  PrepareStartOrResume
  This script prepares actions and dispatch on an Start or Resume
  --------------------------------------------------------------------------------
@@ -26,11 +26,11 @@ if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'onHold' || Workflow.Wf
         resetDispatchQueue('Ack', 'Escalation-L2');
         resetDispatchQueue('Ack', 'Escalation-L3');
         resetDispatchQueue('Ack', 'Escalation-L4');
-        
-        Workflow.WfLifecycle = 'Work';
     } 
     
-    if(Workflow.WfStatus === 'onHold'){
+     if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked') {
+        Workflow.WfLifecycle = 'Work';
+     }else if(Workflow.WfStatus === 'onHold'){
         Workflow.WfLifecycle = 'Resume';
     }    
     

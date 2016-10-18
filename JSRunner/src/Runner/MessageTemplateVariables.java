@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author Shridhar
+ * @author Shridhar, Manpreet
  */
 public class MessageTemplateVariables {    
     private static final Pattern splitPattern = Pattern.compile("\\.");

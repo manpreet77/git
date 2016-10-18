@@ -1,33 +1,41 @@
 /* --------------------------------------------------------------------------------
-   ESQ Management Solutions / ESQ Business Services
-   --------------------------------------------------------------------------------
-   Dispatcher Standard Workflow V 2.8.7.36
-   PrepareResolve
-   This action sets the stage and decides what needs to be done in this workflow
-   --------------------------------------------------------------------------------
-*/
+ ESQ Management Solutions / ESQ Business Services
+ --------------------------------------------------------------------------------
+ Dispatcher Standard Workflow V 2.8.7.37
+ PrepareResolve
+ This action sets the stage and decides what needs to be done in this workflow
+ --------------------------------------------------------------------------------
+ */
 /* global Log, Workflow, Timer */
 
 Log.info(Workflow.WfLogPrefix + "Prepare for Resolve Entered...");
 //  Restore DispatchQueue from Stringfy version in Workflow context
-var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse (Workflow.DispatchQueueStringify): 'undefined');
+var DispatchQueue = (Workflow.DispatchQueueStringify !== 'undefined' ? JSON.parse(Workflow.DispatchQueueStringify) : 'undefined');
 // Check WorkFlow State. If !'active' then ignore.
 // Set Variable WorkFlow.LifeCycle.State to 'resolved'
-if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked' || Workflow.WfStatus ===  'working' || Workflow.WfStatus === 'breached') {
-    Workflow.WfLifecycle =  'Resolve';
-    Workflow.WfStatus    =  'resolved';
+if (Workflow.WfStatus === 'new' || Workflow.WfStatus === 'acked' || Workflow.WfStatus === 'working' || Workflow.WfStatus === 'breached') {
+    Workflow.WfLifecycle = 'Resolve';
+    Workflow.WfStatus = 'resolved';
     Log.info(Workflow.WfLogPrefix + "Changed Workflow Lifecycle = " + Workflow.WfLifecycle + ", Status = " + Workflow.WfStatus);
     Log.info(Workflow.WfLogPrefix + "Canceling the Resolve SLA Breach Timer..");
     Timer.cancel('ei_rsl_sla_breach');
-    
+
     //loop through the dispatch queue and remove unneccesary timers 
+    if (Workflow.WfStatus === 'new') {
+        resetDispatchQueue('Ack', 'Pre Breach Reminder');
+        resetDispatchQueue('Ack', 'Breach');
+        resetDispatchQueue('Ack', 'Escalation-L1');
+        resetDispatchQueue('Ack', 'Escalation-L2');
+        resetDispatchQueue('Ack', 'Escalation-L3');
+        resetDispatchQueue('Ack', 'Escalation-L4');
+    }
     resetDispatchQueue('Resolve', 'Pre Breach Reminder');
     resetDispatchQueue('Resolve', 'Breach');
     resetDispatchQueue('Resolve', 'Escalation-L1');
     resetDispatchQueue('Resolve', 'Escalation-L2');
     resetDispatchQueue('Resolve', 'Escalation-L3');
     resetDispatchQueue('Resolve', 'Escalation-L4');
-    
+
     //  Save the Queue away
     Workflow.DispatchQueueStringify = JSON.stringify(DispatchQueue);
     Log.debug(Workflow.WfLogPrefix + "DispatchQueue = {}", Workflow.DispatchQueueStringify);

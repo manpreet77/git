@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 
 /**
  *
- * @author Shridhar
+ * @author Shridhar, Manpreet
  */
 public class CmdLine {
 
@@ -33,7 +33,7 @@ public class CmdLine {
     public void Loop() {
 
         Log.info(" ");
-        Log.info("Welcome to ESQ Dispatcher Script Tool...V 2.8.7.36");
+        Log.info("Welcome to ESQ Dispatcher Script Tool...V 2.8.7.37");
 
         // Read input with BufferedReader.
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -104,6 +104,7 @@ public class CmdLine {
                     r.RunJS("StageDispatch.js");
                     break;
                 case 3:
+                    t.cancel("ei_ack_sla_breach");
                     Log.info("Run EventAckSLABreach.js...............................");
                     r.RunJS("EventAckSLABreach.js");
                     Log.info("Run PrepareAckSLABreach.js...............................");
@@ -152,6 +153,7 @@ public class CmdLine {
                     r.RunJS("StageDispatch.js");
                     break;
                 case 9:
+                    t.cancel("ei_rsl_sla_breach");
                     Log.info("Run EventRslSLABreach.js. .............................");
                     r.RunJS("EventRslSLABreach.js");
                     Log.info("Run PrepareRslSLABreach.js. .............................");

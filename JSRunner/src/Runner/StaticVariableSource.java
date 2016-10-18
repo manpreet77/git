@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  *
- * @author Shridhar
+ * @author Shridhar, Manpreet
  */
 public class StaticVariableSource implements VariableSource {
 

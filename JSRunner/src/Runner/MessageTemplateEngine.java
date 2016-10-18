@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author Shridhar
+ * @author Shridhar, Manpreet
  */
 public class MessageTemplateEngine {
 
